@@ -3,7 +3,7 @@ ActionsContentView
 
 ActionsContentView is an standalone library implements actions/content swiping view.
 
-The library doesn't use any specific code introduced in nex Android SDK versions. This allows develop an application with an action/content swiping view for every version of Android from 2.2 and up.
+The library doesn't use any specific code introduced in new Android SDK versions. This allows develop an application with an action/content swiping view for every version of Android from 2.2 and up.
 
 ![Example application looks on phone][1]
 
