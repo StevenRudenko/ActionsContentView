@@ -20,6 +20,26 @@ There is one limitation:
 
 ![Example application looks on tablet][2]
 
+Here is exmple of usage ActionsContentView as element of XML layout:
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    
+    ...
+    
+        <shared.ui.actionscontentview.ActionsContentView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:actions_layout="@layout/actions"
+            app:content_layout="@layout/content" />
+    
+    ...
+    
+    </RelativeLayout>
+
 Try out the example application on the Android Market: [ActionsContentView Example][3].
 
 Developed By
