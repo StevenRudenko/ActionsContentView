@@ -5,6 +5,17 @@ ActionsContentView is an standalone library implements actions/content swiping v
 
 The library doesn't use any specific code introduced in new Android SDK versions. This allows develop an application with an action/content swiping view for every version of Android from 2.2 and up.
 
+Some advantages of this library:
+
+* ability to slide view by touch
+* it is easy to adjust size of actions bar in XML
+* support of all Android SDK version starting from 2.0 and up
+
+There is one limitation:
+
+* all horizontal scrolling views will not work at bounds of this view
+
+
 ![Example application looks on phone][1]
 
 ![Example application looks on tablet][2]
