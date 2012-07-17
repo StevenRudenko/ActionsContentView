@@ -177,6 +177,8 @@ public class ActionsContentView extends ViewGroup {
       final View v = getChildAt(i);
       v.layout(l, t, l + v.getMeasuredWidth(), t + v.getMeasuredHeight());
     }
+
+    mContentScrollController.init();
   }
 
   /**
@@ -225,8 +227,31 @@ public class ActionsContentView extends ViewGroup {
 
     private int mLastFlingX = 0;
 
+    /**
+     * Indicates whether we need initialize position of view
+     * after measuring is finished.
+     * </br>Can be <code>null</code> if there is no any requirements for position was set.
+     * In this case we will have content shown.
+     */
+    private Boolean isInitiallyShown = null;
+
     public ContentScrollController(Scroller scroller) {
       mScroller = scroller;
+    }
+
+    /**
+     * Initializes visibility of content after views measuring is finished.
+     */
+    public void init() {
+      if (isInitiallyShown == null)
+        return;
+
+      if (isInitiallyShown)
+        showContent();
+      else
+        hideContent();
+
+      isInitiallyShown = null;
     }
 
     /**
@@ -273,11 +298,11 @@ public class ActionsContentView extends ViewGroup {
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
           // if first event is more scroll by Y axis than X one
           // ignore all events until event up
-          mHandleEvent = Boolean.valueOf(false);
+          mHandleEvent = Boolean.FALSE;
           return mHandleEvent;
         } else {
           // handle all events of scrolling by X axis
-          mHandleEvent = Boolean.valueOf(true);
+          mHandleEvent = Boolean.TRUE;
           scrollBy((int) distanceX);
         }
       } else if (mHandleEvent) {
@@ -343,6 +368,11 @@ public class ActionsContentView extends ViewGroup {
     }
 
     public void hideContent() {
+      if (viewContentContainer.getMeasuredWidth() == 0 || viewContentContainer.getMeasuredHeight() == 0) {
+        isInitiallyShown = Boolean.FALSE;
+        return;
+      }
+
       final int startX = viewContentContainer.getScrollX();
       final int dx;
       if (mSpacingType == SPACING_ACTIONS_WIDTH) {
@@ -355,6 +385,11 @@ public class ActionsContentView extends ViewGroup {
     }
 
     public void showContent() {
+      if (viewContentContainer.getMeasuredWidth() == 0 || viewContentContainer.getMeasuredHeight() == 0) {
+        isInitiallyShown = Boolean.TRUE;
+        return;
+      }
+
       final int startX = viewContentContainer.getScrollX();
       final int dx = startX;
 
