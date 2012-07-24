@@ -51,6 +51,11 @@ public class ActionsContentView extends ViewGroup {
    */
   private int mSpacing;
 
+  /**
+   * Indicates whether swiping is enabled or not.
+   */
+  private boolean isSwipingEnabled = true;
+
   private final FrameLayout viewActionsContainer;
   private final FrameLayout viewContentContainer;
 
@@ -127,8 +132,19 @@ public class ActionsContentView extends ViewGroup {
     mContentScrollController.showContent();
   }
 
+  public boolean isSwipingEnabled() {
+    return isSwipingEnabled;
+  }
+
+  public void setSwipingEnabled(boolean enabled) {
+    isSwipingEnabled = enabled;
+  }
+
   @Override
   public boolean dispatchTouchEvent(MotionEvent ev) {
+    if (!isSwipingEnabled)
+      return super.dispatchTouchEvent(ev);
+
     final int action = ev.getAction();
     // if current touch event should be handled
     if (mContentScrollController.isHandled() && action == MotionEvent.ACTION_UP) {
