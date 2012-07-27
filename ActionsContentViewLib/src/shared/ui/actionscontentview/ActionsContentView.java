@@ -141,6 +141,12 @@ public class ActionsContentView extends ViewGroup {
   }
 
   @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    // return true always as far we should handle touch event for swiping
+    return true;
+  }
+
+  @Override
   public boolean dispatchTouchEvent(MotionEvent ev) {
     if (!isSwipingEnabled)
       return super.dispatchTouchEvent(ev);
