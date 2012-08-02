@@ -188,7 +188,7 @@ public class ActionsContentView extends ViewGroup {
       }
     }
 
-    setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 
   @Override
