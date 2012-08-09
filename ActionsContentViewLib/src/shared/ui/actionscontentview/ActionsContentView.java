@@ -15,10 +15,9 @@
  ******************************************************************************/
 package shared.ui.actionscontentview;
 
-import shared.ui.actionscontentview.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -58,6 +57,8 @@ public class ActionsContentView extends ViewGroup {
 
   private final FrameLayout viewActionsContainer;
   private final FrameLayout viewContentContainer;
+
+  private final Rect mContentHitRect = new Rect();
 
   public ActionsContentView(Context context) {
     this(context, null);
@@ -162,6 +163,11 @@ public class ActionsContentView extends ViewGroup {
       clearPressedState(this);
       return false;
     }
+
+    viewContentContainer.getHitRect(mContentHitRect);
+    mContentHitRect.offset(viewContentContainer.getScrollX(), viewContentContainer.getScrollY());
+    if (mContentHitRect.contains((int)ev.getX(), (int)ev.getY()))
+      return true;
 
     return super.dispatchTouchEvent(ev);
   }
