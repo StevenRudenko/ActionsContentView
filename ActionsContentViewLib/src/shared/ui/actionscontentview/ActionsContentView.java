@@ -102,7 +102,20 @@ public class ActionsContentView extends ViewGroup {
 
     addView(viewActionsContainer, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-    viewContentContainer = new FrameLayout(context);
+    viewContentContainer = new FrameLayout(context) {
+      @Override
+      public boolean onTouchEvent(MotionEvent event) {
+        // prevent ray cast of touch events to actions container
+        getHitRect(mContentHitRect);
+        mContentHitRect.offset(viewContentContainer.getScrollX(), viewContentContainer.getScrollY());
+        if (mContentHitRect.contains((int)event.getX(), (int)event.getY())) {
+          return true;
+        }
+
+        return super.onTouchEvent(event);
+      }
+    };
+
     if (contentLayout != 0)
       inflater.inflate(contentLayout, viewContentContainer, true);
 
@@ -144,7 +157,10 @@ public class ActionsContentView extends ViewGroup {
   @Override
   public boolean onTouchEvent(MotionEvent event) {
     // return true always as far we should handle touch event for swiping
-    return true;
+    if (isSwipingEnabled)
+      return true;
+
+    return super.onTouchEvent(event);
   }
 
   @Override
@@ -163,11 +179,6 @@ public class ActionsContentView extends ViewGroup {
       clearPressedState(this);
       return false;
     }
-
-    viewContentContainer.getHitRect(mContentHitRect);
-    mContentHitRect.offset(viewContentContainer.getScrollX(), viewContentContainer.getScrollY());
-    if (mContentHitRect.contains((int)ev.getX(), (int)ev.getY()))
-      return true;
 
     return super.dispatchTouchEvent(ev);
   }
