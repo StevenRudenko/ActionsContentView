@@ -40,7 +40,7 @@ Here is exmple of usage ActionsContentView as element of XML layout:
     
     </RelativeLayout>
 
-Try out the example application on the Android Market: [ActionsContentView Example][3].
+Try out the example application on the Android Market: [ActionsContentView Example][4].
 
 Developed By
 ============
@@ -72,4 +72,4 @@ License
  [1]: http://lh5.ggpht.com/zLNsUDWGb37WMrsCOkg5H_WOBSnovsUgGPWtBCEo8pq8u-cR6oTmAs6VzypIw0VWxQ
  [2]: http://lh3.ggpht.com/fvYvbO8cLrzyozWlKrGM8koYI6xrm-WLX3-D5nUjCyNKVFuM5C1LR4Bps-BnVStNul0
  [3]: http://lh4.ggpht.com/gjSc5WXfxL2hZqq6Rno0Byx3nHEf7-n4G8ceDV3BC0e4wm2RpFxC7I8VMPgSA9fvKyw
- [3]: https://play.google.com/store/apps/details?id=sample.actionscontentview
+ [4]: https://play.google.com/store/apps/details?id=sample.actionscontentview
