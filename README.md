@@ -16,7 +16,7 @@ There is one limitation:
 * all horizontal scrolling views will not work at bounds of this view
 
 
-![Example application looks on phone][1][2]
+![Example application looks on phone][1]![Example application looks on phone][2]
 
 ![Example application looks on tablet][3]
 
