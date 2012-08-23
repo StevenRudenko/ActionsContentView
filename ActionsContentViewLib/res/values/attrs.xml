@@ -30,6 +30,8 @@
         <attr name="spacing_type" />
         <!-- Spacing value. -->
         <attr name="spacing" format="dimension" />
+        <!-- Spacing value for actions container. -->
+        <attr name="actions_spacing" format="dimension" />
         <!-- Actions layout ID to link at view creation time. -->
         <attr name="actions_layout" format="reference"/>
         <!-- Content layout ID to link at view creation time. -->

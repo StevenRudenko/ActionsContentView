@@ -30,7 +30,7 @@ import android.widget.Scroller;
 
 public class ActionsContentView extends ViewGroup {
   private static final String TAG = ActionsContentView.class.getSimpleName();
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
 
   /**
    * Spacing will be calculated as offset from right bound of view.
@@ -49,6 +49,11 @@ public class ActionsContentView extends ViewGroup {
    * Value of spacing to use.
    */
   private int mSpacing;
+
+  /**
+   * Value of actions container spacing to use.
+   */
+  private int mActionsSpacing;
 
   /**
    * Indicates whether swiping is enabled or not.
@@ -77,8 +82,10 @@ public class ActionsContentView extends ViewGroup {
     // reading attributes
     final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ActionsContentView);
     mSpacingType = a.getInteger(R.styleable.ActionsContentView_spacing_type, SPACING_RIGHT_OFFSET);
-    final int spacingDefault = context.getResources().getDimensionPixelSize(R.dimen.detault_actionscontentview_spacing);
+    final int spacingDefault = context.getResources().getDimensionPixelSize(R.dimen.default_actionscontentview_spacing);
     mSpacing = a.getDimensionPixelSize(R.styleable.ActionsContentView_spacing, spacingDefault);
+    final int actionsSpacingDefault = context.getResources().getDimensionPixelSize(R.dimen.default_actionscontentview_actions_spacing);
+    mActionsSpacing = a.getDimensionPixelSize(R.styleable.ActionsContentView_actions_spacing, actionsSpacingDefault);
 
     final int actionsLayout = a.getResourceId(R.styleable.ActionsContentView_actions_layout, 0);
     final int contentLayout = a.getResourceId(R.styleable.ActionsContentView_content_layout, 0);
@@ -87,6 +94,7 @@ public class ActionsContentView extends ViewGroup {
     if (DEBUG) {
       Log.d(TAG, "spacing type: " + mSpacingType);
       Log.d(TAG, "spacing value: " + mSpacing);
+      Log.d(TAG, "actions spacing value: " + mActionsSpacing);
       Log.d(TAG, "actions layout id: " + actionsLayout);
       Log.d(TAG, "content layout id: " + contentLayout);
     }
@@ -107,7 +115,7 @@ public class ActionsContentView extends ViewGroup {
       public boolean onTouchEvent(MotionEvent event) {
         // prevent ray cast of touch events to actions container
         getHitRect(mContentHitRect);
-        mContentHitRect.offset(viewContentContainer.getScrollX(), viewContentContainer.getScrollY());
+        mContentHitRect.offset(-viewContentContainer.getScrollX(), viewContentContainer.getScrollY());
         if (mContentHitRect.contains((int)event.getX(), (int)event.getY())) {
           return true;
         }
@@ -200,6 +208,9 @@ public class ActionsContentView extends ViewGroup {
           viewActionsContainer.measure(MeasureSpec.makeMeasureSpec(mSpacing, MeasureSpec.EXACTLY), heightMeasureSpec);
         else // all other situations are handled as SPACING_RIGHT_OFFSET
           viewActionsContainer.measure(MeasureSpec.makeMeasureSpec(width - mSpacing, MeasureSpec.EXACTLY), heightMeasureSpec);
+      } else if (v == viewContentContainer) {
+        final int contetnWidth = MeasureSpec.getSize(widthMeasureSpec) - mActionsSpacing;
+        v.measure(MeasureSpec.makeMeasureSpec(contetnWidth, MeasureSpec.EXACTLY), heightMeasureSpec);
       } else {
         v.measure(widthMeasureSpec, heightMeasureSpec);
       }
@@ -214,7 +225,10 @@ public class ActionsContentView extends ViewGroup {
     final int childrenCount = getChildCount();
     for (int i=0; i<childrenCount; ++i) {
       final View v = getChildAt(i);
-      v.layout(l, t, l + v.getMeasuredWidth(), t + v.getMeasuredHeight());
+      if (v == viewContentContainer)
+        v.layout(l + mActionsSpacing, t, l + mActionsSpacing + v.getMeasuredWidth(), t + v.getMeasuredHeight());
+      else
+        v.layout(l, t, l + v.getMeasuredWidth(), t + v.getMeasuredHeight());
     }
 
     mContentScrollController.init();
@@ -374,10 +388,9 @@ public class ActionsContentView extends ViewGroup {
       if (DEBUG)
         Log.d(TAG, "scroll from " + x + " by " + dx);
 
-      final int rightBound = getRightBound();
-
       final int scrollBy;
       if (dx < 0) { // scrolling right
+        final int rightBound = getRightBound();
         if (x + dx < -rightBound)
           scrollBy = -rightBound - x;
         else
@@ -413,13 +426,7 @@ public class ActionsContentView extends ViewGroup {
       }
 
       final int startX = viewContentContainer.getScrollX();
-      final int dx;
-      if (mSpacingType == SPACING_ACTIONS_WIDTH) {
-        dx = mSpacing + startX;
-      } else { // all other situations are handled as SPACING_RIGHT_OFFSET
-        dx = getWidth() - mSpacing + startX;
-      }
-
+      final int dx = getRightBound() + startX;
       fling(startX, dx);
     }
 
@@ -431,7 +438,6 @@ public class ActionsContentView extends ViewGroup {
 
       final int startX = viewContentContainer.getScrollX();
       final int dx = startX;
-
       fling(startX, dx);
     }
 
@@ -447,11 +453,7 @@ public class ActionsContentView extends ViewGroup {
       if (startX > middle) {
         dx = startX;
       } else {
-        if (mSpacingType == SPACING_ACTIONS_WIDTH) {
-          dx = mSpacing + startX;
-        } else { // all other situations are handled as SPACING_RIGHT_OFFSET
-          dx = getWidth() - mSpacing + startX;
-        }
+        dx = rightBound + startX;
       }
 
       fling(startX, dx);
@@ -509,9 +511,9 @@ public class ActionsContentView extends ViewGroup {
      */
     private int getRightBound() {
       if (mSpacingType == SPACING_ACTIONS_WIDTH) {
-        return mSpacing;
+        return mSpacing - mActionsSpacing;
       } else { // all other situations are handled as SPACING_RIGHT_OFFSET
-        return getWidth() - mSpacing;
+        return getWidth() - mSpacing - mActionsSpacing;
       }
     }
   };

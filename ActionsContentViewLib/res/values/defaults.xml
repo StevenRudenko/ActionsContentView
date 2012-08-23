@@ -15,5 +15,6 @@
   limitations under the License.
 -->
 <resources>
-    <dimen name="detault_actionscontentview_spacing">64dip</dimen>
+    <dimen name="default_actionscontentview_spacing">64dip</dimen>
+    <dimen name="default_actionscontentview_actions_spacing">0dip</dimen>
 </resources>
