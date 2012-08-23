@@ -16,9 +16,9 @@ There is one limitation:
 * all horizontal scrolling views will not work at bounds of this view
 
 
-![Example application looks on phone][1]
+![Example application looks on phone][1][2]
 
-![Example application looks on tablet][2]
+![Example application looks on tablet][3]
 
 Here is exmple of usage ActionsContentView as element of XML layout:
 
@@ -69,6 +69,7 @@ License
 
 
 
- [1]: http://lh6.ggpht.com/tdaPikC_eg8LMwoVm8lLu0TG3qMW4Vghw1e2q1e8BeY9pR7WitVZ7hsT_R593WhwLK8
- [2]: http://lh4.ggpht.com/gjSc5WXfxL2hZqq6Rno0Byx3nHEf7-n4G8ceDV3BC0e4wm2RpFxC7I8VMPgSA9fvKyw
+ [1]: http://lh5.ggpht.com/zLNsUDWGb37WMrsCOkg5H_WOBSnovsUgGPWtBCEo8pq8u-cR6oTmAs6VzypIw0VWxQ
+ [2]: http://lh3.ggpht.com/fvYvbO8cLrzyozWlKrGM8koYI6xrm-WLX3-D5nUjCyNKVFuM5C1LR4Bps-BnVStNul0
+ [3]: http://lh4.ggpht.com/gjSc5WXfxL2hZqq6Rno0Byx3nHEf7-n4G8ceDV3BC0e4wm2RpFxC7I8VMPgSA9fvKyw
  [3]: https://play.google.com/store/apps/details?id=sample.actionscontentview
