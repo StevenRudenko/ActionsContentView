@@ -27,7 +27,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -59,23 +58,20 @@ public class ExamplesActivity extends Activity {
       }
     });
 
-    final String[] titles = getResources().getStringArray(R.array.site_names);
-    final String[] linkes = getResources().getStringArray(R.array.site_links);
-
     final ListView viewActionsList = (ListView) findViewById(R.id.actions);
-    final ArrayAdapter<String> actionsAdapter = new ArrayAdapter<String>(this, R.layout.action_list_item, titles);
+    final SitesAdapter actionsAdapter = new SitesAdapter(this, R.array.site_names, R.array.site_links, R.array.site_icons);
     viewActionsList.setAdapter(actionsAdapter);
     viewActionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapter, View v, int position,
           long flags) {
-        final String url = linkes[position];
+        final String url = actionsAdapter.getItem(position);
         viewContentWebView.loadUrl(url);
         viewActionsContentView.showContent();
       }
     });
 
-    viewContentWebView.loadUrl(linkes[0]);
+    viewContentWebView.loadUrl(actionsAdapter.getItem(0));
   }
 
   public void onActionsButtonClick(View view) {

@@ -63,6 +63,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/divider"
         app:actions_layout="@layout/actions"
+        app:actions_spacing="@dimen/actions_spacing"
         app:content_layout="@layout/content" />
 
 </RelativeLayout>

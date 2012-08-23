@@ -65,6 +65,7 @@
         app:actions_layout="@layout/actions"
         app:content_layout="@layout/content"
         app:spacing="360dp"
+        app:actions_spacing="@dimen/actions_spacing"
         app:spacing_type="actions_width" />
 
 </RelativeLayout>

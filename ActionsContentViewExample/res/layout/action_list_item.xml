@@ -23,5 +23,6 @@
     android:minHeight="48dip"
     android:paddingLeft="6dip"
     android:paddingRight="6dip"
+    android:drawablePadding="6dip"
     android:textAppearance="?android:attr/textAppearanceLarge"
     android:textColor="@android:color/white" />

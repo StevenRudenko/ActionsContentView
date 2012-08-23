@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="site_icons">
+        <item>@drawable/ic_link_dropbox</item>
+        <item>@drawable/ic_link_evernote</item>
+        <item>@drawable/ic_link_facebook</item>
+        <item>@drawable/ic_link_github</item>
+        <item>@drawable/ic_link_google_plus</item>
+        <item>@drawable/ic_link_lastfm</item>
+        <item>@drawable/ic_link_linkedin</item>
+        <item>@drawable/ic_link_skype</item>
+        <item>@drawable/ic_link_stackoverflow</item>
+        <item>@drawable/ic_link_twitter</item>
+        <item>@drawable/ic_link_vk</item>
+        <item>@drawable/ic_link_yandex</item>
+        <item>@drawable/ic_link_youtube</item>
+    </array>
+
+</resources>

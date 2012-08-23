@@ -19,34 +19,33 @@
     <string name="sources_link">https://github.com/StevenRudenko/ActionsContentView</string>
 
     <string-array name="site_names">
-        <item>Google</item>
+        <item>Dropbox</item>
+        <item>Evernote</item>
         <item>Facebook</item>
-        <item>Youtube</item>
-        <item>Yahoo</item>
-        <item>Wikipedia</item>
-        <item>Linkedin</item>
-        <item>Msn</item>
-        <item>Yandex</item>
-        <item>Ebay</item>
-        <item>Microsoft</item>
-        <item>Tumblr</item>
-        <item>Apple</item>
+        <item>GitHub</item>
+        <item>Google+</item>
+        <item>Last.fm</item>
+        <item>LinkedIn</item>
+        <item>Skype</item>
+        <item>Stackoverflow</item>
+        <item>Twitter</item>
         <item>Vk</item>
+        <item>Yandex</item>
+        <item>Youtube</item>
     </string-array>
     <string-array name="site_links">
-        <item>http://www.google.com</item>
+        <item>http://www.dropbox.com</item>
+        <item>http://www.evernote.com</item>
         <item>http://www.facebook.com</item>
-        <item>http://www.youtube.com</item>
-        <item>http://www.yahoo.com</item>
-        <item>http://www.wikipedia.org</item>
+        <item>http://www.github.com</item>
+        <item>http://plus.google.com</item>
+        <item>http://www.lastfm.com</item>
         <item>http://www.linkedin.com</item>
-        <item>http://www.msn.com</item>
-        <item>http://www.yandex.ru</item>
-        <item>http://www.ebay.com</item>
-        <item>http://www.microsoft.com</item>
-        <item>http://www.tumblr.co</item>
-        <item>http://www.apple.com</item>
+        <item>http://www.skype.com</item>
+        <item>http://www.stackoverflow.com</item>
+        <item>http://www.twitter.com</item>
         <item>http://www.vk.com</item>
+        <item>http://www.yandex.com</item>
+        <item>http://www.youtube.com</item>
     </string-array>
-
 </resources>

@@ -16,4 +16,5 @@
 -->
 <resources>
     <dimen name="divider_size">.9dp</dimen>
+    <dimen name="actions_spacing">44dp</dimen>
 </resources>
