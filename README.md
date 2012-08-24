@@ -33,8 +33,14 @@ Here is exmple of usage ActionsContentView as element of XML layout:
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/divider"
             app:actions_layout="@layout/actions"
-            app:content_layout="@layout/content" />
+            app:actions_spacing="0dp"
+            app:content_layout="@layout/content"
+            app:shadow_drawable="@drawable/shadow"
+            app:shadow_width="8dip"
+            app:spacing="64dip"
+            app:spacing_type="right_offest" />
     
     ...
     
