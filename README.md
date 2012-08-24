@@ -40,7 +40,7 @@ Here is exmple of usage ActionsContentView as element of XML layout:
             app:shadow_drawable="@drawable/shadow"
             app:shadow_width="8dip"
             app:spacing="64dip"
-            app:spacing_type="right_offest" />
+            app:spacing_type="right_offset" />
     
     ...
     

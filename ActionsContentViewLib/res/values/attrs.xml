@@ -19,7 +19,7 @@
     <!-- Default spacing types. -->
     <attr name="spacing_type">
         <!-- Spacing will be calculated as offset from right bound of view. -->
-        <enum name="right_offest" value="0" />
+        <enum name="right_offset" value="0" />
         <!-- Spacing will be calculated as right bound of actions container. -->
         <enum name="actions_width" value="1" />
     </attr>
