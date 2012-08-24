@@ -26,11 +26,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Scroller;
 
 public class ActionsContentView extends ViewGroup {
   private static final String TAG = ActionsContentView.class.getSimpleName();
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   /**
    * Spacing will be calculated as offset from right bound of view.
@@ -56,12 +58,17 @@ public class ActionsContentView extends ViewGroup {
   private int mActionsSpacing;
 
   /**
+   * Value of shadow width.
+   */
+  private int mShadowWidth = 0;
+
+  /**
    * Indicates whether swiping is enabled or not.
    */
   private boolean isSwipingEnabled = true;
 
   private final FrameLayout viewActionsContainer;
-  private final FrameLayout viewContentContainer;
+  private final LinearLayout viewContentContainer;
 
   private final Rect mContentHitRect = new Rect();
 
@@ -89,6 +96,10 @@ public class ActionsContentView extends ViewGroup {
 
     final int actionsLayout = a.getResourceId(R.styleable.ActionsContentView_actions_layout, 0);
     final int contentLayout = a.getResourceId(R.styleable.ActionsContentView_content_layout, 0);
+
+    mShadowWidth = a.getDimensionPixelSize(R.styleable.ActionsContentView_shadow_width, 0);
+    final int shadowDrawableRes = a.getResourceId(R.styleable.ActionsContentView_shadow_drawable, 0);
+
     a.recycle();
 
     if (DEBUG) {
@@ -97,6 +108,8 @@ public class ActionsContentView extends ViewGroup {
       Log.d(TAG, "actions spacing value: " + mActionsSpacing);
       Log.d(TAG, "actions layout id: " + actionsLayout);
       Log.d(TAG, "content layout id: " + contentLayout);
+      Log.d(TAG, "shadow drawable: " + shadowDrawableRes);
+      Log.d(TAG, "shadow width: " + mShadowWidth);
     }
 
     mContentScrollController = new ContentScrollController(new Scroller(context));
@@ -110,7 +123,7 @@ public class ActionsContentView extends ViewGroup {
 
     addView(viewActionsContainer, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-    viewContentContainer = new FrameLayout(context) {
+    viewContentContainer = new LinearLayout(context) {
       @Override
       public boolean onTouchEvent(MotionEvent event) {
         // prevent ray cast of touch events to actions container
@@ -124,17 +137,28 @@ public class ActionsContentView extends ViewGroup {
       }
     };
 
+    // we need to be sure we have horizontal layout to add shadow to left border
+    viewContentContainer.setOrientation(LinearLayout.HORIZONTAL);
+
+    if (mShadowWidth > 0 && shadowDrawableRes != 0) {
+      final ImageView shadow = new ImageView(context);
+      shadow.setBackgroundResource(shadowDrawableRes);
+      final LinearLayout.LayoutParams shadowParams = new LinearLayout.LayoutParams(mShadowWidth, LinearLayout.LayoutParams.MATCH_PARENT);
+      shadow.setLayoutParams(shadowParams);
+      viewContentContainer.addView(shadow);
+    }
+
     if (contentLayout != 0)
       inflater.inflate(contentLayout, viewContentContainer, true);
 
     addView(viewContentContainer, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
   }
 
-  public FrameLayout getActionsContainer() {
+  public ViewGroup getActionsContainer() {
     return viewActionsContainer;
   }
 
-  public FrameLayout getContentContainer() {
+  public ViewGroup getContentContainer() {
     return viewContentContainer;
   }
 
@@ -209,8 +233,8 @@ public class ActionsContentView extends ViewGroup {
         else // all other situations are handled as SPACING_RIGHT_OFFSET
           viewActionsContainer.measure(MeasureSpec.makeMeasureSpec(width - mSpacing, MeasureSpec.EXACTLY), heightMeasureSpec);
       } else if (v == viewContentContainer) {
-        final int contetnWidth = MeasureSpec.getSize(widthMeasureSpec) - mActionsSpacing;
-        v.measure(MeasureSpec.makeMeasureSpec(contetnWidth, MeasureSpec.EXACTLY), heightMeasureSpec);
+        final int contentWidth = MeasureSpec.getSize(widthMeasureSpec) - mActionsSpacing + mShadowWidth;
+        v.measure(MeasureSpec.makeMeasureSpec(contentWidth, MeasureSpec.EXACTLY), heightMeasureSpec);
       } else {
         v.measure(widthMeasureSpec, heightMeasureSpec);
       }
@@ -226,7 +250,7 @@ public class ActionsContentView extends ViewGroup {
     for (int i=0; i<childrenCount; ++i) {
       final View v = getChildAt(i);
       if (v == viewContentContainer)
-        v.layout(l + mActionsSpacing, t, l + mActionsSpacing + v.getMeasuredWidth(), t + v.getMeasuredHeight());
+        v.layout(l + mActionsSpacing - mShadowWidth, t, l + mActionsSpacing + v.getMeasuredWidth(), t + v.getMeasuredHeight());
       else
         v.layout(l, t, l + v.getMeasuredWidth(), t + v.getMeasuredHeight());
     }
