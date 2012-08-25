@@ -18,6 +18,8 @@ package shared.ui.actionscontentview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -66,6 +68,11 @@ public class ActionsContentView extends ViewGroup {
    * Indicates whether swiping is enabled or not.
    */
   private boolean isSwipingEnabled = true;
+
+  /**
+   * Indicates how long flinging will take time in milliseconds.
+   */
+  private int mFlingDuration = 250;
 
   private final FrameLayout viewActionsContainer;
   private final LinearLayout viewContentContainer;
@@ -167,7 +174,7 @@ public class ActionsContentView extends ViewGroup {
   }
 
   public void showActions() {
-    mContentScrollController.hideContent();
+    mContentScrollController.hideContent(mFlingDuration);
   }
 
   public boolean isContentShown() {
@@ -175,7 +182,22 @@ public class ActionsContentView extends ViewGroup {
   }
 
   public void showContent() {
-    mContentScrollController.showContent();
+    mContentScrollController.showContent(mFlingDuration);
+  }
+
+  public void toggleActions() {
+    if (isActionsShown())
+      showContent();
+    else
+      showActions();
+  }
+
+  public void setFlingDuration(int duration) {
+    mFlingDuration = duration;
+  }
+
+  public int getFlingDuration() {
+    return mFlingDuration;
   }
 
   public boolean isSwipingEnabled() {
@@ -245,10 +267,19 @@ public class ActionsContentView extends ViewGroup {
 
   @Override
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    if (DEBUG) {
+      final Rect layout = new Rect(l, t, r, b);
+      Log.d(TAG, "layout: " + layout.toShortString());
+    }
+
     // putting every child view to top-left corner
     final int childrenCount = getChildCount();
     for (int i=0; i<childrenCount; ++i) {
       final View v = getChildAt(i);
+
+      if (DEBUG)
+        Log.d(TAG, "measured width/height: " + v.getMeasuredWidth() + "/" + v.getMeasuredHeight());
+
       if (v == viewContentContainer)
         v.layout(l + mActionsSpacing - mShadowWidth, t, l + mActionsSpacing + v.getMeasuredWidth(), t + v.getMeasuredHeight());
       else
@@ -305,12 +336,9 @@ public class ActionsContentView extends ViewGroup {
     private int mLastFlingX = 0;
 
     /**
-     * Indicates whether we need initialize position of view
-     * after measuring is finished.
-     * </br>Can be <code>null</code> if there is no any requirements for position was set.
-     * In this case we will have content shown.
+     * Indicates whether we need initialize position of view after measuring is finished.
      */
-    private Boolean isInitiallyShown = null;
+    private boolean isContentShown = true;
 
     public ContentScrollController(Scroller scroller) {
       mScroller = scroller;
@@ -320,15 +348,10 @@ public class ActionsContentView extends ViewGroup {
      * Initializes visibility of content after views measuring is finished.
      */
     public void init() {
-      if (isInitiallyShown == null)
-        return;
-
-      if (isInitiallyShown)
-        showContent();
+      if (isContentShown)
+        showContent(0);
       else
-        hideContent();
-
-      isInitiallyShown = null;
+        hideContent(0);
     }
 
     /**
@@ -443,26 +466,26 @@ public class ActionsContentView extends ViewGroup {
       return x == 0;
     }
 
-    public void hideContent() {
+    public void hideContent(int duration) {
+      isContentShown = false;
       if (viewContentContainer.getMeasuredWidth() == 0 || viewContentContainer.getMeasuredHeight() == 0) {
-        isInitiallyShown = Boolean.FALSE;
         return;
       }
 
       final int startX = viewContentContainer.getScrollX();
       final int dx = getRightBound() + startX;
-      fling(startX, dx);
+      fling(startX, dx, duration);
     }
 
-    public void showContent() {
+    public void showContent(int duration) {
+      isContentShown = true;
       if (viewContentContainer.getMeasuredWidth() == 0 || viewContentContainer.getMeasuredHeight() == 0) {
-        isInitiallyShown = Boolean.TRUE;
         return;
       }
 
       final int startX = viewContentContainer.getScrollX();
       final int dx = startX;
-      fling(startX, dx);
+      fling(startX, dx, duration);
     }
 
     /**
@@ -473,24 +496,26 @@ public class ActionsContentView extends ViewGroup {
 
       final int rightBound = getRightBound();
       final int middle = -rightBound / 2;
-      final int dx;
       if (startX > middle) {
-        dx = startX;
+        showContent(mFlingDuration);
       } else {
-        dx = rightBound + startX;
+        hideContent(mFlingDuration);
       }
-
-      fling(startX, dx);
     }
 
-    private void fling(int startX, int dx) {
+    private void fling(int startX, int dx, int duration) {
       if (dx == 0)
         return;
 
-      mScroller.startScroll(startX, 0, dx, 0);
+      if (duration <= 0) {
+        viewContentContainer.scrollBy(-dx, 0);
+        return;
+      }
+
+      mScroller.startScroll(startX, 0, dx, 0, duration);
 
       if (DEBUG)
-        Log.d(TAG, "starting fling at " + startX + " for " + dx);
+        Log.d(TAG, "starting fling at " + startX + " for " + dx + " by " + duration);
 
       mLastFlingX = startX;
       viewContentContainer.post(this);
@@ -541,4 +566,66 @@ public class ActionsContentView extends ViewGroup {
       }
     }
   };
+
+  public static class SavedState extends BaseSavedState {
+    /**
+     * Indicates whether content was shown while saving state.
+     */
+    private boolean isContentShown;
+
+    public SavedState(Parcelable superState) {
+      super(superState);
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+      super.writeToParcel(out, flags);
+      out.writeBooleanArray(new boolean[]{isContentShown});
+    }
+
+    public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+      public SavedState[] newArray(int size) {
+        return new SavedState[size];
+      }
+
+      @Override
+      public SavedState createFromParcel(Parcel source) {
+        return new SavedState(source);
+      }
+    };
+
+    SavedState(Parcel in) {
+      super(in);
+
+      boolean[] showing = new boolean[1];
+      in.readBooleanArray(showing);
+      isContentShown = showing[0];
+    }
+  }
+
+
+  public Parcelable onSaveInstanceState() {
+    final Parcelable superState = super.onSaveInstanceState();
+    final SavedState ss = new SavedState(superState);
+    ss.isContentShown = isContentShown();
+    return ss;
+  }
+
+
+  public void onRestoreInstanceState(Parcelable state) {
+    if (!(state instanceof SavedState)) {
+      super.onRestoreInstanceState(state);
+      return;
+    }
+
+    final SavedState ss = (SavedState)state;
+    super.onRestoreInstanceState(ss.getSuperState());
+
+    if (ss.isContentShown) {
+      showContent();
+    } else {
+      showActions();
+    }
+  }
+
+
 }
