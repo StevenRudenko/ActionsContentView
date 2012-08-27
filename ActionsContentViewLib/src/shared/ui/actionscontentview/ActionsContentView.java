@@ -34,7 +34,7 @@ import android.widget.Scroller;
 
 public class ActionsContentView extends ViewGroup {
   private static final String TAG = ActionsContentView.class.getSimpleName();
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
 
   /**
    * Spacing will be calculated as offset from right bound of view.
@@ -276,17 +276,21 @@ public class ActionsContentView extends ViewGroup {
     final int childrenCount = getChildCount();
     for (int i=0; i<childrenCount; ++i) {
       final View v = getChildAt(i);
-
-      if (DEBUG)
-        Log.d(TAG, "measured width/height: " + v.getMeasuredWidth() + "/" + v.getMeasuredHeight());
-
       if (v == viewContentContainer)
         v.layout(l + mActionsSpacing - mShadowWidth, t, l + mActionsSpacing + v.getMeasuredWidth(), t + v.getMeasuredHeight());
       else
         v.layout(l, t, l + v.getMeasuredWidth(), t + v.getMeasuredHeight());
     }
+  }
 
-    mContentScrollController.init();
+  @Override
+  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    super.onSizeChanged(w, h, oldw, oldh);
+
+    // set correct position of content view after view size was changed
+    if (w != oldw || h != oldh) {
+      mContentScrollController.init();
+    }
   }
 
   /**
@@ -348,6 +352,9 @@ public class ActionsContentView extends ViewGroup {
      * Initializes visibility of content after views measuring is finished.
      */
     public void init() {
+      if (DEBUG)
+        Log.d(TAG, "Scroller: init");
+
       if (isContentShown)
         showContent(0);
       else
@@ -467,6 +474,9 @@ public class ActionsContentView extends ViewGroup {
     }
 
     public void hideContent(int duration) {
+      if (DEBUG)
+        Log.d(TAG, "Scroller: hide content by " + duration + "ms");
+
       isContentShown = false;
       if (viewContentContainer.getMeasuredWidth() == 0 || viewContentContainer.getMeasuredHeight() == 0) {
         return;
@@ -478,6 +488,9 @@ public class ActionsContentView extends ViewGroup {
     }
 
     public void showContent(int duration) {
+      if (DEBUG)
+        Log.d(TAG, "Scroller: show content by " + duration + "ms");
+
       isContentShown = true;
       if (viewContentContainer.getMeasuredWidth() == 0 || viewContentContainer.getMeasuredHeight() == 0) {
         return;
@@ -504,6 +517,8 @@ public class ActionsContentView extends ViewGroup {
     }
 
     private void fling(int startX, int dx, int duration) {
+      reset();
+
       if (dx == 0)
         return;
 
@@ -549,6 +564,9 @@ public class ActionsContentView extends ViewGroup {
      * Resets scroller controller. Stops flinging on current position.
      */
     public void reset() {
+      if (DEBUG)
+        Log.d(TAG, "Scroller: reset");
+
       if (!mScroller.isFinished()) {
         mScroller.forceFinished(true);
       }
