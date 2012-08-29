@@ -24,6 +24,18 @@
         <enum name="actions_width" value="1" />
     </attr>
 
+    <!-- Default fade types. -->
+    <attr name="fade_type">
+        <!-- Fade is disabled. -->
+        <enum name="none" value="0" />
+        <!-- Fade applies to actions container. -->
+        <enum name="actions" value="1" />
+        <!-- Fade applies to content container. -->
+        <enum name="content" value="2" />
+        <!-- Fade applies to every container. -->
+        <enum name="both" value="3" />
+    </attr>
+
     <declare-styleable name="ActionsContentView">
 
         <!-- Spacing type. -->
@@ -40,6 +52,12 @@
         <attr name="shadow_drawable" format="reference"/>
         <!-- Shadow width. -->
         <attr name="shadow_width" format="dimension" />
+        <!-- Fade type. -->
+        <attr name="fade_type" />
+        <!-- Max fade value. -->
+        <attr name="fade_max_value" format="integer" />
+        <!-- Indicates how long flinging will take time in milliseconds. -->
+        <attr name="fling_duration" format="integer" />
     </declare-styleable>
 
 </resources>

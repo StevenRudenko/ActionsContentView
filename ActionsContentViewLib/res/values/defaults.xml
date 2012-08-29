@@ -17,4 +17,6 @@
 <resources>
     <dimen name="default_actionscontentview_spacing">64dip</dimen>
     <dimen name="default_actionscontentview_actions_spacing">0dip</dimen>
+    <integer name="default_actionscontentview_fade_max_value">170</integer>
+    <integer name="default_actionscontentview_fling_duration">900</integer>
 </resources>
