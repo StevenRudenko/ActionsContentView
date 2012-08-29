@@ -14,15 +14,26 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:minHeight="48dip"
+    android:orientation="vertical"
     android:paddingLeft="6dip"
-    android:paddingRight="6dip"
-    android:drawablePadding="6dip"
-    android:textAppearance="?android:attr/textAppearanceMedium"
-    android:textColor="@android:color/white" />
+    android:paddingRight="6dip" >
+
+    <TextView
+        android:id="@android:id/text1"
+        style="@style/HeaderText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="6dip"
+        android:gravity="center"
+        android:textColor="@android:color/white" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_large_size"
+        android:background="@color/divider" />
+
+</LinearLayout>

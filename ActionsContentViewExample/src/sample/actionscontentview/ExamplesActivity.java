@@ -15,23 +15,26 @@
  ******************************************************************************/
 package sample.actionscontentview;
 
-import sample.actionscontentview.R;
-
+import sample.actionscontentview.adapter.ActionsAdapter;
+import sample.actionscontentview.fragment.AboutFragment;
+import sample.actionscontentview.fragment.SettingsFragment;
+import sample.actionscontentview.fragment.WebViewFragment;
 import shared.ui.actionscontentview.ActionsContentView;
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
-public class ExamplesActivity extends Activity {
+public class ExamplesActivity extends FragmentActivity {
   private ActionsContentView viewActionsContentView;
+
+  private String currentContentFragmentTag = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -39,39 +42,22 @@ public class ExamplesActivity extends Activity {
 
     setContentView(R.layout.example);
 
-    viewActionsContentView = (ActionsContentView) findViewById(R.id.content);
-
-    final ProgressBar viewContentProgress = (ProgressBar) findViewById(R.id.progress);
-    final WebView viewContentWebView = (WebView) findViewById(R.id.webview);
-    viewContentWebView.getSettings().setJavaScriptEnabled(true);
-    viewContentWebView.setWebViewClient(new WebViewClient() {
-      @Override
-      public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        return super.shouldOverrideUrlLoading(view, url);
-      }
-    });
-    viewContentWebView.setWebChromeClient(new WebChromeClient() {
-      @Override
-      public void onProgressChanged(WebView view, int newProgress) {
-        viewContentProgress.setProgress(newProgress);
-        viewContentProgress.setVisibility(newProgress == 100 ? View.GONE : View.VISIBLE);
-      }
-    });
+    viewActionsContentView = (ActionsContentView) findViewById(R.id.actionsContentView);
 
     final ListView viewActionsList = (ListView) findViewById(R.id.actions);
-    final SitesAdapter actionsAdapter = new SitesAdapter(this, R.array.site_names, R.array.site_links, R.array.site_icons);
+    final ActionsAdapter actionsAdapter = new ActionsAdapter(this);
     viewActionsList.setAdapter(actionsAdapter);
     viewActionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapter, View v, int position,
           long flags) {
-        final String url = actionsAdapter.getItem(position);
-        viewContentWebView.loadUrl(url);
+        final Uri uri = actionsAdapter.getItem(position);
+        updateContent(uri);
         viewActionsContentView.showContent();
       }
     });
 
-    viewContentWebView.loadUrl(actionsAdapter.getItem(0));
+    updateContent(AboutFragment.ABOUT_URI);
   }
 
   public void onActionsButtonClick(View view) {
@@ -85,5 +71,91 @@ public class ExamplesActivity extends Activity {
     final Intent i = new Intent(Intent.ACTION_VIEW);
     i.setData(Uri.parse(getString(R.string.sources_link)));
     startActivity(i);
+  }
+
+  public void updateContent(Uri uri) {
+    final Fragment fragment;
+    final String tag;
+
+    final FragmentManager fm = getSupportFragmentManager();
+    final FragmentTransaction tr = fm.beginTransaction();
+
+    if (currentContentFragmentTag != null) {
+      final Fragment currentFragment = fm.findFragmentByTag(currentContentFragmentTag);
+      if (currentFragment != null)
+        tr.hide(currentFragment);
+    }
+
+    if (AboutFragment.ABOUT_URI.equals(uri)) {
+      tag = AboutFragment.TAG;
+      final Fragment foundFragment = fm.findFragmentByTag(tag);
+      if (foundFragment != null) {
+        fragment = foundFragment;
+      } else {
+        fragment = new AboutFragment();
+      }
+    } else if (SettingsFragment.SETTINGS_URI.equals(uri)) {
+      tag = SettingsFragment.TAG;
+      final Fragment foundFragment = fm.findFragmentByTag(tag);
+      if (foundFragment != null) {
+        fragment = foundFragment;
+      } else {
+        final SettingsFragment settingsFragment = new SettingsFragment();
+        settingsFragment.setOnSettingsChangedListener(getSettingsChangedListener());
+        fragment = settingsFragment;
+      }
+    } else if (uri != null) {
+      tag = WebViewFragment.TAG;
+      final WebViewFragment webViewFragment;
+      final Fragment foundFragment = fm.findFragmentByTag(tag);
+      if (foundFragment != null) {
+        fragment = foundFragment;
+        webViewFragment = (WebViewFragment) fragment;
+      } else {
+        webViewFragment = new WebViewFragment();
+        fragment = webViewFragment;
+      }
+      webViewFragment.setUrl(uri.toString());
+    } else {
+      return;
+    }
+
+    if (fragment.isAdded()) {
+      tr.show(fragment);
+    } else {
+      tr.add(R.id.content, fragment, tag);
+    }
+    tr.commit();
+
+    currentContentFragmentTag = tag;
+  }
+
+  private SettingsFragment.OnSettingsChangedListener getSettingsChangedListener() {
+    return new SettingsFragment.OnSettingsChangedListener() {
+      private final float mDensity = getResources().getDisplayMetrics().density;
+
+      @Override
+      public void onSettingChanged(int prefId, int value) {
+        switch (prefId) {
+        case SettingsFragment.PREF_SPACING_TYPE:
+          viewActionsContentView.setSpacingType(value);
+          return;
+        case SettingsFragment.PREF_SPACING_WIDTH:
+          viewActionsContentView.setSpacingWidth((int) (value * mDensity));
+          return;
+        case SettingsFragment.PREF_SPACING_ACTIONS_WIDTH:
+          viewActionsContentView.setActionsSpacingWidth((int) (value * mDensity));
+          return;
+        case SettingsFragment.PREF_SHOW_SHADOW:
+          viewActionsContentView.setShadowVisible(value == 1);
+          return;
+        case SettingsFragment.PREF_SHADOW_WIDTH:
+          viewActionsContentView.setShadowWidth((int) (value * mDensity));
+          return;
+        default:
+          return;
+        }
+      }
+    };
   }
 }

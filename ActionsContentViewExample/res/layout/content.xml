@@ -14,24 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <ProgressBar
-        android:id="@+id/progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:indeterminateOnly="false"
-        android:progressDrawable="@drawable/progress_horizontal_holo_light"
-        android:layout_marginBottom="-7dp"
-        android:max="100" />
-
-</RelativeLayout>
+    android:layout_height="match_parent" />

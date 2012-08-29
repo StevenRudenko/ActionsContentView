@@ -16,4 +16,15 @@
 <resources>
     <string name="app_name">ActionsContentView Example</string>
     <string name="link_to_sources">source code is here &#187;</string>
+    <string name="about_details"><b>ActionsContentView</b> is an standalone library implements actions/content swiping view (AKA Side Navigation UI Pattern, AKA Facebook side menu). The library doesn\'t use any specific code introduced in new Android SDK versions. This allows develop an application with an action/content swiping view for every version of Android from 2.2 and up.</string>
+    <string name="about_play">Play in sandbox</string>
+    <string name="about_tutorial">View tutorial page</string>
+    <!-- Setting strings -->
+    <string name="pref_spacing">Spacing settings</string>
+    <string name="pref_spacing_type">Spacing type</string>
+    <string name="pref_spacing_width">Spacing width</string>
+    <string name="pref_spacing_actions">Actions spacing width</string>
+    <string name="pref_shadow">Shadow settings</string>
+    <string name="pref_show_shadow">Show shadow</string>
+    <string name="pref_shadow_width">Shadow width</string>
 </resources>

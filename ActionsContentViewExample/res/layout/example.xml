@@ -15,7 +15,6 @@
   limitations under the License.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -58,12 +57,16 @@
         android:background="@color/divider" />
 
     <shared.ui.actionscontentview.ActionsContentView
-        android:id="@+id/content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/actionsContentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/divider"
         app:actions_layout="@layout/actions"
         app:actions_spacing="@dimen/actions_spacing"
-        app:content_layout="@layout/content" />
+        app:content_layout="@layout/content"
+        app:fade_type="actions"
+        app:shadow_drawable="@drawable/shadow"
+        app:shadow_width="@dimen/default_pref_shadow_width" />
 
 </RelativeLayout>
