@@ -199,6 +199,15 @@ public class ActionsContentView extends ViewGroup {
     final Parcelable superState = super.onSaveInstanceState();
     final SavedState ss = new SavedState(superState);
     ss.isContentShown = isContentShown();
+    ss.mSpacingType = getSpacingType();
+    ss.mSpacing = getSpacingWidth();
+    ss.mActionsSpacing = getActionsSpacingWidth();
+    ss.isShadowVisible  = isShadowVisible();
+    ss.mShadowWidth = getShadowWidth();
+    ss.isSwipingEnabled = isSwipingEnabled();
+    ss.mFlingDuration = getFlingDuration();
+    ss.mFadeType = getFadeType();
+    ss.mFadeValue = getFadeValue();
     return ss;
   }
 
@@ -211,11 +220,19 @@ public class ActionsContentView extends ViewGroup {
     final SavedState ss = (SavedState)state;
     super.onRestoreInstanceState(ss.getSuperState());
 
-    if (ss.isContentShown) {
-      showContent();
-    } else {
-      showActions();
-    }
+    mContentScrollController.isContentShown = ss.isContentShown;
+
+    mSpacingType = ss.mSpacingType;
+    mSpacing = ss.mSpacing;
+    mActionsSpacing = ss.mActionsSpacing;
+    mShadowWidth = ss.mShadowWidth;
+    isSwipingEnabled = ss.isSwipingEnabled;
+    mFlingDuration = ss.mFlingDuration;
+    mFadeType = ss.mFadeType;
+    mFadeValue = ss.mFadeValue;
+
+    // this will call requestLayout() to calculate layout according to values
+    setShadowVisible(ss.isShadowVisible);
   }
 
   public ViewGroup getActionsContainer() {
@@ -256,6 +273,9 @@ public class ActionsContentView extends ViewGroup {
     if (type != SPACING_RIGHT_OFFSET && type != SPACING_ACTIONS_WIDTH)
       return;
 
+    if (DEBUG)
+      Log.d(TAG, "- spacing type: " + type);
+
     mSpacingType = type;
     mForceRefresh = true;
     requestLayout();
@@ -268,6 +288,9 @@ public class ActionsContentView extends ViewGroup {
   public void setSpacingWidth(int width) {
     if (mSpacing == width)
       return;
+
+    if (DEBUG)
+      Log.d(TAG, "- spacing width: " + width);
 
     mSpacing = width;
     mForceRefresh = true;
@@ -293,6 +316,7 @@ public class ActionsContentView extends ViewGroup {
 
   public void setShadowVisible(boolean visible) {
     viewShadow.setVisibility(visible ? VISIBLE : GONE);
+    mForceRefresh = true;
     requestLayout();
   }
 
@@ -306,6 +330,7 @@ public class ActionsContentView extends ViewGroup {
 
     mShadowWidth = width;
     viewShadow.getLayoutParams().width = mShadowWidth;
+    mForceRefresh = true;
     requestLayout();
   }
 
@@ -319,6 +344,30 @@ public class ActionsContentView extends ViewGroup {
 
   public int getFlingDuration() {
     return mFlingDuration;
+  }
+
+  public void setFadeType(int type) {
+    if (type != FADE_NONE && type != FADE_ACTIONS && type != FADE_CONTENT && type != FADE_BOTH)
+      return;
+
+    mFadeType = type;
+  }
+
+  public int getFadeType() {
+    return mFadeType;
+  }
+
+  public void setFadeValue(int value) {
+    if (value < 0)
+      value = 0;
+    else if (value > 255)
+      value = 255;
+
+    mFadeValue = value;
+  }
+
+  public int getFadeValue() {
+    return mFadeValue;
   }
 
   public boolean isSwipingEnabled() {
@@ -472,13 +521,66 @@ public class ActionsContentView extends ViewGroup {
      */
     private boolean isContentShown;
 
+    /**
+     * Spacing type.
+     */
+    private int mSpacingType = SPACING_RIGHT_OFFSET;
+    /**
+     * Value of spacing to use.
+     */
+    private int mSpacing;
+
+    /**
+     * Value of actions container spacing to use.
+     */
+    private int mActionsSpacing;
+
+    /**
+     * Indicates whether shadow is visible.
+     */
+    private boolean isShadowVisible;
+
+    /**
+     * Value of shadow width.
+     */
+    private int mShadowWidth = 0;
+
+    /**
+     * Indicates whether swiping is enabled or not.
+     */
+    private boolean isSwipingEnabled = true;
+
+    /**
+     * Indicates how long flinging will take time in milliseconds.
+     */
+    private int mFlingDuration = 250;
+
+    /**
+     * Fade type.
+     */
+    private int mFadeType = FADE_NONE;
+    /**
+     * Max fade value.
+     */
+    private int mFadeValue;
+
     public SavedState(Parcelable superState) {
       super(superState);
     }
 
     public void writeToParcel(Parcel out, int flags) {
       super.writeToParcel(out, flags);
-      out.writeBooleanArray(new boolean[]{isContentShown});
+
+      out.writeInt(isContentShown ? 1 : 0);
+      out.writeInt(mSpacingType);
+      out.writeInt(mSpacing);
+      out.writeInt(mActionsSpacing);
+      out.writeInt(isShadowVisible ? 1 : 0);
+      out.writeInt(mShadowWidth);
+      out.writeInt(isSwipingEnabled ? 1 : 0);
+      out.writeInt(mFlingDuration);
+      out.writeInt(mFadeType);
+      out.writeInt(mFadeValue);
     }
 
     public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
@@ -495,9 +597,16 @@ public class ActionsContentView extends ViewGroup {
     SavedState(Parcel in) {
       super(in);
 
-      boolean[] showing = new boolean[1];
-      in.readBooleanArray(showing);
-      isContentShown = showing[0];
+      isContentShown = in.readInt() == 1;
+      mSpacingType = in.readInt();
+      mSpacing = in.readInt();
+      mActionsSpacing = in.readInt();
+      isShadowVisible  = in.readInt() == 1;
+      mShadowWidth = in.readInt();
+      isSwipingEnabled = in.readInt() == 1;
+      mFlingDuration = in.readInt();
+      mFadeType = in.readInt();
+      mFadeValue = in.readInt();
     }
   }
 
