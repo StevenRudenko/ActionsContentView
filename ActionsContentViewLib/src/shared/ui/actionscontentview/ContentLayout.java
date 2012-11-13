@@ -42,7 +42,10 @@ public class ContentLayout extends LinearLayout {
   }
 
   public ContentLayout(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
+    super(context, attrs);
+
+    // we need to be sure we have horizontal layout to add shadow to left border
+    setOrientation(LinearLayout.HORIZONTAL);
   }
 
   public ContentLayout(Context context, AttributeSet attrs, int defStyle) {
