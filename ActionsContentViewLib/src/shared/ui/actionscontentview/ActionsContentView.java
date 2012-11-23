@@ -32,7 +32,7 @@ import android.widget.Scroller;
 
 public class ActionsContentView extends ViewGroup {
   private static final String TAG = ActionsContentView.class.getSimpleName();
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
 
   /**
    * Spacing will be calculated as offset from right bound of view.
@@ -449,9 +449,9 @@ public class ActionsContentView extends ViewGroup {
       final View v = getChildAt(i);
       if (v == viewContentContainer) {
         final int shadowWidth = isShadowVisible() ? mShadowWidth : 0;
-        v.layout(l + mActionsSpacing - shadowWidth, t, l + mActionsSpacing + v.getMeasuredWidth(), t + v.getMeasuredHeight());
+        v.layout(mActionsSpacing - shadowWidth, 0, mActionsSpacing + v.getMeasuredWidth(), v.getMeasuredHeight());
       } else {
-        v.layout(l, t, l + v.getMeasuredWidth(), t + v.getMeasuredHeight());
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
       }
     }
 
