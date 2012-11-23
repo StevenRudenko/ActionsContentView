@@ -32,7 +32,7 @@ import android.widget.Scroller;
 
 public class ActionsContentView extends ViewGroup {
   private static final String TAG = ActionsContentView.class.getSimpleName();
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   /**
    * Spacing will be calculated as offset from right bound of view.
