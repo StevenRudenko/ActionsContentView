@@ -14,32 +14,39 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="8dip" >
+    android:background="@android:color/white" >
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/about_details" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="8dip" >
 
-    <Button
-        android:id="@+id/play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dip"
-        android:text="@string/about_play" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/about_details"
+            android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/tutorial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dip"
-        android:text="@string/about_tutorial"
-        android:visibility="gone" />
+        <Button
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"
+            android:text="@string/about_play" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/tutorial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"
+            android:text="@string/about_tutorial"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</ScrollView>

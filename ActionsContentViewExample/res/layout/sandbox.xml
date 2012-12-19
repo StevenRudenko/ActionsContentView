@@ -30,6 +30,10 @@
         <include layout="@layout/pref_spacing" />
 
         <include layout="@layout/pref_shadow" />
+
+        <include layout="@layout/pref_fade" />
+
+        <include layout="@layout/pref_other" />
     </LinearLayout>
 
 </ScrollView>

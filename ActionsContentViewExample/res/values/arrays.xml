@@ -15,6 +15,7 @@
   limitations under the License.
 -->
 <resources>
+
     <!-- Actions -->
     <array name="actions_icons">
         <item>@null</item>
@@ -35,6 +36,7 @@
         <item>@drawable/ic_link_yandex</item>
         <item>@drawable/ic_link_youtube</item>
     </array>
+
     <string-array name="actions_names">
         <item>Settings</item>
         <item>About</item>
@@ -83,6 +85,7 @@
         <item>RO</item>
         <item>AW</item>
     </string-array>
+
     <integer-array name="spacing_types_values">
         <item>0</item>
         <item>1</item>
@@ -99,6 +102,7 @@
         <item>96</item>
         <item>128</item>
     </string-array>
+
     <integer-array name="width_values">
         <item>0</item>
         <item>8</item>
@@ -109,6 +113,50 @@
         <item>64</item>
         <item>96</item>
         <item>128</item>
+    </integer-array>
+
+    <string-array name="fade_types">
+        <item>None</item>
+        <item>Actions</item>
+        <item>Content</item>
+        <item>Both</item>
+    </string-array>
+
+    <integer-array name="fade_types_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </integer-array>
+
+    <string-array name="fade_max_value_strings">
+        <item>0</item>
+        <item>64</item>
+        <item>128</item>
+        <item>170</item>
+        <item>255</item>
+    </string-array>
+
+    <integer-array name="fade_max_value_values">
+        <item>0</item>
+        <item>64</item>
+        <item>128</item>
+        <item>170</item>
+        <item>255</item>
+    </integer-array>
+
+    <string-array name="fling_duration_strings">
+        <item>0</item>
+        <item>900</item>
+        <item>1500</item>
+        <item>3000</item>
+    </string-array>
+
+    <integer-array name="fling_duration_values">
+        <item>0</item>
+        <item>900</item>
+        <item>1500</item>
+        <item>3000</item>
     </integer-array>
 
 </resources>

@@ -188,8 +188,14 @@ public class ExamplesActivity extends FragmentActivity {
       case SandboxFragment.PREF_SHOW_SHADOW:
         viewActionsContentView.setShadowVisible(value == 1);
         return;
-      case SandboxFragment.PREF_SHADOW_WIDTH:
-        viewActionsContentView.setShadowWidth((int) (value * mDensity));
+      case SandboxFragment.PREF_FADE_TYPE:
+        viewActionsContentView.setFadeType(value);
+        return;
+      case SandboxFragment.PREF_FADE_MAX_VALUE:
+        viewActionsContentView.setFadeValue(value);
+        return;
+      case SandboxFragment.PREF_FLING_DURATION:
+        viewActionsContentView.setFlingDuration(value);
         return;
       default:
         return;

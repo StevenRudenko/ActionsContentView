@@ -49,12 +49,18 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
   public static final int PREF_SPACING_ACTIONS_WIDTH = R.id.prefSpacingActionsWidth;
   public static final int PREF_SHOW_SHADOW = R.id.prefShowShadow;
   public static final int PREF_SHADOW_WIDTH = R.id.prefShadowWidth;
+  public static final int PREF_FADE_TYPE = R.id.prefFadeType;
+  public static final int PREF_FADE_MAX_VALUE = R.id.prefFadeMaxValue;
+  public static final int PREF_FLING_DURATION = R.id.prefFlingDuration;
 
-  public static final int PREF_SPACING_TYPE_VALUE = R.id.prefSpacingTypeValue;
-  public static final int PREF_SPACING_WIDTH_VALUE = R.id.prefSpacingWidthValue;
-  public static final int PREF_SPACING_ACTIONS_WIDTH_VALUE = R.id.prefSpacingActionsWidthValue;
-  public static final int PREF_SHOW_SHADOW_VALUE = R.id.prefShowShadowValue;
-  public static final int PREF_SHADOW_WIDTH_VALUE = R.id.prefShadowWidthValue;
+  private static final int PREF_SPACING_TYPE_VALUE = R.id.prefSpacingTypeValue;
+  private static final int PREF_SPACING_WIDTH_VALUE = R.id.prefSpacingWidthValue;
+  private static final int PREF_SPACING_ACTIONS_WIDTH_VALUE = R.id.prefSpacingActionsWidthValue;
+  private static final int PREF_SHOW_SHADOW_VALUE = R.id.prefShowShadowValue;
+  private static final int PREF_SHADOW_WIDTH_VALUE = R.id.prefShadowWidthValue;
+  private static final int PREF_FADE_TYPE_VALUE = R.id.prefFadeTypeValue;
+  private static final int PREF_FADE_MAX_VALUE_VALUE = R.id.prefprefFadeMaxValueValue;
+  private static final int PREF_FLING_DURATION_VALUE = R.id.prefFlingDurationValue;
 
   private View viewRoot;
   private OnSettingsChangedListener mSettingsChangedListener;
@@ -70,6 +76,9 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
     saveStringPrefState(outState, PREF_SPACING_ACTIONS_WIDTH_VALUE);
     saveBooleanPrefState(outState, PREF_SHOW_SHADOW_VALUE);
     saveStringPrefState(outState, PREF_SHADOW_WIDTH_VALUE);
+    saveStringPrefState(outState, PREF_FADE_TYPE_VALUE);
+    saveStringPrefState(outState, PREF_FADE_MAX_VALUE_VALUE);
+    saveStringPrefState(outState, PREF_FLING_DURATION_VALUE);
     super.onSaveInstanceState(outState);
   }
 
@@ -81,6 +90,9 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
       restoreStringPrefState(savedInstanceState, PREF_SPACING_ACTIONS_WIDTH_VALUE);
       restoreBooleanPrefState(savedInstanceState, PREF_SHOW_SHADOW_VALUE);
       restoreStringPrefState(savedInstanceState, PREF_SHADOW_WIDTH_VALUE);
+      restoreStringPrefState(savedInstanceState, PREF_FADE_TYPE_VALUE);
+      restoreStringPrefState(savedInstanceState, PREF_FADE_MAX_VALUE_VALUE);
+      restoreStringPrefState(savedInstanceState, PREF_FLING_DURATION_VALUE);
 
       final int[] spacingTypes = getResources().getIntArray(R.array.spacing_types_values);
       final String[] spacingTypeValues = getResources().getStringArray(R.array.spacing_types_short);
@@ -104,13 +116,16 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    viewRoot= inflater.inflate(R.layout.settings, container, false);
+    viewRoot= inflater.inflate(R.layout.sandbox, container, false);
 
     viewRoot.findViewById(PREF_SPACING_TYPE).setOnClickListener(this);
     viewRoot.findViewById(PREF_SPACING_WIDTH).setOnClickListener(this);
     viewRoot.findViewById(PREF_SPACING_ACTIONS_WIDTH).setOnClickListener(this);
     viewRoot.findViewById(PREF_SHOW_SHADOW).setOnClickListener(this);
     viewRoot.findViewById(PREF_SHADOW_WIDTH).setOnClickListener(this);
+    viewRoot.findViewById(PREF_FADE_MAX_VALUE).setOnClickListener(this);
+    viewRoot.findViewById(PREF_FADE_TYPE).setOnClickListener(this);
+    viewRoot.findViewById(PREF_FLING_DURATION).setOnClickListener(this);
     return viewRoot;
   }
 
@@ -158,7 +173,24 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
       itemsArrayId = R.array.width_strings;
       valuesArrayId = R.array.width_values;
       break;
-
+    case PREF_FADE_TYPE:
+      titleId = R.string.pref_fade_type;
+      valueId = PREF_FADE_TYPE_VALUE;
+      itemsArrayId = R.array.fade_types;
+      valuesArrayId = R.array.fade_types_values;
+      break;
+    case PREF_FADE_MAX_VALUE:
+      titleId = R.string.pref_fade_max_value;
+      valueId = PREF_FADE_MAX_VALUE_VALUE;
+      itemsArrayId = R.array.fade_max_value_strings;
+      valuesArrayId = R.array.fade_max_value_values;
+      break;
+    case PREF_FLING_DURATION:
+      titleId = R.string.pref_other_fling_duration;
+      valueId = PREF_FLING_DURATION_VALUE;
+      itemsArrayId = R.array.fling_duration_strings;
+      valuesArrayId = R.array.fling_duration_values;
+      break;
     default:
       return;
     }
@@ -190,9 +222,16 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
           }
           break;
         }
+        case PREF_FADE_TYPE: {
+          final TextView viewValue = (TextView) v.findViewById(valueId);
+          final String value = getResources().getStringArray(R.array.fade_types)[item];
+          viewValue.setText(value);
+          break;
+        }
         case PREF_SPACING_WIDTH:
-        case PREF_SPACING_ACTIONS_WIDTH:
-        case PREF_SHADOW_WIDTH: {
+        case PREF_SHADOW_WIDTH:
+        case PREF_FADE_MAX_VALUE:
+        case PREF_FLING_DURATION: {
           final TextView viewValue = (TextView) v.findViewById(valueId);
           final String value = Integer.toString(values[item]);
           viewValue.setText(value);

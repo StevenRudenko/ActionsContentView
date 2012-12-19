@@ -17,4 +17,6 @@
 <resources>
     <bool name="default_pref_show_shadow">true</bool>
     <dimen name="default_pref_shadow_width">16dip</dimen>
+    <integer name="default_pref_fade_max_value">170</integer>
+    <integer name="default_pref_fling_delay">900</integer>
 </resources>
