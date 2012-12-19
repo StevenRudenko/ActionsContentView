@@ -31,7 +31,7 @@ import android.widget.TextView;
 
 public class SandboxFragment extends Fragment implements View.OnClickListener {
   public static final String TAG = SandboxFragment.class.getSimpleName();
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   public interface OnSettingsChangedListener {
     void onSettingChanged(int prefId, int value);
