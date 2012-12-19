@@ -356,6 +356,7 @@ public class ActionsContentView extends ViewGroup {
       return;
 
     mFadeType = type;
+    fadeViews();
   }
 
   public int getFadeType() {
@@ -369,6 +370,7 @@ public class ActionsContentView extends ViewGroup {
       value = 255;
 
     mFadeValue = value;
+    fadeViews();
   }
 
   public int getFadeValue() {
@@ -477,17 +479,18 @@ public class ActionsContentView extends ViewGroup {
   }
 
   private void fadeViews() {
-    if (mFadeType == FADE_NONE)
-      return;
-
     final float scrollFactor = mContentScrollController.getScrollFactor();
-    if ((mFadeType & FADE_ACTIONS) > 0) {
+    if ((mFadeType & FADE_ACTIONS) == FADE_ACTIONS) {
       final int fadeFactor = (int) (scrollFactor * mFadeValue);
       viewActionsContainer.invalidate(fadeFactor);
+    } else {
+      viewActionsContainer.invalidate(0);
     }
-    if ((mFadeType & FADE_CONTENT) > 0) {
+    if ((mFadeType & FADE_CONTENT) == FADE_CONTENT) {
       final int fadeFactor = (int) ((1f - scrollFactor) * mFadeValue);
       viewContentContainer.invalidate(fadeFactor);
+    } else {
+      viewContentContainer.invalidate(0);
     }
   }
 
