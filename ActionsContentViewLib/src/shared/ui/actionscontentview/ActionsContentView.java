@@ -148,16 +148,17 @@ public class ActionsContentView extends ViewGroup {
     a.recycle();
 
     if (DEBUG) {
-      Log.d(TAG, "spacing type: " + mSpacingType);
-      Log.d(TAG, "spacing value: " + mSpacing);
-      Log.d(TAG, "actions spacing value: " + mActionsSpacing);
-      Log.d(TAG, "actions layout id: " + actionsLayout);
-      Log.d(TAG, "content layout id: " + contentLayout);
-      Log.d(TAG, "shadow drawable: " + shadowDrawableRes);
-      Log.d(TAG, "shadow width: " + mShadowWidth);
-      Log.d(TAG, "fade type: " + mFadeType);
-      Log.d(TAG, "fade max value: " + mFadeValue);
-      Log.d(TAG, "fling duration: " + mFlingDuration);
+      Log.d(TAG, "Values from layout");
+      Log.d(TAG, "  spacing type: " + mSpacingType);
+      Log.d(TAG, "  spacing value: " + mSpacing);
+      Log.d(TAG, "  actions spacing value: " + mActionsSpacing);
+      Log.d(TAG, "  actions layout id: " + actionsLayout);
+      Log.d(TAG, "  content layout id: " + contentLayout);
+      Log.d(TAG, "  shadow drawable: " + shadowDrawableRes);
+      Log.d(TAG, "  shadow width: " + mShadowWidth);
+      Log.d(TAG, "  fade type: " + mFadeType);
+      Log.d(TAG, "  fade max value: " + mFadeValue);
+      Log.d(TAG, "  fling duration: " + mFlingDuration);
     }
 
     mContentScrollController = new ContentScrollController(new Scroller(context));
@@ -225,14 +226,15 @@ public class ActionsContentView extends ViewGroup {
     mSpacingType = ss.mSpacingType;
     mSpacing = ss.mSpacing;
     mActionsSpacing = ss.mActionsSpacing;
-    mShadowWidth = ss.mShadowWidth;
     isSwipingEnabled = ss.isSwipingEnabled;
     mFlingDuration = ss.mFlingDuration;
     mFadeType = ss.mFadeType;
     mFadeValue = ss.mFadeValue;
 
+    viewShadow.setVisibility(ss.isShadowVisible ? VISIBLE : GONE);
+
     // this will call requestLayout() to calculate layout according to values
-    setShadowVisible(ss.isShadowVisible);
+    setShadowWidth(ss.mShadowWidth);
   }
 
   public ViewGroup getActionsContainer() {
@@ -327,6 +329,9 @@ public class ActionsContentView extends ViewGroup {
   public void setShadowWidth(int width) {
     if (mShadowWidth == width)
       return;
+
+    if (DEBUG)
+      Log.d(TAG, "- shadow width: " + width);
 
     mShadowWidth = width;
     viewShadow.getLayoutParams().width = mShadowWidth;
