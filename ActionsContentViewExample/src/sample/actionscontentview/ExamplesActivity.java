@@ -17,7 +17,7 @@ package sample.actionscontentview;
 
 import sample.actionscontentview.adapter.ActionsAdapter;
 import sample.actionscontentview.fragment.AboutFragment;
-import sample.actionscontentview.fragment.SettingsFragment;
+import sample.actionscontentview.fragment.SandboxFragment;
 import sample.actionscontentview.fragment.WebViewFragment;
 import shared.ui.actionscontentview.ActionsContentView;
 import android.content.Intent;
@@ -32,13 +32,22 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class ExamplesActivity extends FragmentActivity {
+
+  private static final String STATE_URI = "state:uri";
+  private static final String STATE_FRAGMENT_TAG = "state:fragment_tag";
+
+  private SettingsChangedListener mSettingsChangedListener;
+
   private ActionsContentView viewActionsContentView;
 
+  private Uri currentUri = AboutFragment.ABOUT_URI;
   private String currentContentFragmentTag = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    mSettingsChangedListener = new SettingsChangedListener();
 
     setContentView(R.layout.example);
 
@@ -57,7 +66,12 @@ public class ExamplesActivity extends FragmentActivity {
       }
     });
 
-    updateContent(AboutFragment.ABOUT_URI);
+    if (savedInstanceState != null) {
+      currentUri = Uri.parse(savedInstanceState.getString(STATE_URI));
+      currentContentFragmentTag = savedInstanceState.getString(STATE_FRAGMENT_TAG);
+    }
+
+    updateContent(currentUri);
   }
 
   public void onActionsButtonClick(View view) {
@@ -65,6 +79,14 @@ public class ExamplesActivity extends FragmentActivity {
       viewActionsContentView.showContent();
     else
       viewActionsContentView.showActions();
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    outState.putString(STATE_URI, currentUri.toString());
+    outState.putString(STATE_FRAGMENT_TAG, currentContentFragmentTag);
+
+    super.onSaveInstanceState(outState);
   }
 
   public void onSourceCodeClick(View view) {
@@ -94,14 +116,15 @@ public class ExamplesActivity extends FragmentActivity {
       } else {
         fragment = new AboutFragment();
       }
-    } else if (SettingsFragment.SETTINGS_URI.equals(uri)) {
-      tag = SettingsFragment.TAG;
-      final Fragment foundFragment = fm.findFragmentByTag(tag);
+    } else if (SandboxFragment.SETTINGS_URI.equals(uri)) {
+      tag = SandboxFragment.TAG;
+      final SandboxFragment foundFragment = (SandboxFragment) fm.findFragmentByTag(tag);
       if (foundFragment != null) {
+        foundFragment.setOnSettingsChangedListener(mSettingsChangedListener);
         fragment = foundFragment;
       } else {
-        final SettingsFragment settingsFragment = new SettingsFragment();
-        settingsFragment.setOnSettingsChangedListener(getSettingsChangedListener());
+        final SandboxFragment settingsFragment = new SandboxFragment();
+        settingsFragment.setOnSettingsChangedListener(mSettingsChangedListener);
         fragment = settingsFragment;
       }
     } else if (uri != null) {
@@ -127,35 +150,50 @@ public class ExamplesActivity extends FragmentActivity {
     }
     tr.commit();
 
+    currentUri = uri;
     currentContentFragmentTag = tag;
   }
 
-  private SettingsFragment.OnSettingsChangedListener getSettingsChangedListener() {
-    return new SettingsFragment.OnSettingsChangedListener() {
-      private final float mDensity = getResources().getDisplayMetrics().density;
+  private class SettingsChangedListener implements SandboxFragment.OnSettingsChangedListener {
+    private final float mDensity = getResources().getDisplayMetrics().density;
+    private final int mAdditionaSpacingWidth = (int) (100 * mDensity);
 
-      @Override
-      public void onSettingChanged(int prefId, int value) {
-        switch (prefId) {
-        case SettingsFragment.PREF_SPACING_TYPE:
-          viewActionsContentView.setSpacingType(value);
+    @Override
+    public void onSettingChanged(int prefId, int value) {
+      switch (prefId) {
+      case SandboxFragment.PREF_SPACING_TYPE:
+        final int currentType = viewActionsContentView.getSpacingType();
+        if (currentType == value)
           return;
-        case SettingsFragment.PREF_SPACING_WIDTH:
-          viewActionsContentView.setSpacingWidth((int) (value * mDensity));
-          return;
-        case SettingsFragment.PREF_SPACING_ACTIONS_WIDTH:
-          viewActionsContentView.setActionsSpacingWidth((int) (value * mDensity));
-          return;
-        case SettingsFragment.PREF_SHOW_SHADOW:
-          viewActionsContentView.setShadowVisible(value == 1);
-          return;
-        case SettingsFragment.PREF_SHADOW_WIDTH:
-          viewActionsContentView.setShadowWidth((int) (value * mDensity));
-          return;
-        default:
-          return;
+
+        final int spacingWidth = viewActionsContentView.getSpacingWidth();
+        if (value == ActionsContentView.SPACING_ACTIONS_WIDTH) {
+          viewActionsContentView.setSpacingWidth(spacingWidth + mAdditionaSpacingWidth);
+        } else if (value == ActionsContentView.SPACING_RIGHT_OFFSET) {
+          viewActionsContentView.setSpacingWidth(spacingWidth - mAdditionaSpacingWidth);
         }
+        viewActionsContentView.setSpacingType(value);
+        return;
+      case SandboxFragment.PREF_SPACING_WIDTH:
+        final int width;
+        if (viewActionsContentView.getSpacingType() == ActionsContentView.SPACING_ACTIONS_WIDTH)
+          width = (int) (value * mDensity) + mAdditionaSpacingWidth;
+        else
+          width = (int) (value * mDensity);
+        viewActionsContentView.setSpacingWidth(width);
+        return;
+      case SandboxFragment.PREF_SPACING_ACTIONS_WIDTH:
+        viewActionsContentView.setActionsSpacingWidth((int) (value * mDensity));
+        return;
+      case SandboxFragment.PREF_SHOW_SHADOW:
+        viewActionsContentView.setShadowVisible(value == 1);
+        return;
+      case SandboxFragment.PREF_SHADOW_WIDTH:
+        viewActionsContentView.setShadowWidth((int) (value * mDensity));
+        return;
+      default:
+        return;
       }
-    };
-  }
+    }
+  };
 }

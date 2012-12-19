@@ -47,7 +47,7 @@ public class AboutFragment extends Fragment {
         final Activity a = getActivity();
         if (a instanceof ExamplesActivity) {
           final ExamplesActivity examplesActivity = (ExamplesActivity) a;
-          examplesActivity.updateContent(SettingsFragment.SETTINGS_URI);
+          examplesActivity.updateContent(SandboxFragment.SETTINGS_URI);
         }
       }
     });

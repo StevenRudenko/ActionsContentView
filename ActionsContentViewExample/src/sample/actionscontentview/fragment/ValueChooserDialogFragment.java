@@ -21,8 +21,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-public class SettingsChooserDialogFragment extends DialogFragment {
-  public static final String TAG = SettingsChooserDialogFragment.class.getSimpleName();
+public class ValueChooserDialogFragment extends DialogFragment {
+  public static final String TAG = ValueChooserDialogFragment.class.getSimpleName();
 
   public interface OnSettingSelectedListener {
     public void onSettingSelected(int id, int item);
@@ -34,8 +34,8 @@ public class SettingsChooserDialogFragment extends DialogFragment {
 
   private OnSettingSelectedListener mSettingSelectedListener;
 
-  public static SettingsChooserDialogFragment newInstance(int id, int titleId, int itemsArrayId) {
-    final SettingsChooserDialogFragment fragment = new SettingsChooserDialogFragment();
+  public static ValueChooserDialogFragment newInstance(int id, int titleId, int itemsArrayId) {
+    final ValueChooserDialogFragment fragment = new ValueChooserDialogFragment();
     final Bundle args = new Bundle();
     args.putInt(ARG_ID, id);
     args.putInt(ARG_TITLE, titleId);

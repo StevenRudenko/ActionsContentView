@@ -54,7 +54,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <CheckBox
-            android:id="@+id/value"
+            android:id="@+id/prefShowShadowValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -90,7 +90,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/value"
+            android:id="@+id/prefShadowWidthValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dip"

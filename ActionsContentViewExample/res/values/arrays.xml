@@ -36,9 +36,9 @@
         <item>@drawable/ic_link_youtube</item>
     </array>
     <string-array name="actions_names">
-        <item>Sandbox</item>
-        <item>About</item>
         <item>Settings</item>
+        <item>About</item>
+        <item>Sandbox</item>
         <item>Bookmarks</item>
         <item>Dropbox</item>
         <item>Evernote</item>
@@ -57,7 +57,7 @@
     <string-array name="actions_links">
         <item>category://settings</item>
         <item>settings://about</item>
-        <item>settings://settings</item>
+        <item>settings://sandbox</item>
         <item>category://bookmarks</item>
         <item>http://www.dropbox.com</item>
         <item>http://www.evernote.com</item>
@@ -96,6 +96,8 @@
         <item>32</item>
         <item>48</item>
         <item>64</item>
+        <item>96</item>
+        <item>128</item>
     </string-array>
     <integer-array name="width_values">
         <item>0</item>
@@ -105,6 +107,8 @@
         <item>32</item>
         <item>48</item>
         <item>64</item>
+        <item>96</item>
+        <item>128</item>
     </integer-array>
 
 </resources>

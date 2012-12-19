@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="6dip"
         android:gravity="center"
+        android:singleLine="true"
         android:textColor="@android:color/white" />
 
     <View
