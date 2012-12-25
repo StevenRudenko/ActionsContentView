@@ -145,6 +145,16 @@
         <item>255</item>
     </integer-array>
 
+    <string-array name="swiping_types">
+        <item>All</item>
+        <item>Edge</item>
+    </string-array>
+
+    <integer-array name="swiping_types_values">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
     <string-array name="fling_duration_strings">
         <item>0</item>
         <item>900</item>

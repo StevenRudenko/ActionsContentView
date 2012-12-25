@@ -51,6 +51,8 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
   public static final int PREF_SHADOW_WIDTH = R.id.prefShadowWidth;
   public static final int PREF_FADE_TYPE = R.id.prefFadeType;
   public static final int PREF_FADE_MAX_VALUE = R.id.prefFadeMaxValue;
+  public static final int PREF_SWIPING_TYPE = R.id.prefSwipingType;
+  public static final int PREF_SWIPING_EDGE_WIDTH = R.id.prefSwipingEdgeWidth;
   public static final int PREF_FLING_DURATION = R.id.prefFlingDuration;
 
   private static final int PREF_SPACING_TYPE_VALUE = R.id.prefSpacingTypeValue;
@@ -59,7 +61,9 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
   private static final int PREF_SHOW_SHADOW_VALUE = R.id.prefShowShadowValue;
   private static final int PREF_SHADOW_WIDTH_VALUE = R.id.prefShadowWidthValue;
   private static final int PREF_FADE_TYPE_VALUE = R.id.prefFadeTypeValue;
-  private static final int PREF_FADE_MAX_VALUE_VALUE = R.id.prefprefFadeMaxValueValue;
+  private static final int PREF_FADE_MAX_VALUE_VALUE = R.id.prefFadeMaxValueValue;
+  private static final int PREF_SWIPING_TYPE_VALUE = R.id.prefSwipingTypeValue;
+  private static final int PREF_SWIPING_EDGE_WIDTH_VALUE = R.id.prefSwipingEdgeWidthValue;
   private static final int PREF_FLING_DURATION_VALUE = R.id.prefFlingDurationValue;
 
   private View viewRoot;
@@ -78,6 +82,8 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
     saveStringPrefState(outState, PREF_SHADOW_WIDTH_VALUE);
     saveStringPrefState(outState, PREF_FADE_TYPE_VALUE);
     saveStringPrefState(outState, PREF_FADE_MAX_VALUE_VALUE);
+    saveStringPrefState(outState, PREF_SWIPING_TYPE_VALUE);
+    saveStringPrefState(outState, PREF_SWIPING_EDGE_WIDTH_VALUE);
     saveStringPrefState(outState, PREF_FLING_DURATION_VALUE);
     super.onSaveInstanceState(outState);
   }
@@ -92,6 +98,8 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
       restoreStringPrefState(savedInstanceState, PREF_SHADOW_WIDTH_VALUE);
       restoreStringPrefState(savedInstanceState, PREF_FADE_TYPE_VALUE);
       restoreStringPrefState(savedInstanceState, PREF_FADE_MAX_VALUE_VALUE);
+      restoreStringPrefState(savedInstanceState, PREF_SWIPING_TYPE_VALUE);
+      restoreStringPrefState(savedInstanceState, PREF_SWIPING_EDGE_WIDTH_VALUE);
       restoreStringPrefState(savedInstanceState, PREF_FLING_DURATION_VALUE);
 
       final int[] spacingTypes = getResources().getIntArray(R.array.spacing_types_values);
@@ -125,6 +133,8 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
     viewRoot.findViewById(PREF_SHADOW_WIDTH).setOnClickListener(this);
     viewRoot.findViewById(PREF_FADE_MAX_VALUE).setOnClickListener(this);
     viewRoot.findViewById(PREF_FADE_TYPE).setOnClickListener(this);
+    viewRoot.findViewById(PREF_SWIPING_TYPE).setOnClickListener(this);
+    viewRoot.findViewById(PREF_SWIPING_EDGE_WIDTH).setOnClickListener(this);
     viewRoot.findViewById(PREF_FLING_DURATION).setOnClickListener(this);
     return viewRoot;
   }
@@ -185,6 +195,18 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
       itemsArrayId = R.array.fade_max_value_strings;
       valuesArrayId = R.array.fade_max_value_values;
       break;
+    case PREF_SWIPING_TYPE:
+      titleId = R.string.pref_swiping_type;
+      valueId = PREF_SWIPING_TYPE_VALUE;
+      itemsArrayId = R.array.swiping_types;
+      valuesArrayId = R.array.swiping_types_values;
+      break;
+    case PREF_SWIPING_EDGE_WIDTH:
+      valueId = PREF_SWIPING_EDGE_WIDTH_VALUE;
+      titleId = R.string.pref_swiping_edge_width;
+      itemsArrayId = R.array.width_strings;
+      valuesArrayId = R.array.width_values;
+      break;
     case PREF_FLING_DURATION:
       titleId = R.string.pref_other_fling_duration;
       valueId = PREF_FLING_DURATION_VALUE;
@@ -228,6 +250,13 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
           viewValue.setText(value);
           break;
         }
+        case PREF_SWIPING_TYPE: {
+          final TextView viewValue = (TextView) v.findViewById(valueId);
+          final String value = getResources().getStringArray(R.array.swiping_types)[item];
+          viewValue.setText(value);
+          break;
+        }
+        case PREF_SWIPING_EDGE_WIDTH:
         case PREF_SPACING_WIDTH:
         case PREF_SHADOW_WIDTH:
         case PREF_FADE_MAX_VALUE:

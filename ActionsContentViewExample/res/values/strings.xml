@@ -14,6 +14,7 @@
   limitations under the License.
 -->
 <resources>
+
     <string name="app_name">ActionsContentView Example</string>
     <string name="link_to_sources">source code is here &#187;</string>
     <string name="about_details"><b>ActionsContentView</b> is an standalone library implements actions/content swiping view (AKA Side Navigation UI Pattern, AKA Facebook side menu). The library doesn\'t use any specific code introduced in new Android SDK versions. This allows develop an application with an action/content swiping view for every version of Android from 2.2 and up.\n\nThis application shows abilities of the library and allows you to play with some values of ActionsContentView control.</string>
@@ -30,6 +31,10 @@
     <string name="pref_fade">Fade settings</string>
     <string name="pref_fade_type">Fade type</string>
     <string name="pref_fade_max_value">Fade max value</string>
+    <string name="pref_swiping">Swiping settings</string>
+    <string name="pref_swiping_type">Swiping type</string>
+    <string name="pref_swiping_edge_width">Swiping edge width</string>
     <string name="pref_other">Other</string>
     <string name="pref_other_fling_duration">Fling duration</string>
+
 </resources>

@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dip"
-        android:text="@string/pref_fade" />
+        android:text="@string/pref_swiping" />
 
     <View
         android:id="@+id/divider"
@@ -34,7 +34,7 @@
         android:background="@color/divider" />
 
     <LinearLayout
-        android:id="@+id/prefFadeType"
+        android:id="@+id/prefSwipingType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_background_holo_light"
@@ -50,17 +50,17 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="true"
-            android:text="@string/pref_fade_type"
+            android:text="@string/pref_swiping_type"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/prefFadeTypeValue"
+            android:id="@+id/prefSwipingTypeValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dip"
             android:layout_marginRight="8dip"
             android:singleLine="true"
-            android:text="Actions"
+            android:text="Edge"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
@@ -71,7 +71,7 @@
         android:background="@color/divider" />
 
     <LinearLayout
-        android:id="@+id/prefFadeMaxValue"
+        android:id="@+id/prefSwipingEdgeWidth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/item_background_holo_light"
@@ -87,17 +87,17 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:singleLine="true"
-            android:text="@string/pref_fade_max_value"
+            android:text="@string/pref_swiping_edge_width"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/prefFadeMaxValueValue"
+            android:id="@+id/prefSwipingEdgeWidthValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dip"
             android:layout_marginRight="8dip"
             android:singleLine="true"
-            android:text="170"
+            android:text="24"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 

@@ -194,6 +194,12 @@ public class ExamplesActivity extends FragmentActivity {
       case SandboxFragment.PREF_FADE_MAX_VALUE:
         viewActionsContentView.setFadeValue(value);
         return;
+      case SandboxFragment.PREF_SWIPING_TYPE:
+        viewActionsContentView.setSwipingType(value);
+        return;
+      case SandboxFragment.PREF_SWIPING_EDGE_WIDTH:
+        viewActionsContentView.setSwipingEdgeWidth(value);
+        return;
       case SandboxFragment.PREF_FLING_DURATION:
         viewActionsContentView.setFlingDuration(value);
         return;

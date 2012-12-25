@@ -19,4 +19,5 @@
     <dimen name="default_pref_shadow_width">16dip</dimen>
     <integer name="default_pref_fade_max_value">170</integer>
     <integer name="default_pref_fling_delay">900</integer>
+    <dimen name="default_pref_swiping_edge_width">24dip</dimen>
 </resources>
