@@ -32,7 +32,7 @@ import android.widget.Scroller;
 
 public class ActionsContentView extends ViewGroup {
   private static final String TAG = ActionsContentView.class.getSimpleName();
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
 
   /**
    * Spacing will be calculated as offset from right bound of view.
@@ -59,6 +59,15 @@ public class ActionsContentView extends ViewGroup {
    * Fade applies to every container.
    */
   public static final int FADE_BOTH = 3;
+
+  /**
+   * Swiping will be handled at any point of screen.
+   */
+  public static final int SWIPING_ALL = 0;
+  /**
+   * Swiping will be handled starting from screen edge only.
+   */
+  public static final int SWIPING_EDGE = 1;
 
   private final ContentScrollController mContentScrollController;
   private final GestureDetector mGestureDetector;
@@ -87,11 +96,6 @@ public class ActionsContentView extends ViewGroup {
   private int mShadowWidth = 0;
 
   /**
-   * Indicates whether swiping is enabled or not.
-   */
-  private boolean isSwipingEnabled = true;
-
-  /**
    * Indicates how long flinging will take time in milliseconds.
    */
   private int mFlingDuration = 250;
@@ -104,6 +108,19 @@ public class ActionsContentView extends ViewGroup {
    * Max fade value.
    */
   private int mFadeValue;
+
+  /**
+   * Indicates whether swiping is enabled or not.
+   */
+  private boolean isSwipingEnabled = true;
+  /**
+   * Swiping type.
+   */
+  private int mSwipeType = FADE_NONE;
+  /**
+   * Swiping edge width.
+   */
+  private int mSwipeEdgeWidth;
 
   /**
    * Indicates whether refresh of content position should be done on next layout calculation.
@@ -145,6 +162,10 @@ public class ActionsContentView extends ViewGroup {
     final int flingDurationDefault = context.getResources().getInteger(R.integer.default_actionscontentview_fling_duration);
     mFlingDuration = a.getInteger(R.styleable.ActionsContentView_fling_duration, flingDurationDefault);
 
+    mSwipeType = a.getInteger(R.styleable.ActionsContentView_swiping_type, SWIPING_EDGE);
+    final int swipingEdgeWidthDefault = context.getResources().getDimensionPixelSize(R.dimen.default_actionscontentview_swiping_edge_width);
+    mSwipeEdgeWidth = a.getDimensionPixelSize(R.styleable.ActionsContentView_swiping_edge_width, swipingEdgeWidthDefault);
+
     a.recycle();
 
     if (DEBUG) {
@@ -159,6 +180,8 @@ public class ActionsContentView extends ViewGroup {
       Log.d(TAG, "  fade type: " + mFadeType);
       Log.d(TAG, "  fade max value: " + mFadeValue);
       Log.d(TAG, "  fling duration: " + mFlingDuration);
+      Log.d(TAG, "  swiping type: " + mSwipeType);
+      Log.d(TAG, "  swiping edge width: " + mSwipeEdgeWidth);
     }
 
     mContentScrollController = new ContentScrollController(new Scroller(context));
@@ -209,6 +232,8 @@ public class ActionsContentView extends ViewGroup {
     ss.mFlingDuration = getFlingDuration();
     ss.mFadeType = getFadeType();
     ss.mFadeValue = getFadeValue();
+    ss.mSwipeType = getSwipingType();
+    ss.mSwipeEdgeWidth = getSwipingEdgeWidth();
     return ss;
   }
 
@@ -227,6 +252,8 @@ public class ActionsContentView extends ViewGroup {
     mSpacing = ss.mSpacing;
     mActionsSpacing = ss.mActionsSpacing;
     isSwipingEnabled = ss.isSwipingEnabled;
+    mSwipeType = ss.mSwipeType;
+    mSwipeEdgeWidth = ss.mSwipeEdgeWidth;
     mFlingDuration = ss.mFlingDuration;
     mFadeType = ss.mFadeType;
     mFadeValue = ss.mFadeValue;
@@ -383,6 +410,25 @@ public class ActionsContentView extends ViewGroup {
 
   public void setSwipingEnabled(boolean enabled) {
     isSwipingEnabled = enabled;
+  }
+
+  public void setSwipingType(int type) {
+    if (type != SWIPING_ALL && type != SWIPING_EDGE)
+      return;
+
+    mSwipeType = type;
+  }
+
+  public int getSwipingType() {
+    return mSwipeType;
+  }
+
+  public void setSwipingEdgeWidth(int width) {
+    mSwipeEdgeWidth = width;
+  }
+
+  public int getSwipingEdgeWidth() {
+    return mSwipeEdgeWidth;
   }
 
   @Override
@@ -571,6 +617,15 @@ public class ActionsContentView extends ViewGroup {
      * Max fade value.
      */
     private int mFadeValue;
+    
+    /**
+     * Swiping type.
+     */
+    private int mSwipeType = FADE_NONE;
+    /**
+     * Swiping edge width.
+     */
+    private int mSwipeEdgeWidth;
 
     public SavedState(Parcelable superState) {
       super(superState);
@@ -589,6 +644,8 @@ public class ActionsContentView extends ViewGroup {
       out.writeInt(mFlingDuration);
       out.writeInt(mFadeType);
       out.writeInt(mFadeValue);
+      out.writeInt(mSwipeType);
+      out.writeInt(mSwipeEdgeWidth);
     }
 
     public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
@@ -615,6 +672,8 @@ public class ActionsContentView extends ViewGroup {
       mFlingDuration = in.readInt();
       mFadeType = in.readInt();
       mFadeValue = in.readInt();
+      mSwipeType = in.readInt();
+      mSwipeEdgeWidth = in.readInt();
     }
   }
 
@@ -704,11 +763,21 @@ public class ActionsContentView extends ViewGroup {
           // if first event is more scroll by Y axis than X one
           // ignore all events until event up
           mHandleEvent = Boolean.FALSE;
-          return mHandleEvent;
         } else {
-          // handle all events of scrolling by X axis
-          mHandleEvent = Boolean.TRUE;
-          scrollBy((int) distanceX);
+          if (DEBUG)
+            Log.d(TAG, "Scroller: first touch: " + e1.getX() + ", " + e1.getY());
+
+          final int firstTouchX = (int) e1.getX();
+          // if content is not shown we handle all horizontal swipes
+          // it content shown and there is edge mode we should check start
+          // swiping area first
+          if (mSwipeType == SWIPING_ALL || !isContentShown() || firstTouchX <= mSwipeEdgeWidth) {
+            // handle all events of scrolling by X axis
+            mHandleEvent = Boolean.TRUE;
+            scrollBy((int) distanceX);
+          } else {
+            mHandleEvent = Boolean.FALSE;
+          }
         }
       } else if (mHandleEvent) {
         // it is not first event we should handle as scrolling by X axis
