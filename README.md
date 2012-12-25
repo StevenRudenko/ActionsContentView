@@ -49,14 +49,14 @@ Here is exmple of usage ActionsContentView as element of XML layout:
 Features included
 ============
 * Slide view by touch
-* Shadow dropped by content view to actions one
+* Shadow dropped by content view to actions one.
 * Offset for content view to show part actions view. Useful to hint user that there are actions under content.
+* Add shading for actions view while scrolling content.
+* Swipe from the bezel to the screen so horizontal scrolling will be possible.
 
 Feature to be implemented in future
 ============
-* Add shading for actions view while scrolling content
-* Left side or both side actions support
-* Swipe from the bezel to the screen so horizontal scrolling will be possible
+* Left side or both side actions support.
 
 Example
 ============
