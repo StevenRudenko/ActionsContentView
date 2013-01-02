@@ -617,7 +617,7 @@ public class ActionsContentView extends ViewGroup {
      * Max fade value.
      */
     private int mFadeValue;
-    
+
     /**
      * Swiping type.
      */
@@ -764,14 +764,20 @@ public class ActionsContentView extends ViewGroup {
           // ignore all events until event up
           mHandleEvent = Boolean.FALSE;
         } else {
-          if (DEBUG)
-            Log.d(TAG, "Scroller: first touch: " + e1.getX() + ", " + e1.getY());
-
+          final int contentLeftBound = viewContentContainer.getLeft() - viewContentContainer.getScrollX() + mShadowWidth;
           final int firstTouchX = (int) e1.getX();
+
+          if (DEBUG) {
+            Log.d(TAG, "Scroller: first touch: " + firstTouchX + ", " + e1.getY());
+            Log.d(TAG, "Content left bound: " + contentLeftBound);
+          }
+
           // if content is not shown we handle all horizontal swipes
           // it content shown and there is edge mode we should check start
           // swiping area first
-          if (mSwipeType == SWIPING_ALL || !isContentShown() || firstTouchX <= mSwipeEdgeWidth) {
+          if (mSwipeType == SWIPING_ALL
+              || (isContentShown() && firstTouchX <= mSwipeEdgeWidth
+              || (!isContentShown() && firstTouchX >= contentLeftBound))) {
             // handle all events of scrolling by X axis
             mHandleEvent = Boolean.TRUE;
             scrollBy((int) distanceX);
