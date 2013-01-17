@@ -89,7 +89,7 @@ License
 
 
 
- [1]: http://lh5.ggpht.com/zLNsUDWGb37WMrsCOkg5H_WOBSnovsUgGPWtBCEo8pq8u-cR6oTmAs6VzypIw0VWxQ
- [2]: http://lh3.ggpht.com/fvYvbO8cLrzyozWlKrGM8koYI6xrm-WLX3-D5nUjCyNKVFuM5C1LR4Bps-BnVStNul0
+ [1]: http://lh3.ggpht.com/LSmwlk83O_BZciUXNmqgEWcBKzCKK17YCS-Gmv2_VnPnMYbpK4NVSuaaCWD45R8-dW3g
+ [2]: http://lh6.ggpht.com/oybOlHn0z9uFMj58s-gRiwICQydFhB5lFGY9cx0qCAQNDm19E8EM2iWyfMTzkTPBKuMY
  [3]: http://lh4.ggpht.com/gjSc5WXfxL2hZqq6Rno0Byx3nHEf7-n4G8ceDV3BC0e4wm2RpFxC7I8VMPgSA9fvKyw
- [4]: https://play.google.com/store/apps/details?id=sample.actionscontentview
+ [4]: http://play.google.com/store/apps/details?id=sample.actionscontentview
