@@ -806,13 +806,7 @@ public class ActionsContentView extends ViewGroup {
     }
 
     public boolean isContentShown() {
-      final int x;
-      if (!mScroller.isFinished())
-        x = mScroller.getFinalX();
-      else
-        x = viewContentContainer.getScrollX();
-
-      return x == 0;
+      return isContentShown;
     }
 
     public void hideContent(int duration) {
