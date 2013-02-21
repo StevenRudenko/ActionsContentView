@@ -67,8 +67,8 @@ public class ContentLayout extends LinearLayout {
   @Override
   public boolean onTouchEvent(MotionEvent event) {
     // prevent ray cast of touch events to actions container
-    getDrawingRect(mHitRect);
-    mHitRect.offset(getScrollX(), getScrollY());
+    getHitRect(mHitRect);
+    mHitRect.offset(-getScrollX(), -getScrollY());
     if (mHitRect.contains((int)event.getX(), (int)event.getY())) {
       return true;
     }
