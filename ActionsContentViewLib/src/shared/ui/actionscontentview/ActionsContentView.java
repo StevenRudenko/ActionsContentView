@@ -157,7 +157,9 @@ public class ActionsContentView extends ViewGroup {
 
     mFadeType = a.getInteger(R.styleable.ActionsContentView_fade_type, FADE_NONE);
     final int fadeValueDefault = context.getResources().getInteger(R.integer.default_actionscontentview_fade_max_value);
-    mFadeValue = a.getDimensionPixelSize(R.styleable.ActionsContentView_spacing, fadeValueDefault);
+    mFadeValue = (int) a.getInt(R.styleable.ActionsContentView_fade_max_value, fadeValueDefault);
+
+    setFadeValue(mFadeValue);
 
     final int flingDurationDefault = context.getResources().getInteger(R.integer.default_actionscontentview_fling_duration);
     mFlingDuration = a.getInteger(R.styleable.ActionsContentView_fling_duration, flingDurationDefault);
@@ -525,6 +527,9 @@ public class ActionsContentView extends ViewGroup {
   }
 
   private void fadeViews() {
+    if ( viewActionsContainer == null )
+      return;
+
     final float scrollFactor = mContentScrollController.getScrollFactor();
     if ((mFadeType & FADE_ACTIONS) == FADE_ACTIONS) {
       final int fadeFactor = (int) (scrollFactor * mFadeValue);
