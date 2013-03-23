@@ -97,7 +97,7 @@
             android:layout_marginLeft="8dip"
             android:layout_marginRight="8dip"
             android:singleLine="true"
-            android:text="24"
+            android:text="48"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 
