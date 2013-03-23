@@ -195,7 +195,7 @@ public class ActionsContentView extends ViewGroup {
     if (actionsLayout != 0)
       inflater.inflate(actionsLayout, viewActionsContainer, true);
 
-    addView(viewActionsContainer, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+    super.addView(viewActionsContainer, 0, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
     viewContentContainer = new ContentLayout(context);
     viewContentContainer.setOnSwipeListener(new ContentLayout.OnSwipeListener() {
@@ -218,7 +218,93 @@ public class ActionsContentView extends ViewGroup {
     if (contentLayout != 0)
       inflater.inflate(contentLayout, viewContentContainer, true);
 
-    addView(viewContentContainer, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+    super.addView(viewContentContainer, 1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+  }
+
+  /**
+   * This method is not supported and throws an UnsupportedOperationException when called.
+   *
+   * @param child Ignored.
+   *
+   * @throws UnsupportedOperationException Every time this method is invoked.
+   */
+  @Override
+  public void addView(View child) {
+    throw new UnsupportedOperationException("addView(View) is not supported in " + TAG);
+  }
+
+  /**
+   * This method is not supported and throws an UnsupportedOperationException when called.
+   *
+   * @param child Ignored.
+   * @param index Ignored.
+   *
+   * @throws UnsupportedOperationException Every time this method is invoked.
+   */
+  @Override
+  public void addView(View child, int index) {
+    throw new UnsupportedOperationException("addView(View, int) is not supported in " + TAG);
+  }
+
+  /**
+   * This method is not supported and throws an UnsupportedOperationException when called.
+   *
+   * @param child Ignored.
+   * @param params Ignored.
+   *
+   * @throws UnsupportedOperationException Every time this method is invoked.
+   */
+  @Override
+  public void addView(View child, LayoutParams params) {
+    throw new UnsupportedOperationException("addView(View, LayoutParams) is not supported in " + TAG);
+  }
+
+  /**
+   * This method is not supported and throws an UnsupportedOperationException when called.
+   *
+   * @param child Ignored.
+   * @param index Ignored.
+   * @param params Ignored.
+   *
+   * @throws UnsupportedOperationException Every time this method is invoked.
+   */
+  @Override
+  public void addView(View child, int index, LayoutParams params) {
+    throw new UnsupportedOperationException("addView(View, int, LayoutParams) is not supported in " + TAG);
+  }
+
+  /**
+   * This method is not supported and throws an UnsupportedOperationException when called.
+   *
+   * @param child Ignored.
+   *
+   * @throws UnsupportedOperationException Every time this method is invoked.
+   */
+  @Override
+  public void removeView(View child) {
+    throw new UnsupportedOperationException("removeView(View) is not supported in " + TAG);
+  }
+
+  /**
+   * This method is not supported and throws an UnsupportedOperationException when called.
+   *
+   * @param index Ignored.
+   *
+   * @throws UnsupportedOperationException Every time this method is invoked.
+   */
+  @Override
+  public void removeViewAt(int index) {
+    throw new UnsupportedOperationException("removeViewAt(int) is not supported in " + TAG);
+  }
+
+  /**
+   * This method is not supported and throws an UnsupportedOperationException when called.
+   *
+   * @throws UnsupportedOperationException Every time this method is invoked.
+   */
+  @Override
+  public void removeAllViews() {
+    throw new UnsupportedOperationException("removeAllViews() is not supported in " + TAG);
   }
 
   public Parcelable onSaveInstanceState() {
@@ -434,32 +520,33 @@ public class ActionsContentView extends ViewGroup {
   }
 
   @Override
-  public boolean onTouchEvent(MotionEvent event) {
-    // return true always as far we should handle touch event for swiping
-    if (isSwipingEnabled)
-      return true;
-
-    return super.onTouchEvent(event);
-  }
-
-  @Override
-  public boolean dispatchTouchEvent(MotionEvent ev) {
+  public boolean onTouchEvent(MotionEvent ev) {
     if (!isSwipingEnabled)
-      return super.dispatchTouchEvent(ev);
+      return false;
+
+    mGestureDetector.onTouchEvent(ev);
 
     final int action = ev.getAction();
     // if current touch event should be handled
-    if (mContentScrollController.isHandled() && action == MotionEvent.ACTION_UP) {
-      mContentScrollController.onUp(ev);
-      return false;
+    if (mContentScrollController.isHandled()) {
+      if (action == MotionEvent.ACTION_UP)
+        mContentScrollController.onUp(ev);
+      return true;
     }
 
-    if (mGestureDetector.onTouchEvent(ev) || mContentScrollController.isHandled()) {
-      clearPressedState(this);
-      return false;
-    }
+    return false;
+  }
 
-    return super.dispatchTouchEvent(ev);
+  @Override
+  public boolean onInterceptTouchEvent(MotionEvent ev) {
+    if (!isSwipingEnabled)
+      return false;
+
+    mGestureDetector.onTouchEvent(ev);
+
+    // whether we should handle all following events by our view
+    // and don't allow children to get them
+    return mContentScrollController.isHandled();
   }
 
   @Override
@@ -543,35 +630,6 @@ public class ActionsContentView extends ViewGroup {
     } else {
       viewContentContainer.invalidate(0);
     }
-  }
-
-  /**
-   * Clears pressed state for all views hierarchy starting from parent view.
-   * @param parent - parent view
-   * @return true is press state was cleared
-   */
-  private static boolean clearPressedState(ViewGroup parent) {
-    if (parent.isPressed()) {
-      parent.setPressed(false);
-      return true;
-    }
-
-    final int count = parent.getChildCount();
-    for (int i=0; i<count; ++i) {
-      final View v = parent.getChildAt(i);
-      if (v.isPressed()) {
-        v.setPressed(false);
-        return true;
-      }
-
-      if (!(v instanceof ViewGroup))
-        continue;
-
-      final ViewGroup vg = (ViewGroup) v;
-      if (clearPressedState(vg))
-        return true;
-    }
-    return false;
   }
 
   public static class SavedState extends BaseSavedState {

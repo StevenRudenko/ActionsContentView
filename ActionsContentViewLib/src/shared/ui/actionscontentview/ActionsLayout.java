@@ -22,7 +22,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-public class ActionsLayout extends FrameLayout {
+class ActionsLayout extends FrameLayout {
 
   private final Paint mFadePaint = new Paint();
 

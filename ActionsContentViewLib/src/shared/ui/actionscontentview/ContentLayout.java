@@ -24,7 +24,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
-public class ContentLayout extends LinearLayout {
+class ContentLayout extends LinearLayout {
 
   public interface OnSwipeListener {
     public void onSwipe(int scrollPosition);
