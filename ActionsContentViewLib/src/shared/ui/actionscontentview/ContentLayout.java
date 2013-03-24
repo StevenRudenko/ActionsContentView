@@ -22,6 +22,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
 class ContentLayout extends LinearLayout {
@@ -30,13 +31,15 @@ class ContentLayout extends LinearLayout {
     public void onSwipe(int scrollPosition);
   }
 
+  private final EffectsController mEffectsController = new EffectsController();
+
   private final Rect mHitRect = new Rect();
   private final Paint mFadePaint = new Paint();
 
   private int mFadeFactor = 0;
 
   private OnSwipeListener mOnSwipeListener;
-  
+
   public ContentLayout(Context context) {
     this(context, null);
   }
@@ -59,9 +62,15 @@ class ContentLayout extends LinearLayout {
     mOnSwipeListener = listener;
   }
 
-  public void invalidate(int fadeFactor) {
+  @Override
+  public void setAnimation(Animation animation) {
+    mEffectsController.setEffects(animation);
+  }
+
+  public void scroll(float factor, int fadeFactor) {
     mFadeFactor = fadeFactor;
-    invalidate();
+    if (mEffectsController.apply(factor) || mFadeFactor > 0)
+      invalidate();
   }
 
   @Override
@@ -85,11 +94,17 @@ class ContentLayout extends LinearLayout {
 
   @Override
   protected void dispatchDraw(Canvas canvas) {
+    final int saveCount = canvas.save();
+    canvas.concat(mEffectsController.getEffectsMatrix());
+    canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), (int)(255 * mEffectsController.getEffectsAlpha()), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
+
     super.dispatchDraw(canvas);
 
     if (mFadeFactor > 0f) {
       mFadePaint.setColor(Color.argb(mFadeFactor, 0, 0, 0));
       canvas.drawRect(0, 0, getWidth(), getHeight(), mFadePaint);
     }
+
+    canvas.restoreToCount(saveCount);
   }
 }

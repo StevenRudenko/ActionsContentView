@@ -20,9 +20,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
 class ActionsLayout extends FrameLayout {
+
+  private final EffectsController mEffectsController = new EffectsController();
 
   private final Paint mFadePaint = new Paint();
 
@@ -40,18 +43,30 @@ class ActionsLayout extends FrameLayout {
     super(context, attrs, defStyle);
   }
 
-  public void invalidate(int fadeFactor) {
+  @Override
+  public void setAnimation(Animation animation) {
+    mEffectsController.setEffects(animation);
+  }
+
+  public void scroll(float factor, int fadeFactor) {
     mFadeFactor = fadeFactor;
-    invalidate();
+    if (mEffectsController.apply(factor) || mFadeFactor > 0)
+      invalidate();
   }
 
   @Override
   protected void dispatchDraw(Canvas canvas) {
+    final int saveCount = canvas.save();
+    canvas.concat(mEffectsController.getEffectsMatrix());
+    canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), (int)(255 * mEffectsController.getEffectsAlpha()), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
+
     super.dispatchDraw(canvas);
 
-    if (mFadeFactor > 0f) {
+    if (mFadeFactor > 0) {
       mFadePaint.setColor(Color.argb(mFadeFactor, 0, 0, 0));
       canvas.drawRect(0, 0, getWidth(), getHeight(), mFadePaint);
     }
+
+    canvas.restoreToCount(saveCount);
   }
 }

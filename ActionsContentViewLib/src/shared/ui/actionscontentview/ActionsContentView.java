@@ -201,7 +201,7 @@ public class ActionsContentView extends ViewGroup {
     viewContentContainer.setOnSwipeListener(new ContentLayout.OnSwipeListener() {
       @Override
       public void onSwipe(int scrollPosition) {
-        fadeViews();
+        updateScrollFactor();
       }
     });
 
@@ -471,7 +471,7 @@ public class ActionsContentView extends ViewGroup {
       return;
 
     mFadeType = type;
-    fadeViews();
+    updateScrollFactor();
   }
 
   public int getFadeType() {
@@ -485,7 +485,7 @@ public class ActionsContentView extends ViewGroup {
       value = 255;
 
     mFadeValue = value;
-    fadeViews();
+    updateScrollFactor();
   }
 
   public int getFadeValue() {
@@ -613,23 +613,27 @@ public class ActionsContentView extends ViewGroup {
     }
   }
 
-  private void fadeViews() {
+  private void updateScrollFactor() {
     if ( viewActionsContainer == null )
       return;
 
     final float scrollFactor = mContentScrollController.getScrollFactor();
+
+    final int actionsFadeFactor;
     if ((mFadeType & FADE_ACTIONS) == FADE_ACTIONS) {
-      final int fadeFactor = (int) (scrollFactor * mFadeValue);
-      viewActionsContainer.invalidate(fadeFactor);
+      actionsFadeFactor = (int) (scrollFactor * mFadeValue);
     } else {
-      viewActionsContainer.invalidate(0);
+      actionsFadeFactor = 0;
     }
+    viewActionsContainer.scroll(scrollFactor, actionsFadeFactor);
+
+    final int contentFadeFactor;
     if ((mFadeType & FADE_CONTENT) == FADE_CONTENT) {
-      final int fadeFactor = (int) ((1f - scrollFactor) * mFadeValue);
-      viewContentContainer.invalidate(fadeFactor);
+      contentFadeFactor = (int) ((1f - scrollFactor) * mFadeValue);
     } else {
-      viewContentContainer.invalidate(0);
+      contentFadeFactor = 0;
     }
+    viewContentContainer.scroll(1f - scrollFactor, contentFadeFactor);
   }
 
   public static class SavedState extends BaseSavedState {
@@ -778,7 +782,7 @@ public class ActionsContentView extends ViewGroup {
       else
         hideContent(0);
 
-      fadeViews();
+      updateScrollFactor();
     }
 
     /**
