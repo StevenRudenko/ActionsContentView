@@ -68,8 +68,6 @@ class EffectsController {
     }
   }
 
-  float[] v = new float[9];
-  
   private boolean apply(float factor, Animation animation) {
     try {
       APPLY_TRANSFORMATION.invoke(animation, factor, mTransformation);
