@@ -15,10 +15,29 @@ There is one limitation:
 
 * all horizontal scrolling views will not work at bounds of this view, except you will use swipe from the bezel mode (read Useful hints for more information).
 
+Screenshots
+-----------
 
 ![Example application looks on phone][1]![Example application looks on phone][2]
 
 ![Example application looks on tablet][3]
+
+Features included
+-----------------
+* Slide view by touch.
+* Shadow dropped by content view to actions one.
+* Offset for content view to show part actions view. Useful to hint user that there are actions under content.
+* Add shading for actions view while scrolling content.
+* Swipe from the bezel to the screen so horizontal scrolling will be possible
+* Effects for Action and Content views. See example below.
+
+Feature to be implemented in future
+-----------------------------------
+* Left, right or both sides actions support
+
+
+Examples
+=============
 
 Here is example of usage ActionsContentView as element of XML layout:
 
@@ -47,22 +66,8 @@ Here is example of usage ActionsContentView as element of XML layout:
    
 </RelativeLayout>
 ```
-
-Features included
-============
-* Slide view by touch.
-* Shadow dropped by content view to actions one.
-* Offset for content view to show part actions view. Useful to hint user that there are actions under content.
-* Add shading for actions view while scrolling content.
-* Swipe from the bezel to the screen so horizontal scrolling will be possible
-* Effects for Action and Content views. See example below.
-
-Feature to be implemented in future
-============
-* Left, right or both sides actions support
-
 Example application
-============
+-------------------
 Try out the example application on the Android Market: [ActionsContentView Example][4].
 
 Useful hints
@@ -93,7 +98,7 @@ Parallax effect for actions layout
 To create parallax effect we should create translate animation and use it as effect for actions layout.
 Here are steps to get it done:
 
-1. Create <project_path>/res/anim/acitons.xml and put next code into it:
+Create <project_path>/res/anim/acitons.xml and put next code into it:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -102,8 +107,7 @@ Here are steps to get it done:
     android:interpolator="@android:anim/accelerate_decelerate_interpolator"
     android:toXDelta="-200" />
 ```
-
-2. Add next line to the XML layout of ActionsContentView:
+Add next line to the XML layout of ActionsContentView:
 
 ```xml
 <shared.ui.actionscontentview.ActionsContentView
@@ -113,12 +117,12 @@ Here are steps to get it done:
     />
 ```
 
+-------------------------------------------------------------------------------
+
 Developed By
 ============
 
 * Steven Rudenko - <steven.rudenko@gmail.com>
-
-
 
 License
 =======
