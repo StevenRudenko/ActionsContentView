@@ -92,6 +92,7 @@ Parallax effect for actions layout
 -------------
 To create parallax effect we should create translate animation and use it as effect for actions layout.
 Here are steps to get it done:
+
 1. Create <project_path>/res/anim/acitons.xml and put next code into it:
 
 ```xml
