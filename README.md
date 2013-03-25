@@ -21,6 +21,7 @@ There is one limitation:
 ![Example application looks on tablet][3]
 
 Here is example of usage ActionsContentView as element of XML layout:
+
 ```xml
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -71,6 +72,7 @@ Enable horizontall scrolling
 -------------
 To enable horizontall scrolling at content view you should set swipe from the bezel mode.
 It is wasy to do this by adding next row to XML layout:
+
 ```xml
 <shared.ui.actionscontentview.ActionsContentView
     ...
@@ -80,6 +82,7 @@ It is wasy to do this by adding next row to XML layout:
 ```
 
 or by next lines of code:
+
 ```java
 viewActionsContentView.setSwipingType(ActionsContentView.SWIPING_EDGE);
 ```
@@ -90,6 +93,7 @@ Parallax effect for actions layout
 To create parallax effect we should create translate animation and use it as effect for actions layout.
 Here are steps to get it done:
 1. Create <project_path>/res/anim/acitons.xml and put next code into it:
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <translate xmlns:android="http://schemas.android.com/apk/res/android"
@@ -99,6 +103,7 @@ Here are steps to get it done:
 ```
 
 2. Add next line to the XML layout of ActionsContentView:
+
 ```xml
 <shared.ui.actionscontentview.ActionsContentView
     ...
