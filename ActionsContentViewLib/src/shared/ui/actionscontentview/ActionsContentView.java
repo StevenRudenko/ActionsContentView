@@ -27,6 +27,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
@@ -168,6 +170,9 @@ public class ActionsContentView extends ViewGroup {
     final int swipingEdgeWidthDefault = context.getResources().getDimensionPixelSize(R.dimen.default_actionscontentview_swiping_edge_width);
     mSwipeEdgeWidth = a.getDimensionPixelSize(R.styleable.ActionsContentView_swiping_edge_width, swipingEdgeWidthDefault);
 
+    final int effectActionsRes = a.getResourceId(R.styleable.ActionsContentView_effect_actions, 0);
+    final int effectContentRes = a.getResourceId(R.styleable.ActionsContentView_effect_content, 0);
+
     a.recycle();
 
     if (DEBUG) {
@@ -184,6 +189,8 @@ public class ActionsContentView extends ViewGroup {
       Log.d(TAG, "  fling duration: " + mFlingDuration);
       Log.d(TAG, "  swiping type: " + mSwipeType);
       Log.d(TAG, "  swiping edge width: " + mSwipeEdgeWidth);
+      Log.d(TAG, "  effect actions: " + effectActionsRes);
+      Log.d(TAG, "  effect content: " + effectContentRes);
     }
 
     mContentScrollController = new ContentScrollController(new Scroller(context));
@@ -219,6 +226,13 @@ public class ActionsContentView extends ViewGroup {
       inflater.inflate(contentLayout, viewContentContainer, true);
 
     super.addView(viewContentContainer, 1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+    if ( effectActionsRes > 0 ) {
+      setActionEffects(effectActionsRes);
+    }
+    if ( effectContentRes > 0 ) {
+      setContentEffects(effectContentRes);
+    }
   }
 
   /**
@@ -519,6 +533,32 @@ public class ActionsContentView extends ViewGroup {
     return mSwipeEdgeWidth;
   }
 
+  public void setActionEffects(int effectsId) {
+    final Animation effects = AnimationUtils.loadAnimation(getContext(), effectsId);
+    setActionEffects(effects);
+  }
+
+  public void setActionEffects(Animation effects) {
+    viewActionsContainer.setEffects(effects);
+  }
+
+  public Animation getActionEffects() {
+    return viewActionsContainer.getEffects();
+  }
+
+  public void setContentEffects(int effectsId) {
+    final Animation effects = AnimationUtils.loadAnimation(getContext(), effectsId);
+    setContentEffects(effects);
+  }
+
+  public void setContentEffects(Animation effects) {
+    viewContentContainer.setEffects(effects);
+  }
+
+  public Animation getContentEffects() {
+    return viewContentContainer.getEffects();
+  }
+
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
     if (!isSwipingEnabled)
@@ -625,7 +665,7 @@ public class ActionsContentView extends ViewGroup {
     } else {
       actionsFadeFactor = 0;
     }
-    viewActionsContainer.scroll(scrollFactor, actionsFadeFactor);
+    viewActionsContainer.onScroll(scrollFactor, actionsFadeFactor);
 
     final int contentFadeFactor;
     if ((mFadeType & FADE_CONTENT) == FADE_CONTENT) {
@@ -633,7 +673,7 @@ public class ActionsContentView extends ViewGroup {
     } else {
       contentFadeFactor = 0;
     }
-    viewContentContainer.scroll(1f - scrollFactor, contentFadeFactor);
+    viewContentContainer.onScroll(1f - scrollFactor, contentFadeFactor);
   }
 
   public static class SavedState extends BaseSavedState {

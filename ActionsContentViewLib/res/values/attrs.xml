@@ -73,6 +73,10 @@
         <attr name="swiping_type" />
         <!-- Swiping edge width. -->
         <attr name="swiping_edge_width" format="dimension" />
+        <!-- Actions layout effect. -->
+        <attr name="effect_actions" format="reference" />
+        <!-- Content layout effect. -->
+        <attr name="effect_content" format="reference" />
     </declare-styleable>
 
 </resources>

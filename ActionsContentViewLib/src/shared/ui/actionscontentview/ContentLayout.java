@@ -25,7 +25,7 @@ import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
-class ContentLayout extends LinearLayout {
+class ContentLayout extends LinearLayout implements BaseLayout {
 
   public interface OnSwipeListener {
     public void onSwipe(int scrollPosition);
@@ -63,11 +63,17 @@ class ContentLayout extends LinearLayout {
   }
 
   @Override
-  public void setAnimation(Animation animation) {
-    mEffectsController.setEffects(animation);
+  public void setEffects(Animation effects) {
+    mEffectsController.setEffects(effects);
   }
 
-  public void scroll(float factor, int fadeFactor) {
+  @Override
+  public Animation getEffects() {
+    return mEffectsController.getEffects();
+  }
+
+  @Override
+  public void onScroll(float factor, int fadeFactor) {
     mFadeFactor = fadeFactor;
     if (mEffectsController.apply(factor) || mFadeFactor > 0)
       invalidate();

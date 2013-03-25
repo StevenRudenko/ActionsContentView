@@ -23,7 +23,7 @@ import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 
-class ActionsLayout extends FrameLayout {
+class ActionsLayout extends FrameLayout implements BaseLayout {
 
   private final EffectsController mEffectsController = new EffectsController();
 
@@ -44,11 +44,17 @@ class ActionsLayout extends FrameLayout {
   }
 
   @Override
-  public void setAnimation(Animation animation) {
-    mEffectsController.setEffects(animation);
+  public void setEffects(Animation effects) {
+    mEffectsController.setEffects(effects);
   }
 
-  public void scroll(float factor, int fadeFactor) {
+  @Override
+  public Animation getEffects() {
+    return mEffectsController.getEffects();
+  }
+
+  @Override
+  public void onScroll(float factor, int fadeFactor) {
     mFadeFactor = fadeFactor;
     if (mEffectsController.apply(factor) || mFadeFactor > 0)
       invalidate();
