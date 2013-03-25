@@ -13,20 +13,7 @@ Some advantages of this library:
 
 There is one limitation:
 
-* all horizontal scrolling views will not work at bounds of this view, except you will use swipe from the bezel mode.
-
-You can enable swipe from the bezel by adding next row to XML layout
-
-    <shared.ui.actionscontentview.ActionsContentView
-        ...
-        app:swiping_type="edge"
-        ...
-        />
-
-or by next lines of code:
-
-    viewActionsContentView.setSwipingType(ActionsContentView.SWIPING_EDGE);
-
+* all horizontal scrolling views will not work at bounds of this view, except you will use swipe from the bezel mode (read Useful hints for more information).
 
 
 ![Example application looks on phone][1]![Example application looks on phone][2]
@@ -34,30 +21,31 @@ or by next lines of code:
 ![Example application looks on tablet][3]
 
 Here is example of usage ActionsContentView as element of XML layout:
+```xml
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    ...
+
+    <shared.ui.actionscontentview.ActionsContentView
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_above="@id/divider"
+        app:actions_layout="@layout/actions"
+        app:actions_spacing="0dp"
+        app:content_layout="@layout/content"
+        app:shadow_drawable="@drawable/shadow"
+        app:shadow_width="8dip"
+        app:spacing="64dip"
+        app:spacing_type="right_offset" />
     
     ...
-    
-        <shared.ui.actionscontentview.ActionsContentView
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/divider"
-            app:actions_layout="@layout/actions"
-            app:actions_spacing="0dp"
-            app:content_layout="@layout/content"
-            app:shadow_drawable="@drawable/shadow"
-            app:shadow_width="8dip"
-            app:spacing="64dip"
-            app:spacing_type="right_offset" />
-    
-    ...
-    
-    </RelativeLayout>
+   
+</RelativeLayout>
+```
 
 Features included
 ============
@@ -79,25 +67,45 @@ Try out the example application on the Android Market: [ActionsContentView Examp
 Useful hints
 ============
 
+Enable horizontall scrolling
+-------------
+To enable horizontall scrolling at content view you should set swipe from the bezel mode.
+It is wasy to do this by adding next row to XML layout:
+```xml
+<shared.ui.actionscontentview.ActionsContentView
+    ...
+    app:swiping_type="edge"
+    ...
+    />
+```
+
+or by next lines of code:
+```java
+viewActionsContentView.setSwipingType(ActionsContentView.SWIPING_EDGE);
+```
+
+
 Parallax effect for actions layout
 -------------
-
+To create parallax effect we should create translate animation and use it as effect for actions layout.
+Here are steps to get it done:
 1. Create <project_path>/res/anim/acitons.xml and put next code into it:
-
-    <?xml version="1.0" encoding="utf-8"?>
-    <translate xmlns:android="http://schemas.android.com/apk/res/android"
-        android:fromXDelta="0"
-        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-        android:toXDelta="-200" />
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<translate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromXDelta="0"
+    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+    android:toXDelta="-200" />
+```
 
 2. Add next line to the XML layout of ActionsContentView:
-
-    <shared.ui.actionscontentview.ActionsContentView
-        ...
-        app:swiping_type="edge"
-        ...
-        />
-
+```xml
+<shared.ui.actionscontentview.ActionsContentView
+    ...
+    app:swiping_type="edge"
+    ...
+    />
+```
 
 Developed By
 ============
