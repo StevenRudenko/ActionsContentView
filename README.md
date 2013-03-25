@@ -116,7 +116,7 @@ Add next line to the XML layout of ActionsContentView:
     ...
     />
 ```
-Parallax demo can be seem [here][5].
+Parallax demo can be seen [here][5].
 
 -------------------------------------------------------------------------------
 
