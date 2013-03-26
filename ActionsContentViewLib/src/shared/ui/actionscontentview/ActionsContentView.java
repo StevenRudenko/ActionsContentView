@@ -15,6 +15,7 @@
  ******************************************************************************/
 package shared.ui.actionscontentview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -618,6 +619,7 @@ public class ActionsContentView extends ViewGroup {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 
+  @SuppressLint("DrawAllocation")
   @Override
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
     if (DEBUG) {
