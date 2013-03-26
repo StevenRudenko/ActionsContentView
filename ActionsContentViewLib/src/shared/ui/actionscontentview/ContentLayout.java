@@ -20,6 +20,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.Animation;
@@ -34,6 +35,7 @@ class ContentLayout extends LinearLayout implements BaseLayout {
   private final EffectsController mEffectsController = new EffectsController();
 
   private final Rect mHitRect = new Rect();
+  private final RectF mEffectedHitRect = new RectF();
   private final Paint mFadePaint = new Paint();
 
   private int mFadeFactor = 0;
@@ -80,11 +82,22 @@ class ContentLayout extends LinearLayout implements BaseLayout {
   }
 
   @Override
+  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    super.onSizeChanged(w, h, oldw, oldh);
+    mEffectsController.initialize(this);
+  }
+
+  @Override
   public boolean onTouchEvent(MotionEvent event) {
     // prevent ray cast of touch events to actions container
     getHitRect(mHitRect);
     mHitRect.offset(-getScrollX(), -getScrollY());
-    if (mHitRect.contains((int)event.getX(), (int)event.getY())) {
+
+    // applying effects
+    mEffectedHitRect.set(mHitRect);
+    mEffectsController.getEffectsMatrix().mapRect(mEffectedHitRect);
+
+    if (mEffectedHitRect.contains((int)event.getX(), (int)event.getY())) {
       return true;
     }
 

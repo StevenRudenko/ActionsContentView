@@ -20,6 +20,9 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import android.graphics.Matrix;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.Transformation;
@@ -38,12 +41,22 @@ class EffectsController {
   private float mEffectsAlpha = 1f;
 
   public void setEffects(Animation animation) {
-    animation.initialize(0, 0, 0, 0);
     mEffectsAnimation = animation;
   }
 
   public Animation getEffects() {
     return mEffectsAnimation;
+  }
+
+  public void initialize(View v) {
+    if ( mEffectsAnimation == null )
+      return;
+
+    final ViewGroup parent = (ViewGroup) v.getParent();
+    if ( parent != null ) {
+      Log.d("----------", "initialize: [" + v.getWidth() + ", " + v.getHeight()+ "] [" + parent.getWidth()+ ", " + parent.getHeight() + "]");
+      mEffectsAnimation.initialize(v.getWidth(), v.getHeight(), parent.getWidth(), parent.getHeight());
+    }
   }
 
   public Matrix getEffectsMatrix() {
@@ -53,7 +66,7 @@ class EffectsController {
   public float getEffectsAlpha() {
     return mEffectsAlpha;
   }
-  
+
   public boolean apply(float factor) {
     if (mEffectsAnimation == null)
       return false;

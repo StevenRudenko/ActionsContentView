@@ -61,6 +61,12 @@ class ActionsLayout extends FrameLayout implements BaseLayout {
   }
 
   @Override
+  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    super.onSizeChanged(w, h, oldw, oldh);
+    mEffectsController.initialize(this);
+  }
+
+  @Override
   protected void dispatchDraw(Canvas canvas) {
     final int saveCount = canvas.save();
     canvas.concat(mEffectsController.getEffectsMatrix());
