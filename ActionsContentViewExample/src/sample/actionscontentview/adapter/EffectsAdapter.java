@@ -4,6 +4,7 @@ import sample.actionscontentview.R;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,12 @@ public class EffectsAdapter extends BaseAdapter {
 
       holder = new ViewHolder();
       holder.text = (TextView) convertView.findViewById(android.R.id.text1);
+
+      final Drawable icon = convertView.getContext().getResources().getDrawable(R.drawable.ic_action_effects);
+      icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+      holder.text.setCompoundDrawables(icon, null, null, null);
+      holder.text.setText(mTitles[position]);
+
       convertView.setTag(holder);
     } else {
       holder = (ViewHolder) convertView.getTag();

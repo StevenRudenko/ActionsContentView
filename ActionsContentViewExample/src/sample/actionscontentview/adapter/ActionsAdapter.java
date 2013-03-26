@@ -35,7 +35,6 @@ public class ActionsAdapter extends BaseAdapter {
   private static final int VIEW_TYPE_SITES = 2;
   private static final int VIEW_TYPES_COUNT = 3;
 
-  private final Context mContext;
   private final LayoutInflater mInflater;
 
   private final String[] mTitles;
@@ -43,7 +42,6 @@ public class ActionsAdapter extends BaseAdapter {
   private final int[] mIcons;
 
   public ActionsAdapter(Context context) {
-    mContext = context;
     mInflater = LayoutInflater.from(context);
 
     final Resources res = context.getResources();
@@ -94,7 +92,7 @@ public class ActionsAdapter extends BaseAdapter {
     }
 
     if (type != VIEW_TYPE_CATEGORY) {
-      final Drawable icon = mContext.getResources().getDrawable(mIcons[position]);
+      final Drawable icon = convertView.getContext().getResources().getDrawable(mIcons[position]);
       icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
       holder.text.setCompoundDrawables(icon, null, null, null);
       holder.text.setText(mTitles[position]);
