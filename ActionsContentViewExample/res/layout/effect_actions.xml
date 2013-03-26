@@ -14,27 +14,25 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@color/actions_bg" >
 
-    <LinearLayout
+    <include
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="8dip"
-        android:paddingRight="8dip" >
+        layout="@layout/category_list_item" />
 
-        <include layout="@layout/pref_spacing" />
+    <ListView
+        android:id="@+id/actions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/title"
+        android:cacheColorHint="@color/actions_bg"
+        android:divider="@null"
+        android:listSelector="@drawable/item_background_holo_light" />
 
-        <include layout="@layout/pref_swiping" />
-
-        <include layout="@layout/pref_shadow" />
-
-        <include layout="@layout/pref_fade" />
-
-        <include layout="@layout/pref_other" />
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>

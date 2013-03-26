@@ -14,27 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:layout_height="match_parent" >
 
-    <LinearLayout
+    <include
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="8dip"
-        android:paddingRight="8dip" >
+        android:layout_height="match_parent"
+        layout="@layout/about" />
 
-        <include layout="@layout/pref_spacing" />
-
-        <include layout="@layout/pref_swiping" />
-
-        <include layout="@layout/pref_shadow" />
-
-        <include layout="@layout/pref_fade" />
-
-        <include layout="@layout/pref_other" />
-    </LinearLayout>
-
-</ScrollView>
+</FrameLayout>

@@ -16,11 +16,23 @@
 -->
 <resources>
 
+    <!-- Effects -->
+    <string-array name="effects_name">
+        <item>@string/effect_parallax</item>
+        <item>@string/effect_replace</item>
+    </string-array>
+
+    <array name="effect_layouts">
+        <item>@layout/effect_parallax</item>
+        <item>@layout/effect_replace</item>
+    </array>
+
     <!-- Actions -->
     <array name="actions_icons">
         <item>@null</item>
         <item>@drawable/ic_action_about</item>
         <item>@drawable/ic_action_settings</item>
+        <item>@drawable/ic_action_effects</item>
         <item>@null</item>
         <item>@drawable/ic_link_dropbox</item>
         <item>@drawable/ic_link_evernote</item>
@@ -38,10 +50,11 @@
     </array>
 
     <string-array name="actions_names">
-        <item>Settings</item>
-        <item>About</item>
-        <item>Sandbox</item>
-        <item>Bookmarks</item>
+        <item>@string/action_settings</item>
+        <item>@string/action_about</item>
+        <item>@string/action_sandbox</item>
+        <item>@string/action_effects</item>
+        <item>@string/action_bookmarks</item>
         <item>Dropbox</item>
         <item>Evernote</item>
         <item>Facebook</item>
@@ -60,6 +73,7 @@
         <item>category://settings</item>
         <item>settings://about</item>
         <item>settings://sandbox</item>
+        <item>settings://effects</item>
         <item>category://bookmarks</item>
         <item>http://www.dropbox.com</item>
         <item>http://www.evernote.com</item>

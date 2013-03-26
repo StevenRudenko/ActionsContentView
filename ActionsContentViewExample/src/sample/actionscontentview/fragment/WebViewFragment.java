@@ -16,6 +16,7 @@
 package sample.actionscontentview.fragment;
 
 import sample.actionscontentview.R;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -33,6 +34,7 @@ public class WebViewFragment extends Fragment {
   private WebView viewContentWebView;
   private String url;
 
+  @SuppressLint("SetJavaScriptEnabled")
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {

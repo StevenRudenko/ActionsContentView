@@ -16,6 +16,7 @@
 package sample.actionscontentview.adapter;
 
 import sample.actionscontentview.R;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -34,19 +35,28 @@ public class ActionsAdapter extends BaseAdapter {
   private static final int VIEW_TYPE_SITES = 2;
   private static final int VIEW_TYPES_COUNT = 3;
 
+  private final Context mContext;
   private final LayoutInflater mInflater;
 
   private final String[] mTitles;
   private final String[] mUrls;
-  private final TypedArray mIcons;
+  private final int[] mIcons;
 
   public ActionsAdapter(Context context) {
+    mContext = context;
     mInflater = LayoutInflater.from(context);
 
     final Resources res = context.getResources();
     mTitles = res.getStringArray(R.array.actions_names);
     mUrls = res.getStringArray(R.array.actions_links);
-    mIcons = res.obtainTypedArray(R.array.actions_icons);
+
+    final TypedArray iconsArray = res.obtainTypedArray(R.array.actions_icons);
+    final int count = iconsArray.length();
+    mIcons = new int[count];
+    for ( int i=0; i<count; ++i ) {
+      mIcons[i] = iconsArray.getResourceId(i, 0);
+    }
+    iconsArray.recycle();
   }
 
   @Override
@@ -64,6 +74,7 @@ public class ActionsAdapter extends BaseAdapter {
     return position;
   }
 
+  @SuppressLint("DefaultLocale")
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     final int type = getItemViewType(position);
@@ -82,11 +93,13 @@ public class ActionsAdapter extends BaseAdapter {
       holder = (ViewHolder) convertView.getTag();
     }
 
-    holder.text.setText(mTitles[position]);
     if (type != VIEW_TYPE_CATEGORY) {
-      final Drawable icon = mIcons.getDrawable(position);
+      final Drawable icon = mContext.getResources().getDrawable(mIcons[position]);
       icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
       holder.text.setCompoundDrawables(icon, null, null, null);
+      holder.text.setText(mTitles[position]);
+    } else {
+      holder.text.setText(mTitles[position].toUpperCase());
     }
 
     return convertView;

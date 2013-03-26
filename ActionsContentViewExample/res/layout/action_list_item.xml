@@ -26,4 +26,5 @@
     android:paddingRight="6dip"
     android:singleLine="true"
     android:textAppearance="?android:attr/textAppearanceMedium"
-    android:textColor="@android:color/white" />
+    android:textColor="@android:color/white"
+    android:textIsSelectable="false" />

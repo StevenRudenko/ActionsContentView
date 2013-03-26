@@ -26,7 +26,6 @@
     </style>
 
     <style name="HeaderText" parent="@android:style/Widget.TextView">
-        <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
         <item name="android:layout_marginTop">8dip</item>

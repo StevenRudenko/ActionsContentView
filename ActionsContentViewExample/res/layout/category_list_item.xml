@@ -29,7 +29,8 @@
         android:drawablePadding="6dip"
         android:gravity="center"
         android:singleLine="true"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:textIsSelectable="false" />
 
     <View
         android:id="@+id/divider"

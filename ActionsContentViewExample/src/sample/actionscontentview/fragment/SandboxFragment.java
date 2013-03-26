@@ -20,7 +20,6 @@ import shared.ui.actionscontentview.ActionsContentView;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -217,12 +216,10 @@ public class SandboxFragment extends Fragment implements View.OnClickListener {
       return;
     }
 
-    final FragmentTransaction ft = getFragmentManager().beginTransaction();
-    Fragment prev = getFragmentManager().findFragmentByTag(ValueChooserDialogFragment.TAG);
+    final Fragment prev = getFragmentManager().findFragmentByTag(ValueChooserDialogFragment.TAG);
     if (prev != null) {
-      ft.remove(prev);
+      getFragmentManager().beginTransaction().remove(prev).commit();
     }
-    ft.addToBackStack(null);
 
     final ValueChooserDialogFragment fragment = ValueChooserDialogFragment.newInstance(id, titleId, itemsArrayId);
     fragment.setOnSettingsSelectedListener(new ValueChooserDialogFragment.OnSettingSelectedListener() {

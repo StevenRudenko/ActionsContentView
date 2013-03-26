@@ -52,6 +52,7 @@ public class ExamplesActivity extends FragmentActivity {
     setContentView(R.layout.example);
 
     viewActionsContentView = (ActionsContentView) findViewById(R.id.actionsContentView);
+    viewActionsContentView.setSwipingType(ActionsContentView.SWIPING_EDGE);
 
     final ListView viewActionsList = (ListView) findViewById(R.id.actions);
     final ActionsAdapter actionsAdapter = new ActionsAdapter(this);
@@ -61,6 +62,12 @@ public class ExamplesActivity extends FragmentActivity {
       public void onItemClick(AdapterView<?> adapter, View v, int position,
           long flags) {
         final Uri uri = actionsAdapter.getItem(position);
+
+        if (EffectsExampleActivity.URI.equals(uri)) {
+          startActivity(new Intent(getBaseContext(), EffectsExampleActivity.class));
+          return;
+        }
+
         updateContent(uri);
         viewActionsContentView.showContent();
       }
