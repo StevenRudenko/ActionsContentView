@@ -910,8 +910,16 @@ public class ActionsContentView extends ViewGroup {
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
         float velocityY) {
-      // does not work because onDown() method returns false always
-      return false;
+
+      if (Math.abs(velocityX) <= Math.abs(velocityY))
+        return false;
+
+      if (velocityX > 0)
+        hideContent(mFlingDuration);
+      else
+        showContent(mFlingDuration);
+
+      return true;
     }
 
     public boolean isContentShown() {
@@ -990,6 +998,10 @@ public class ActionsContentView extends ViewGroup {
      * Starts auto-scrolling to bound which is closer to current position.
      */
     private void completeScrolling() {
+      // preventing overide of fligh effect
+      if (!mScroller.isFinished())
+        return;
+
       final int startX = viewContentContainer.getScrollX();
 
       final int rightBound = getRightBound();
