@@ -5,10 +5,14 @@
 
     <translate
         android:fromXDelta="0"
-        android:toXDelta="-100%" />
+        android:toXDelta="-128" />
 
-    <alpha
-        android:fromAlpha="1"
-        android:toAlpha="0.15" />
+    <scale
+        android:duration="300"
+        android:fromXScale="1"
+        android:fromYScale="1"
+        android:startOffset="100"
+        android:toXScale="0"
+        android:toYScale="1" />
 
 </set>

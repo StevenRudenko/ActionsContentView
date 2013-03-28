@@ -1,6 +1,7 @@
 package sample.actionscontentview;
 
 import sample.actionscontentview.adapter.EffectsAdapter;
+import shared.ui.actionscontentview.ActionsContentView;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +48,14 @@ public class EffectsExampleActivity extends FragmentActivity {
   @SuppressLint("DefaultLocale")
   private void init(int layoutId) {
     setContentView(layoutId);
+
+    final ActionsContentView viewActionsContentView = (ActionsContentView) findViewById(R.id.actionsContentView);
+    viewActionsContentView.setOnActionsContentListener(new ActionsContentView.OnActionsContentListener() {
+      @Override
+      public void onContentStateChanged(ActionsContentView v, boolean isContentShown) {
+        v.getContentController().setIgnoreTouchEvents(!isContentShown);
+      }
+    });
 
     final TextView title = (TextView) findViewById(android.R.id.text1);
     final String titleText = getString(R.string.action_effects).toUpperCase();
