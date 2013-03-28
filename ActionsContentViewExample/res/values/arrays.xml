@@ -22,6 +22,7 @@
         <item>@string/effect_replace</item>
         <item>@string/effect_alpha</item>
         <item>@string/effect_duration</item>
+        <item>@string/effect_bounce</item>
     </string-array>
 
     <array name="effect_layouts">
@@ -29,6 +30,7 @@
         <item>@layout/effect_replace</item>
         <item>@layout/effect_alpha</item>
         <item>@layout/effect_duration</item>
+        <item>@layout/effect_bounce</item>
     </array>
 
     <!-- Actions -->

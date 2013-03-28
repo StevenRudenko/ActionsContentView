@@ -47,5 +47,6 @@
     <string name="effect_replace">Replace</string>
     <string name="effect_alpha">Alpha</string>
     <string name="effect_duration">Duration</string>
+    <string name="effect_bounce">Bounce</string>
 
 </resources>
