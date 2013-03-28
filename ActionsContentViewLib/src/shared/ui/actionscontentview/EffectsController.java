@@ -39,9 +39,11 @@ class EffectsController {
 
   private Animation mEffectsAnimation;
   private float mEffectsAlpha = 1f;
+  private long mEffectsTotalTime = 0;
 
   public void setEffects(Animation animation) {
     mEffectsAnimation = animation;
+    mEffectsTotalTime = calculateTotalEffectsTime();
   }
 
   public Animation getEffects() {
@@ -54,7 +56,6 @@ class EffectsController {
 
     final ViewGroup parent = (ViewGroup) v.getParent();
     if ( parent != null ) {
-      Log.d("----------", "initialize: [" + v.getWidth() + ", " + v.getHeight()+ "] [" + parent.getWidth()+ ", " + parent.getHeight() + "]");
       mEffectsAnimation.initialize(v.getWidth(), v.getHeight(), parent.getWidth(), parent.getHeight());
     }
   }
@@ -65,6 +66,34 @@ class EffectsController {
 
   public float getEffectsAlpha() {
     return mEffectsAlpha;
+  }
+
+  private long calculateTotalEffectsTime() {
+    if (mEffectsAnimation instanceof AnimationSet) {
+      return calculateTotalEffectsTime((AnimationSet) mEffectsAnimation);
+    } else {
+      return calculateTotalEffectsTime(mEffectsAnimation);
+    }
+  }
+
+  private static long calculateTotalEffectsTime(AnimationSet set) {
+    long totalTime = 0;
+
+    final List<Animation> animations = set.getAnimations();
+    for (Animation a : animations) {
+      if (a instanceof AnimationSet) {
+        final long setTotalTime = calculateTotalEffectsTime((AnimationSet) a);
+        totalTime = Math.max(totalTime, setTotalTime);
+      } else {
+        final long animTotalTime = calculateTotalEffectsTime(a);
+        totalTime = Math.max(totalTime, animTotalTime);
+      }
+    }
+    return totalTime;
+  }
+
+  private static long calculateTotalEffectsTime(Animation animation) {
+    return animation.getStartOffset() + animation.getDuration();
   }
 
   public boolean apply(float factor) {
@@ -82,10 +111,33 @@ class EffectsController {
   }
 
   private boolean apply(float factor, Animation animation) {
+    final float animationFactor;
+
+    final long animationDuration = animation.getDuration();
+    if (animationDuration == 0 || mEffectsTotalTime == 0) {
+      animationFactor = factor;
+    } else {
+      final long effectTime = (int) (mEffectsTotalTime * factor);
+
+      final long animationStartOffset = animation.getStartOffset();
+      final long animationEndTime = animationStartOffset + animationDuration;
+
+      if (effectTime < animationStartOffset || effectTime > animationEndTime)
+        return true;
+
+      animationFactor = (float)(effectTime - animationStartOffset) / (float)animationDuration;
+    }
+
+    Log.d("-------------", "anim factor: " + animationFactor + "  " + animation );
+
     try {
-      APPLY_TRANSFORMATION.invoke(animation, factor, mTransformation);
-      mMatrix.postConcat(mTransformation.getMatrix());
-      mEffectsAlpha *= mTransformation.getAlpha();
+      mTransformation.clear();
+      APPLY_TRANSFORMATION.invoke(animation, animationFactor, mTransformation);
+      Log.d("+++", mTransformation.toShortString());
+      if ((mTransformation.getTransformationType() & Transformation.TYPE_MATRIX) == Transformation.TYPE_MATRIX)
+        mMatrix.postConcat(mTransformation.getMatrix());
+      if ((mTransformation.getTransformationType() & Transformation.TYPE_ALPHA) == Transformation.TYPE_ALPHA)
+        mEffectsAlpha *= mTransformation.getAlpha();
       return true;
     } catch (IllegalArgumentException e) {
       // we don't care because this exception should never happen
