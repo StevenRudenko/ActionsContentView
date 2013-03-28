@@ -25,22 +25,19 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
-class ContentLayout extends LinearLayout implements BaseLayout {
+class ContentLayout extends LinearLayout {
 
   public interface OnSwipeListener {
     public void onSwipe(int scrollPosition);
   }
 
-  private final EffectsController mEffectsController = new EffectsController();
+  private final BaseContainerController mController = new BaseContainerController(this);
 
   private final Rect mHitRect = new Rect();
   private final RectF mEffectedHitRect = new RectF();
   private final Paint mFadePaint = new Paint();
-
-  private int mFadeFactor = 0;
 
   private OnSwipeListener mOnSwipeListener;
 
@@ -63,42 +60,32 @@ class ContentLayout extends LinearLayout implements BaseLayout {
     setOrientation(LinearLayout.HORIZONTAL);
   }
 
+  public BaseContainerController getController() {
+    return mController;
+  }
+
   public void setOnSwipeListener(OnSwipeListener listener) {
     mOnSwipeListener = listener;
   }
 
   @Override
-  public void setEffects(Animation effects) {
-    mEffectsController.setEffects(effects);
-  }
-
-  @Override
-  public Animation getEffects() {
-    return mEffectsController.getEffects();
-  }
-
-  @Override
-  public void onScroll(float factor, int fadeFactor) {
-    mFadeFactor = fadeFactor;
-    if (mEffectsController.apply(factor) || mFadeFactor > 0)
-      invalidate();
-  }
-
-  @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-    mEffectsController.initialize(this);
+    mController.initializeEffects();
   }
 
   @Override
   public boolean onTouchEvent(MotionEvent event) {
+    if (mController.isIgnoringTouchEvents())
+      return false;
+
     // prevent ray cast of touch events to actions container
     getHitRect(mHitRect);
     mHitRect.offset(-getScrollX(), -getScrollY());
 
     // applying effects
     mEffectedHitRect.set(mHitRect);
-    mEffectsController.getEffectsMatrix().mapRect(mEffectedHitRect);
+    mController.getEffectsMatrix().mapRect(mEffectedHitRect);
 
     if (mEffectedHitRect.contains((int)event.getX(), (int)event.getY())) {
       return true;
@@ -117,13 +104,14 @@ class ContentLayout extends LinearLayout implements BaseLayout {
   @Override
   protected void dispatchDraw(Canvas canvas) {
     final int saveCount = canvas.save();
-    canvas.concat(mEffectsController.getEffectsMatrix());
-    canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), (int)(255 * mEffectsController.getEffectsAlpha()), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
+    canvas.concat(mController.getEffectsMatrix());
+    canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), (int)(255 * mController.getEffectsAlpha()), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
 
     super.dispatchDraw(canvas);
 
-    if (mFadeFactor > 0f) {
-      mFadePaint.setColor(Color.argb(mFadeFactor, 0, 0, 0));
+    final int fadeFactor = mController.getFadeFactor();
+    if (fadeFactor > 0f) {
+      mFadePaint.setColor(Color.argb(fadeFactor, 0, 0, 0));
       canvas.drawRect(0, 0, getWidth(), getHeight(), mFadePaint);
     }
 

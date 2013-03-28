@@ -20,16 +20,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.animation.Animation;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
-class ActionsLayout extends FrameLayout implements BaseLayout {
+class ActionsLayout extends FrameLayout {
 
-  private final EffectsController mEffectsController = new EffectsController();
+  private BaseContainerController mController = new BaseContainerController(this);
 
   private final Paint mFadePaint = new Paint();
-
-  private int mFadeFactor = 0;
 
   public ActionsLayout(Context context) {
     this(context, null);
@@ -43,39 +41,32 @@ class ActionsLayout extends FrameLayout implements BaseLayout {
     super(context, attrs, defStyle);
   }
 
-  @Override
-  public void setEffects(Animation effects) {
-    mEffectsController.setEffects(effects);
+  public BaseContainerController getController() {
+    return mController;
   }
 
   @Override
-  public Animation getEffects() {
-    return mEffectsController.getEffects();
-  }
-
-  @Override
-  public void onScroll(float factor, int fadeFactor) {
-    mFadeFactor = fadeFactor;
-    if (mEffectsController.apply(factor) || mFadeFactor > 0)
-      invalidate();
+  public boolean onTouchEvent(MotionEvent event) {
+    return !mController.isIgnoringTouchEvents() && super.onTouchEvent(event);
   }
 
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-    mEffectsController.initialize(this);
+    mController.initializeEffects();
   }
 
   @Override
   protected void dispatchDraw(Canvas canvas) {
     final int saveCount = canvas.save();
-    canvas.concat(mEffectsController.getEffectsMatrix());
-    canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), (int)(255 * mEffectsController.getEffectsAlpha()), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
+    canvas.concat(mController.getEffectsMatrix());
+    canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), (int)(255 * mController.getEffectsAlpha()), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
 
     super.dispatchDraw(canvas);
 
-    if (mFadeFactor > 0) {
-      mFadePaint.setColor(Color.argb(mFadeFactor, 0, 0, 0));
+    final int fadeFactor = mController.getFadeFactor();
+    if (fadeFactor > 0) {
+      mFadePaint.setColor(Color.argb(fadeFactor, 0, 0, 0));
       canvas.drawRect(0, 0, getWidth(), getHeight(), mFadePaint);
     }
 

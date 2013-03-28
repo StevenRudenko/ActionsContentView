@@ -37,6 +37,10 @@ public class ActionsContentView extends ViewGroup {
   private static final String TAG = ActionsContentView.class.getSimpleName();
   private static final boolean DEBUG = false;
 
+  public interface OnActionsContentListener {
+    public void onContentStateChanged(ActionsContentView v, boolean isContentShown);
+  }
+
   /**
    * Spacing will be calculated as offset from right bound of view.
    */
@@ -129,6 +133,8 @@ public class ActionsContentView extends ViewGroup {
    * Indicates whether refresh of content position should be done on next layout calculation.
    */
   private boolean mForceRefresh = false;
+
+  private OnActionsContentListener mOnActionsContentListener;
 
   public ActionsContentView(Context context) {
     this(context, null);
@@ -229,11 +235,21 @@ public class ActionsContentView extends ViewGroup {
     super.addView(viewContentContainer, 1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
     if ( effectActionsRes > 0 ) {
-      setActionEffects(effectActionsRes);
+      final Animation effects = AnimationUtils.loadAnimation(getContext(), effectActionsRes);
+      viewActionsContainer.getController().setEffects(effects);
     }
     if ( effectContentRes > 0 ) {
-      setContentEffects(effectContentRes);
+      final Animation effects = AnimationUtils.loadAnimation(getContext(), effectContentRes);
+      viewContentContainer.getController().setEffects(effects);
     }
+  }
+
+  public void setOnActionsContentListener(OnActionsContentListener listener) {
+    mOnActionsContentListener = listener;
+  }
+
+  public OnActionsContentListener getOnActionsContentListener() {
+    return mOnActionsContentListener;
   }
 
   /**
@@ -373,6 +389,14 @@ public class ActionsContentView extends ViewGroup {
 
   public ViewGroup getContentContainer() {
     return viewContentContainer;
+  }
+
+  public ContainerController getActionsController() {
+    return viewActionsContainer.getController();
+  }
+
+  public ContainerController getContentController() {
+    return viewContentContainer.getController();
   }
 
   public boolean isActionsShown() {
@@ -534,32 +558,6 @@ public class ActionsContentView extends ViewGroup {
     return mSwipeEdgeWidth;
   }
 
-  public void setActionEffects(int effectsId) {
-    final Animation effects = AnimationUtils.loadAnimation(getContext(), effectsId);
-    setActionEffects(effects);
-  }
-
-  public void setActionEffects(Animation effects) {
-    viewActionsContainer.setEffects(effects);
-  }
-
-  public Animation getActionEffects() {
-    return viewActionsContainer.getEffects();
-  }
-
-  public void setContentEffects(int effectsId) {
-    final Animation effects = AnimationUtils.loadAnimation(getContext(), effectsId);
-    setContentEffects(effects);
-  }
-
-  public void setContentEffects(Animation effects) {
-    viewContentContainer.setEffects(effects);
-  }
-
-  public Animation getContentEffects() {
-    return viewContentContainer.getEffects();
-  }
-
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
     if (!isSwipingEnabled)
@@ -667,7 +665,7 @@ public class ActionsContentView extends ViewGroup {
     } else {
       actionsFadeFactor = 0;
     }
-    viewActionsContainer.onScroll(scrollFactor, actionsFadeFactor);
+    viewActionsContainer.getController().onScroll(scrollFactor, actionsFadeFactor);
 
     final int contentFadeFactor;
     if ((mFadeType & FADE_CONTENT) == FADE_CONTENT) {
@@ -675,7 +673,7 @@ public class ActionsContentView extends ViewGroup {
     } else {
       contentFadeFactor = 0;
     }
-    viewContentContainer.onScroll(1f - scrollFactor, contentFadeFactor);
+    viewContentContainer.getController().onScroll(1f - scrollFactor, contentFadeFactor);
   }
 
   public static class SavedState extends BaseSavedState {
@@ -966,6 +964,8 @@ public class ActionsContentView extends ViewGroup {
       if (mScroller.isFinished()) {
         if (DEBUG)
           Log.d(TAG, "scroller is finished, done with fling");
+        if (mOnActionsContentListener != null)
+          mOnActionsContentListener.onContentStateChanged(ActionsContentView.this, isContentShown);
         return;
       }
 
@@ -979,6 +979,9 @@ public class ActionsContentView extends ViewGroup {
 
       if (more) {
         viewContentContainer.post(this);
+      } else {
+        if (mOnActionsContentListener != null)
+          mOnActionsContentListener.onContentStateChanged(ActionsContentView.this, isContentShown);
       }
     }
 
