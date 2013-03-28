@@ -77,6 +77,10 @@
         <attr name="effect_actions" format="reference" />
         <!-- Content layout effect. -->
         <attr name="effect_content" format="reference" />
+        <!-- Content layout effect. -->
+        <attr name="effect_on_fling_only" format="boolean" />
+        <!-- Swiping interpolator -->
+        <attr name="swiping_interpolator" format="reference" />
     </declare-styleable>
 
 </resources>

@@ -104,8 +104,11 @@ class EffectsController {
     }
 
     try {
+      // we need reset transformation for every animation
       mTransformation.clear();
-      APPLY_TRANSFORMATION.invoke(animation, animationFactor, mTransformation);
+
+      final float interpolatedFactor = animation.getInterpolator().getInterpolation(animationFactor);
+      APPLY_TRANSFORMATION.invoke(animation, interpolatedFactor, mTransformation);
       if ((mTransformation.getTransformationType() & Transformation.TYPE_MATRIX) == Transformation.TYPE_MATRIX)
         mMatrix.postConcat(mTransformation.getMatrix());
       if ((mTransformation.getTransformationType() & Transformation.TYPE_ALPHA) == Transformation.TYPE_ALPHA)

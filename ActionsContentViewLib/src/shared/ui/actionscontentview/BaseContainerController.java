@@ -72,9 +72,12 @@ public class BaseContainerController implements ContainerController {
    * @param factor - factor of scrolling. Can be in range from 0f to 1f.
    * @param fadeFactor - fade factor for current scroll factor.
    */
-  public void onScroll(float factor, int fadeFactor) {
+  public void onScroll(float factor, int fadeFactor, boolean useEffects) {
     mFadeFactor = fadeFactor;
-    if (mEffectsController.apply(factor) || mFadeFactor > 0)
+
+    final boolean updateEffects = useEffects && mEffectsController.apply(factor);
+
+    if (updateEffects || mFadeFactor > 0)
       view.invalidate();
   }
 }
