@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import android.graphics.Matrix;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -100,12 +99,9 @@ class EffectsController {
       animationFactor = (float)(effectTime - animationStartOffset) / (float)animationDuration;
     }
 
-    Log.d("-------------", "anim factor: " + animationFactor + "  " + animation );
-
     try {
       mTransformation.clear();
       APPLY_TRANSFORMATION.invoke(animation, animationFactor, mTransformation);
-      Log.d("+++", mTransformation.toShortString());
       if ((mTransformation.getTransformationType() & Transformation.TYPE_MATRIX) == Transformation.TYPE_MATRIX)
         mMatrix.postConcat(mTransformation.getMatrix());
       if ((mTransformation.getTransformationType() & Transformation.TYPE_ALPHA) == Transformation.TYPE_ALPHA)
