@@ -43,7 +43,7 @@ class EffectsController {
 
   public void setEffects(Animation animation) {
     mEffectsAnimation = animation;
-    mEffectsTotalTime = calculateTotalEffectsTime();
+    mEffectsTotalTime = animation.computeDurationHint();
   }
 
   public Animation getEffects() {
@@ -66,34 +66,6 @@ class EffectsController {
 
   public float getEffectsAlpha() {
     return mEffectsAlpha;
-  }
-
-  private long calculateTotalEffectsTime() {
-    if (mEffectsAnimation instanceof AnimationSet) {
-      return calculateTotalEffectsTime((AnimationSet) mEffectsAnimation);
-    } else {
-      return calculateTotalEffectsTime(mEffectsAnimation);
-    }
-  }
-
-  private static long calculateTotalEffectsTime(AnimationSet set) {
-    long totalTime = 0;
-
-    final List<Animation> animations = set.getAnimations();
-    for (Animation a : animations) {
-      if (a instanceof AnimationSet) {
-        final long setTotalTime = calculateTotalEffectsTime((AnimationSet) a);
-        totalTime = Math.max(totalTime, setTotalTime);
-      } else {
-        final long animTotalTime = calculateTotalEffectsTime(a);
-        totalTime = Math.max(totalTime, animTotalTime);
-      }
-    }
-    return totalTime;
-  }
-
-  private static long calculateTotalEffectsTime(Animation animation) {
-    return animation.getStartOffset() + animation.getDuration();
   }
 
   public boolean apply(float factor) {
