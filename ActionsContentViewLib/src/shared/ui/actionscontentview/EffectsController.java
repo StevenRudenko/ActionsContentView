@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import android.graphics.Matrix;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -27,6 +28,9 @@ import android.view.animation.AnimationSet;
 import android.view.animation.Transformation;
 
 class EffectsController {
+  private static final String TAG = EffectsController.class.getSimpleName();
+  private static final boolean DEBUG = false;
+
   private static final Method APPLY_TRANSFORMATION;
 
   static {
@@ -106,6 +110,12 @@ class EffectsController {
         mMatrix.postConcat(mTransformation.getMatrix());
       if ((mTransformation.getTransformationType() & Transformation.TYPE_ALPHA) == Transformation.TYPE_ALPHA)
         mEffectsAlpha *= mTransformation.getAlpha();
+
+      if (DEBUG) {
+        Log.d(TAG, "Transformation: " + animation);
+        Log.d(TAG, " - " + mTransformation.toShortString());
+      }
+
       return true;
     } catch (IllegalArgumentException e) {
       // we don't care because this exception should never happen
