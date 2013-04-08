@@ -15,6 +15,7 @@
  ******************************************************************************/
 package shared.ui.actionscontentview;
 
+import shared.ui.actionscontentview.EffectsController.Effect;
 import android.view.animation.Animation;
 
 public interface ContainerController {
@@ -33,6 +34,12 @@ public interface ContainerController {
 
   /**
    * Setter for effects.
+   * @param resId - id to load effects from resources.
+   */
+  public void setEffects(int resId);
+
+  /**
+   * Setter for effects.
    * @param effects - animation will be used as effect for current layout while swipping.
    */
   public void setEffects(Animation effects);
@@ -41,5 +48,5 @@ public interface ContainerController {
    * Getter for effects.
    * @return animation that is used as effect for current layout while swipping.
    */
-  public Animation getEffects();
+  public Effect[] getEffects();
 }

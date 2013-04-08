@@ -19,12 +19,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Matrix;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
 
 class EffectsController {
@@ -33,33 +36,63 @@ class EffectsController {
 
   private static final Method APPLY_TRANSFORMATION;
 
+  public static final int EFFECT_OPEN = 0;
+  public static final int EFFECT_CLOSE = 1;
+
+  private static final int EFFECTS_COUNT = 2;
+
   static {
     APPLY_TRANSFORMATION = getApplyTransformation();
   }
 
   private final Transformation mTransformation = new Transformation();
   private final Matrix mMatrix = new Matrix();
-
-  private Animation mEffectsAnimation;
   private float mEffectsAlpha = 1f;
-  private long mEffectsTotalTime = 0;
 
-  public void setEffects(Animation animation) {
-    mEffectsAnimation = animation;
-    mEffectsTotalTime = animation.computeDurationHint();
+  private final Effect[] mEffects = new Effect[EFFECTS_COUNT];
+
+  public void setEffects(Context context, int resId) {
+    final String resourceType = context.getResources().getResourceTypeName(resId);
+
+    if ( !resourceType.equals("array") ) {
+      final Animation anim = AnimationUtils.loadAnimation(context, resId);
+      setEffects(anim);
+      return;
+    }
+
+    final TypedArray effects = context.getResources().obtainTypedArray(resId);
+
+    final int count = effects.length();
+    final int size = Math.min(EFFECTS_COUNT, count);
+    for ( int i=0; i<size; ++i ) {
+      final int id = effects.getResourceId(i, -1);
+      if (id > 0) {
+        final Animation anim = AnimationUtils.loadAnimation(context, id);
+        mEffects[i] = new Effect(anim);
+      }
+    }
+    effects.recycle();
   }
 
-  public Animation getEffects() {
-    return mEffectsAnimation;
+  public void setEffects(Animation animation) {
+    mEffects[0] = mEffects[1] = new Effect(animation);
+  }
+
+  public Effect[] getEffects() {
+    return mEffects;
   }
 
   public void initialize(View v) {
-    if ( mEffectsAnimation == null )
+    if ( mEffects == null )
       return;
 
     final ViewGroup parent = (ViewGroup) v.getParent();
     if ( parent != null ) {
-      mEffectsAnimation.initialize(v.getWidth(), v.getHeight(), parent.getWidth(), parent.getHeight());
+      for ( Effect effect : mEffects ) {
+        if ( effect == null )
+          continue;
+        effect.anim.initialize(v.getWidth(), v.getHeight(), parent.getWidth(), parent.getHeight());
+      }
     }
   }
 
@@ -71,28 +104,35 @@ class EffectsController {
     return mEffectsAlpha;
   }
 
-  public boolean apply(float factor) {
-    if (mEffectsAnimation == null)
+  public boolean apply(float factor, int effectType) {
+    if (mEffects == null)
       return false;
 
     mMatrix.reset();
     mEffectsAlpha = 1f;
 
-    if (mEffectsAnimation instanceof AnimationSet) {
-      return apply(factor, (AnimationSet) mEffectsAnimation);
+    final Effect effect = mEffects[effectType];
+    if ( effect == null )
+      return false;
+
+    final Animation anim = effect.anim;
+    final long totalTime = effect.totalTime;
+
+    if (anim instanceof AnimationSet) {
+      return apply(factor, (AnimationSet) anim, totalTime);
     } else {
-      return apply(factor, mEffectsAnimation);
+      return apply(factor, anim, totalTime);
     }
   }
 
-  private boolean apply(float factor, Animation animation) {
+  private boolean apply(float factor, Animation animation, long totalTime) {
     final float animationFactor;
 
     final long animationDuration = animation.getDuration();
-    if (animationDuration == 0 || mEffectsTotalTime == 0) {
+    if (animationDuration == 0 || totalTime == 0) {
       animationFactor = factor;
     } else {
-      final long effectTime = (int) (mEffectsTotalTime * factor);
+      final long effectTime = (int) (totalTime * factor);
 
       final long animationStartOffset = animation.getStartOffset();
       final long animationEndTime = animationStartOffset + animationDuration;
@@ -130,14 +170,14 @@ class EffectsController {
     return false;
   }
 
-  private boolean apply(float factor, AnimationSet set) {
+  private boolean apply(float factor, AnimationSet set, long totalTime) {
     final List<Animation> animations = set.getAnimations();
     for (Animation a : animations) {
       if (a instanceof AnimationSet) {
-        if (!apply(factor, (AnimationSet) a))
+        if (!apply(factor, (AnimationSet) a, totalTime))
           return false;
       } else {
-        if (!apply(factor, a))
+        if (!apply(factor, a, totalTime))
           return false;
       }
     }
@@ -153,5 +193,15 @@ class EffectsController {
       // we don't care because this exception should never happen
     }
     return null;
+  }
+
+  public static class Effect {
+    public final Animation anim;
+    public final long totalTime;
+
+    public Effect(Animation anim) {
+      this.anim = anim;
+      totalTime = anim.computeDurationHint();
+    }
   }
 }

@@ -38,6 +38,27 @@
         <enum name="both" value="3" />
     </attr>
 
+    <!-- Enabled effects. -->
+    <attr name="effects">
+
+        <!-- None. -->
+        <enum name="none" value="0" />
+        <!-- Scroll opening. -->
+        <enum name="scroll_opening" value="1" />
+        <!-- Scroll closing. -->
+        <enum name="scroll_closing" value="2" />
+        <!-- Scroll effects. -->
+        <enum name="scroll" value="3" />
+        <!-- Fling opening. -->
+        <enum name="fling_opening" value="4" />
+        <!-- Fling closing. -->
+        <enum name="fling_closing" value="8" />
+        <!-- Fling effects. -->
+        <enum name="fling" value="12" />
+        <!-- All (Opening and Closing). -->
+        <enum name="all" value="15" />
+    </attr>
+
     <!-- Default swiping types. -->
     <attr name="swiping_type">
 
@@ -73,14 +94,14 @@
         <attr name="swiping_type" />
         <!-- Swiping edge width. -->
         <attr name="swiping_edge_width" format="dimension" />
+        <!-- Enabled effects. -->
+        <attr name="effects" />
         <!-- Actions layout effect. -->
         <attr name="effect_actions" format="reference" />
         <!-- Content layout effect. -->
         <attr name="effect_content" format="reference" />
-        <!-- Content layout effect. -->
-        <attr name="effect_on_fling_only" format="boolean" />
-        <!-- Swiping interpolator -->
-        <attr name="swiping_interpolator" format="reference" />
+        <!-- Effects interpolator -->
+        <attr name="effects_interpolator" format="reference" />
     </declare-styleable>
 
 </resources>

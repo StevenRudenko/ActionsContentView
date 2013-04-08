@@ -28,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
@@ -36,7 +35,7 @@ import android.widget.Scroller;
 
 public class ActionsContentView extends ViewGroup {
   private static final String TAG = ActionsContentView.class.getSimpleName();
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   public interface OnActionsContentListener {
     public void onContentStateChanged(ActionsContentView v, boolean isContentShown);
@@ -78,6 +77,15 @@ public class ActionsContentView extends ViewGroup {
    * Swiping will be handled starting from screen edge only.
    */
   public static final int SWIPING_EDGE = 1;
+
+  public static final int EFFECTS_NONE = 0;
+  public static final int EFFECTS_SCROLL_OPENING = 1 << 0;
+  public static final int EFFECTS_SCROLL_CLOSING = 1 << 1;
+  public static final int EFFECTS_SCROLL = EFFECTS_SCROLL_OPENING | EFFECTS_SCROLL_CLOSING;
+  public static final int EFFECTS_FLING_OPENING = 1 << 2;
+  public static final int EFFECTS_FLING_CLOSING = 1 << 3;
+  public static final int EFFECTS_FLING = EFFECTS_FLING_OPENING | EFFECTS_FLING_CLOSING;
+  public static final int EFFECTS_ALL = EFFECTS_SCROLL | EFFECTS_FLING;
 
   private final ContentScrollController mScrollController;
   private final GestureDetector mGestureDetector;
@@ -137,7 +145,7 @@ public class ActionsContentView extends ViewGroup {
    */
   private boolean mForceRefresh = false;
 
-  private boolean mEffectsOnFlingOnly = false;
+  private int mEffects = EFFECTS_ALL;
 
   private OnActionsContentListener mOnActionsContentListener;
 
@@ -184,9 +192,9 @@ public class ActionsContentView extends ViewGroup {
 
     final int effectActionsRes = a.getResourceId(R.styleable.ActionsContentView_effect_actions, 0);
     final int effectContentRes = a.getResourceId(R.styleable.ActionsContentView_effect_content, 0);
-    mEffectsOnFlingOnly = a.getBoolean(R.styleable.ActionsContentView_effect_on_fling_only, false);
+    mEffects = a.getInt(R.styleable.ActionsContentView_effects, EFFECTS_ALL);
 
-    final int swipingInterpolatorRes = a.getResourceId(R.styleable.ActionsContentView_swiping_interpolator, 0);
+    final int effectsInterpolatorRes = a.getResourceId(R.styleable.ActionsContentView_effects_interpolator, 0);
 
     a.recycle();
 
@@ -204,20 +212,21 @@ public class ActionsContentView extends ViewGroup {
       Log.d(TAG, "  fling duration: " + mFlingDuration);
       Log.d(TAG, "  swiping type: " + mSwipeType);
       Log.d(TAG, "  swiping edge width: " + mSwipeEdgeWidth);
+      Log.d(TAG, "  effects: " + mEffects);
       Log.d(TAG, "  effect actions: " + effectActionsRes);
       Log.d(TAG, "  effect content: " + effectContentRes);
-      Log.d(TAG, "  effect on fling only: " + mEffectsOnFlingOnly);
+      Log.d(TAG, "  effects interpolator: " + effectsInterpolatorRes);
     }
 
-    final Scroller scroller;
-    if (swipingInterpolatorRes > 0) {
-      final Interpolator interpolator = AnimationUtils.loadInterpolator(getContext(), swipingInterpolatorRes);
-      scroller = new Scroller(context, interpolator);
+    final Scroller effectsScroller;
+    if (effectsInterpolatorRes > 0) {
+      final Interpolator interpolator = AnimationUtils.loadInterpolator(getContext(), effectsInterpolatorRes);
+      effectsScroller = new Scroller(context, interpolator);
     } else {
-      scroller = new Scroller(context);
+      effectsScroller = new Scroller(context);
     }
 
-    mScrollController = new ContentScrollController(scroller);
+    mScrollController = new ContentScrollController(new Scroller(context), effectsScroller);
 
     mGestureDetector = new GestureDetector(context, mScrollController);
     mGestureDetector.setIsLongpressEnabled(true);
@@ -253,12 +262,10 @@ public class ActionsContentView extends ViewGroup {
     super.addView(viewContentContainer, 1, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
     if ( effectActionsRes > 0 ) {
-      final Animation effects = AnimationUtils.loadAnimation(getContext(), effectActionsRes);
-      viewActionsContainer.getController().setEffects(effects);
+      viewActionsContainer.getController().setEffects(effectActionsRes);
     }
     if ( effectContentRes > 0 ) {
-      final Animation effects = AnimationUtils.loadAnimation(getContext(), effectContentRes);
-      viewContentContainer.getController().setEffects(effects);
+      viewContentContainer.getController().setEffects(effectContentRes);
     }
   }
 
@@ -676,7 +683,8 @@ public class ActionsContentView extends ViewGroup {
       return;
 
     final float scrollFactor = mScrollController.getScrollFactor();
-    final boolean useEffects = !mEffectsOnFlingOnly || mScrollController.isFlinging();
+    final boolean isOpening = mScrollController.isOpening();
+    final boolean enableEffects = mScrollController.isEffectsEnabled();
 
     final int actionsFadeFactor;
     if ((mFadeType & FADE_ACTIONS) == FADE_ACTIONS) {
@@ -684,7 +692,7 @@ public class ActionsContentView extends ViewGroup {
     } else {
       actionsFadeFactor = 0;
     }
-    viewActionsContainer.getController().onScroll(scrollFactor, actionsFadeFactor, useEffects);
+    viewActionsContainer.getController().onScroll(scrollFactor, actionsFadeFactor, isOpening, enableEffects);
 
     final int contentFadeFactor;
     if ((mFadeType & FADE_CONTENT) == FADE_CONTENT) {
@@ -692,7 +700,7 @@ public class ActionsContentView extends ViewGroup {
     } else {
       contentFadeFactor = 0;
     }
-    viewContentContainer.getController().onScroll(1f - scrollFactor, contentFadeFactor, useEffects);
+    viewContentContainer.getController().onScroll(1f - scrollFactor, contentFadeFactor, isOpening, enableEffects);
   }
 
   public static class SavedState extends BaseSavedState {
@@ -814,6 +822,10 @@ public class ActionsContentView extends ViewGroup {
      * Used to auto-scroll to closest bound on touch up event.
      */
     private final Scroller mScroller;
+    /**
+     * Used to fling to after fling touch event.
+     */
+    private final Scroller mEffectsScroller;
 
     // using Boolean object to initialize while first scroll event
     private Boolean mHandleEvent = null;
@@ -826,9 +838,12 @@ public class ActionsContentView extends ViewGroup {
     private boolean isContentShown = true;
 
     private boolean isFlinging = false;
+    
+    private boolean isEffectsEnabled = false;
 
-    public ContentScrollController(Scroller scroller) {
+    public ContentScrollController(Scroller scroller, Scroller effectsScroller) {
       mScroller = scroller;
+      mEffectsScroller = effectsScroller;
     }
 
     /**
@@ -857,6 +872,22 @@ public class ActionsContentView extends ViewGroup {
 
     public boolean isFlinging() {
       return isFlinging;
+    }
+
+    public boolean isOpening() {
+      if (!mScroller.isFinished()) {
+        return mScroller.getFinalX() > mScroller.getStartX();
+      }
+
+      if (!mEffectsScroller.isFinished()) {
+        return mEffectsScroller.getFinalX() > mEffectsScroller.getStartX();
+      }
+
+      return !isContentShown;
+    }
+
+    public boolean isEffectsEnabled() {
+      return isEffectsEnabled;
     }
 
     @Override
@@ -890,6 +921,7 @@ public class ActionsContentView extends ViewGroup {
         float distanceY) {
 
       isFlinging = false;
+      isEffectsEnabled = false;
       // if there is first scroll event after touch down
       if (mHandleEvent == null) {
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
@@ -941,12 +973,12 @@ public class ActionsContentView extends ViewGroup {
 
       if (absVelocityX < FLING_MIN)
         return false;
-      
+
       isFlinging = true;
-      if (velocityX > 0)
-        hideContent(mFlingDuration);
-      else
+      if (velocityX < 0)
         showContent(mFlingDuration);
+      else
+        hideContent(mFlingDuration);
 
       return true;
     }
@@ -992,7 +1024,8 @@ public class ActionsContentView extends ViewGroup {
      */
     @Override
     public void run() {
-      if (mScroller.isFinished()) {
+      final Scroller scroller = isEffectsEnabled() ? mEffectsScroller : mScroller;
+      if (scroller.isFinished()) {
         if (DEBUG)
           Log.d(TAG, "scroller is finished, done with fling");
         if (mOnActionsContentListener != null)
@@ -1000,8 +1033,9 @@ public class ActionsContentView extends ViewGroup {
         return;
       }
 
-      final boolean more = mScroller.computeScrollOffset();
-      final int x = mScroller.getCurrX();
+
+      final boolean more = scroller.computeScrollOffset();
+      final int x = scroller.getCurrX();
       final int diff = mLastFlingX - x;
       if (diff != 0) {
         viewContentContainer.scrollBy(diff, 0);
@@ -1026,14 +1060,17 @@ public class ActionsContentView extends ViewGroup {
       if (!mScroller.isFinished()) {
         mScroller.forceFinished(true);
       }
+      if (!mEffectsScroller.isFinished()) {
+        mEffectsScroller.forceFinished(true);
+      }
     }
 
     /**
      * Starts auto-scrolling to bound which is closer to current position.
      */
     private void completeScrolling() {
-      // preventing overide of fligh effect
-      if (!mScroller.isFinished())
+      // preventing override of fling effect
+      if (!mScroller.isFinished() || !mEffectsScroller.isFinished())
         return;
 
       final int startX = viewContentContainer.getScrollX();
@@ -1058,7 +1095,11 @@ public class ActionsContentView extends ViewGroup {
         return;
       }
 
-      mScroller.startScroll(startX, 0, dx, 0, duration);
+      isEffectsEnabled = startEffects(dx > 0, isFlinging);
+      if (isEffectsEnabled)
+        mEffectsScroller.startScroll(startX, 0, dx, 0, duration);
+      else
+        mScroller.startScroll(startX, 0, dx, 0, duration);
 
       if (DEBUG)
         Log.d(TAG, "starting fling at " + startX + " for " + dx + " by " + duration);
@@ -1073,6 +1114,8 @@ public class ActionsContentView extends ViewGroup {
      */
     private void scrollBy(int dx) {
       final int x = viewContentContainer.getScrollX();
+
+      isEffectsEnabled = startEffects(!isContentShown, false);
 
       if (DEBUG)
         Log.d(TAG, "scroll from " + x + " by " + dx);
@@ -1111,4 +1154,29 @@ public class ActionsContentView extends ViewGroup {
     }
   };
 
+  private boolean startEffects(boolean isOpening, boolean isFlinging) {
+    final boolean enableEffects;
+
+    if (mEffects == EFFECTS_NONE) {
+      enableEffects = false;
+    } else if (!isFlinging && (mEffects & EFFECTS_SCROLL) > 0) {
+      if (isOpening && (mEffects & EFFECTS_SCROLL_OPENING) == EFFECTS_SCROLL_OPENING)
+        enableEffects = true;
+      else if (!isOpening && (mEffects & EFFECTS_SCROLL_CLOSING) == EFFECTS_SCROLL_CLOSING)
+        enableEffects = true;
+      else
+        enableEffects = false;
+    } else if (isFlinging && (mEffects & EFFECTS_FLING) > 0) {
+      if (isOpening && (mEffects & EFFECTS_FLING_OPENING) == EFFECTS_FLING_OPENING)
+        enableEffects = true;
+      else if (!isOpening && (mEffects & EFFECTS_FLING_CLOSING) == EFFECTS_FLING_CLOSING)
+        enableEffects = true;
+      else
+        enableEffects = false;
+    } else {
+      enableEffects = false;
+    }
+
+    return enableEffects;
+  }
 }

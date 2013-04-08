@@ -15,6 +15,7 @@
  ******************************************************************************/
 package shared.ui.actionscontentview;
 
+import shared.ui.actionscontentview.EffectsController.Effect;
 import android.graphics.Matrix;
 import android.view.View;
 import android.view.animation.Animation;
@@ -59,7 +60,12 @@ public class BaseContainerController implements ContainerController {
   }
 
   @Override
-  public Animation getEffects() {
+  public void setEffects(int resId) {
+    mEffectsController.setEffects(view.getContext(), resId);
+  }
+
+  @Override
+  public Effect[] getEffects() {
     return mEffectsController.getEffects();
   }
 
@@ -72,10 +78,10 @@ public class BaseContainerController implements ContainerController {
    * @param factor - factor of scrolling. Can be in range from 0f to 1f.
    * @param fadeFactor - fade factor for current scroll factor.
    */
-  public void onScroll(float factor, int fadeFactor, boolean useEffects) {
+  public void onScroll(float factor, int fadeFactor, boolean isOpening, boolean enableEffects) {
     mFadeFactor = fadeFactor;
 
-    final boolean updateEffects = useEffects && mEffectsController.apply(factor);
+    final boolean updateEffects = enableEffects && mEffectsController.apply(factor, isOpening ? EffectsController.EFFECT_OPEN : EffectsController.EFFECT_CLOSE);
 
     if (updateEffects || mFadeFactor > 0)
       view.invalidate();
