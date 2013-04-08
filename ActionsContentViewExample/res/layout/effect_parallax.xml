@@ -23,7 +23,7 @@
     app:actions_layout="@layout/effect_actions"
     app:actions_spacing="0dp"
     app:content_layout="@layout/effect_content"
-    app:effect_actions="@anim/effect_parallax_actions"
+    app:effect_actions="@anim/default_content_effect"
     app:fade_max_value="@integer/default_pref_fade_max_value"
     app:fade_type="actions"
     app:fling_duration="@integer/default_pref_fling_delay"

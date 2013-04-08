@@ -40,9 +40,8 @@ public class EffectsExampleActivity extends FragmentActivity {
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
-    outState.putInt(STATE_LAYOUT_ID, mLayoutId);
-
     super.onSaveInstanceState(outState);
+    outState.putInt(STATE_LAYOUT_ID, mLayoutId);
   }
 
   @SuppressLint("DefaultLocale")

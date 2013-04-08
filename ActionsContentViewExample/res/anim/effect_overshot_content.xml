@@ -4,12 +4,13 @@
 
     <translate
         android:fromXDelta="0"
-        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:interpolator="@android:interpolator/linear"
         android:toXDelta="-100%" />
-
     <translate
+        android:duration="2500"
         android:fromXDelta="0"
-        android:interpolator="@android:anim/bounce_interpolator"
+        android:interpolator="@android:interpolator/overshoot"
+        android:startOffset="500"
         android:toXDelta="100%" />
 
 </set>
