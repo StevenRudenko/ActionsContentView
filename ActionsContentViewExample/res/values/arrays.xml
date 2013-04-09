@@ -34,6 +34,24 @@
         <item>@layout/effect_bounce</item>
         <item>@layout/effect_overshot</item>
     </array>
+
+    <string-array name="effects_actions_html">
+        <item>@string/effect_parallax_actions_html</item>
+        <item>@string/effect_replace_actions_html</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@null</item>
+        <item>@null</item>
+    </string-array>
+    <string-array name="effects_content_html">
+        <item>@null</item>
+        <item>@string/effect_replace_content_html</item>
+        <item>@string/effect_alpha_content_html</item>
+        <item>@string/effect_duration_content_html</item>
+        <item>@string/effect_bounce_content_html</item>
+        <item>@string/effect_overshot_content_html</item>
+    </string-array>
+
     <array name="bounce_effect">
         <item>@anim/effect_bounce_content</item>
         <item>@null</item>

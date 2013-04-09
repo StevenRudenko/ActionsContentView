@@ -2,14 +2,14 @@
 <!--
   Copyright 2012 Steven Rudenko
   
-  Licensed under the Apache License, Version 2.0 (the "License");
+  Licensed under the Apache License, Version 2.0 (the \"License\");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
   
     http://www.apache.org/licenses/LICENSE-2.0
   
   Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
+  distributed under the License is distributed on an \"AS IS\" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
@@ -18,4 +18,124 @@
 
     <string name="sources_link">https://github.com/StevenRudenko/ActionsContentView</string>
 
+    <!-- HTML -->
+    <string name="effect_parallax_actions_html">
+<![CDATA[<font color=\'#004a43\'>&lt;?</font><font color=\'#800000\'>xml</font><font color=\'#004a43\'> </font><font color=\'#074726\'>version</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#7d0045\'>1.0</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'> </font><font color=\'#074726\'>encoding</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>utf-8</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'>?></font>
+<br/><font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>translate</font> <font color=\'#666616\'>xmlns</font><font color=\'#800080\'>:</font><font color=\'#074726\'>android</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#666616\'>http</font><font color=\'#800080\'>:</font><font color=\'#800000\'>//</font><font color=\'#5555dd\'>schemas.android.com</font><font color=\'#40015a\'>/apk/res/android</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:interpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>@android:anim/accelerate_decelerate_interpolator</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>-200</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>]]>
+    </string>
+    <string name="effect_replace_actions_html" formatted="false">
+<![CDATA[<font color=\'#004a43\'>&lt;?</font><font color=\'#800000\'>xml</font><font color=\'#004a43\'> </font><font color=\'#074726\'>version</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#7d0045\'>1.0</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'> </font><font color=\'#074726\'>encoding</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>utf-8</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'>?></font>
+<br/><font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>set</font> <font color=\'#666616\'>xmlns</font><font color=\'#800080\'>:</font><font color=\'#074726\'>android</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#666616\'>http</font><font color=\'#800080\'>:</font><font color=\'#800000\'>//</font><font color=\'#5555dd\'>schemas.android.com</font><font color=\'#40015a\'>/apk/res/android</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:interpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>@android:anim/accelerate_decelerate_interpolator</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:shareInterpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>true</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>translate</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>-100</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>scale</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>1</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromYScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>1</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0.5</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toYScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0.5</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:pivotX</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>25%</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:pivotY</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>50%</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/><font color=\'#a65700\'>&lt;/</font><font color=\'#5f5035\'>set</font><font color=\'#a65700\'>></font>]]>
+    </string>
+    <string name="effect_replace_content_html" formatted="false">
+<![CDATA[<font color=\'#004a43\'>&lt;?</font><font color=\'#800000\'>xml</font><font color=\'#004a43\'> </font><font color=\'#074726\'>version</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#7d0045\'>1.0</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'> </font><font color=\'#074726\'>encoding</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>utf-8</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'>?></font>
+<br/><font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>set</font> <font color=\'#666616\'>xmlns</font><font color=\'#800080\'>:</font><font color=\'#074726\'>android</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#666616\'>http</font><font color=\'#800080\'>:</font><font color=\'#800000\'>//</font><font color=\'#5555dd\'>schemas.android.com</font><font color=\'#40015a\'>/apk/res/android</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:interpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>@android:anim/accelerate_decelerate_interpolator</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:shareInterpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>true</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>translate</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>100</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>scale</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>1</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromYScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>1</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0.5</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toYScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0.5</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:pivotX</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>25%</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:pivotY</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>50%</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/><font color=\'#a65700\'>&lt;/</font><font color=\'#5f5035\'>set</font><font color=\'#a65700\'>></font>]]>
+    </string>
+    <string name="effect_overshot_content_html" formatted="false">
+<![CDATA[<font color=\'#004a43\'>&lt;?</font><font color=\'#800000\'>xml</font><font color=\'#004a43\'> </font><font color=\'#074726\'>version</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#7d0045\'>1.0</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'> </font><font color=\'#074726\'>encoding</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>utf-8</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'>?></font>
+<br/><font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>set</font> <font color=\'#666616\'>xmlns</font><font color=\'#800080\'>:</font><font color=\'#074726\'>android</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#666616\'>http</font><font color=\'#800080\'>:</font><font color=\'#800000\'>//</font><font color=\'#5555dd\'>schemas.android.com</font><font color=\'#40015a\'>/apk/res/android</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:shareInterpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>false</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>translate</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:interpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>@android:interpolator/linear</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>-100%</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>translate</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:duration</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>2500</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:interpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>@android:interpolator/overshoot</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:startOffset</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>500</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>100%</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/><font color=\'#a65700\'>&lt;/</font><font color=\'#5f5035\'>set</font><font color=\'#a65700\'>></font>]]>
+    </string>
+    <string name="effect_duration_content_html" formatted="false">
+<![CDATA[<font color=\'#004a43\'>&lt;?</font><font color=\'#800000\'>xml</font><font color=\'#004a43\'> </font><font color=\'#074726\'>version</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#7d0045\'>1.0</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'> </font><font color=\'#074726\'>encoding</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>utf-8</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'>?></font>
+<br/><font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>set</font> <font color=\'#666616\'>xmlns</font><font color=\'#800080\'>:</font><font color=\'#074726\'>android</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#666616\'>http</font><font color=\'#800080\'>:</font><font color=\'#800000\'>//</font><font color=\'#5555dd\'>schemas.android.com</font><font color=\'#40015a\'>/apk/res/android</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:interpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>@android:anim/accelerate_interpolator</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:shareInterpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>true</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>translate</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>-100%</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>scale</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:duration</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>400</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>1</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromYScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>1</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:pivotX</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>100%</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:startOffset</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>200</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toYScale</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>1</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/><font color=\'#a65700\'>&lt;/</font><font color=\'#5f5035\'>set</font><font color=\'#a65700\'>></font>]]>
+    </string>
+        <string name="effect_bounce_content_html" formatted="false">
+<![CDATA[<font color=\'#004a43\'>&lt;?</font><font color=\'#800000\'>xml</font><font color=\'#004a43\'> </font><font color=\'#074726\'>version</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#7d0045\'>1.0</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'> </font><font color=\'#074726\'>encoding</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>utf-8</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'>?></font>
+<br/><font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>set</font> <font color=\'#666616\'>xmlns</font><font color=\'#800080\'>:</font><font color=\'#074726\'>android</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#666616\'>http</font><font color=\'#800080\'>:</font><font color=\'#800000\'>//</font><font color=\'#5555dd\'>schemas.android.com</font><font color=\'#40015a\'>/apk/res/android</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:shareInterpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>false</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>translate</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:interpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>@android:anim/accelerate_decelerate_interpolator</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>-100%</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>translate</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:interpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>@android:anim/bounce_interpolator</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>100%</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/><font color=\'#a65700\'>&lt;/</font><font color=\'#5f5035\'>set</font><font color=\'#a65700\'>></font>]]>
+    </string>
+            <string name="effect_alpha_content_html" formatted="false">
+<![CDATA[<font color=\'#004a43\'>&lt;?</font><font color=\'#800000\'>xml</font><font color=\'#004a43\'> </font><font color=\'#074726\'>version</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#7d0045\'>1.0</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'> </font><font color=\'#074726\'>encoding</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>utf-8</font><font color=\'#0000e6\'>\"</font><font color=\'#004a43\'>?></font>
+<br/><font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>set</font> <font color=\'#666616\'>xmlns</font><font color=\'#800080\'>:</font><font color=\'#074726\'>android</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#666616\'>http</font><font color=\'#800080\'>:</font><font color=\'#800000\'>//</font><font color=\'#5555dd\'>schemas.android.com</font><font color=\'#40015a\'>/apk/res/android</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:shareInterpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>false</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>translate</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:interpolator</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>@android:anim/linear_interpolator</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toXDelta</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>-100%</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/>&#160;&#160;&#160;&#160;<font color=\'#a65700\'>&lt;</font><font color=\'#5f5035\'>alpha</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:fromAlpha</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>1</font><font color=\'#0000e6\'>\"</font>
+<br/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<font color=\'#274796\'>android:toAlpha</font><font color=\'#808030\'>=</font><font color=\'#0000e6\'>\"</font><font color=\'#0000e6\'>0.15</font><font color=\'#0000e6\'>\"</font> <font color=\'#a65700\'>/></font>
+<br/>
+<br/><font color=\'#a65700\'>&lt;/</font><font color=\'#5f5035\'>set</font><font color=\'#a65700\'>></font>]]>
+    </string>
 </resources>

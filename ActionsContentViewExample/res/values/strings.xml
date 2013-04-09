@@ -49,5 +49,8 @@
     <string name="effect_duration">Duration</string>
     <string name="effect_bounce">Bounce</string>
     <string name="effect_overshot">Overshot</string>
+    <!-- Effects content strings -->
+    <string name="effect_content_actions_xml">Actions effect animation XML</string>
+    <string name="effect_content_content_xml">Content effect animation XML</string>
 
 </resources>

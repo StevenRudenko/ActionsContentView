@@ -16,12 +16,19 @@ public class EffectsAdapter extends BaseAdapter {
 
   private final String[] mTitles;
   private final int[] mLayouts;
+  private final String[][] mHtmls;
 
   public EffectsAdapter(Context context) {
     mInflater = LayoutInflater.from(context);
 
     final Resources res = context.getResources();
     mTitles = res.getStringArray(R.array.effects_name);
+
+    final String[] actionsHtml = res.getStringArray(R.array.effects_actions_html);
+    final String[] contentHtml = res.getStringArray(R.array.effects_content_html);
+    mHtmls = new String[][] {
+        actionsHtml, contentHtml
+    };
 
     final TypedArray layoutsArray = res.obtainTypedArray(R.array.effect_layouts);
     final int count = layoutsArray.length();
@@ -30,6 +37,18 @@ public class EffectsAdapter extends BaseAdapter {
       mLayouts[i] = layoutsArray.getResourceId(i, 0);
     }
     layoutsArray.recycle();
+  }
+
+  public String getActionsHtml(int position) {
+    return mHtmls[0][position];
+  }
+
+  public String getContentHtml(int position) {
+    return mHtmls[1][position];
+  }
+
+  public String getEffectTitle(int position) {
+    return mTitles[position];
   }
 
   @Override
