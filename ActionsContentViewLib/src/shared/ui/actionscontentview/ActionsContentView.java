@@ -830,15 +830,13 @@ public class ActionsContentView extends ViewGroup {
     // using Boolean object to initialize while first scroll event
     private Boolean mHandleEvent = null;
 
-    private int mLastFlingX = 0;
-
     /**
      * Indicates whether we need initialize position of view after measuring is finished.
      */
     private boolean isContentShown = true;
 
     private boolean isFlinging = false;
-    
+
     private boolean isEffectsEnabled = false;
 
     public ContentScrollController(Scroller scroller, Scroller effectsScroller) {
@@ -870,17 +868,13 @@ public class ActionsContentView extends ViewGroup {
       return mHandleEvent != null && mHandleEvent;
     }
 
-    public boolean isFlinging() {
-      return isFlinging;
-    }
-
     public boolean isOpening() {
       if (!mScroller.isFinished()) {
-        return mScroller.getFinalX() > mScroller.getStartX();
+        return mScroller.getStartX() > mScroller.getFinalX();
       }
 
       if (!mEffectsScroller.isFinished()) {
-        return mEffectsScroller.getFinalX() > mEffectsScroller.getStartX();
+        return mEffectsScroller.getStartX() > mEffectsScroller.getFinalX();
       }
 
       return !isContentShown;
@@ -922,6 +916,9 @@ public class ActionsContentView extends ViewGroup {
 
       isFlinging = false;
       isEffectsEnabled = false;
+
+      reset();
+
       // if there is first scroll event after touch down
       if (mHandleEvent == null) {
         if (Math.abs(distanceX) < Math.abs(distanceY)) {
@@ -996,9 +993,7 @@ public class ActionsContentView extends ViewGroup {
         return;
       }
 
-      final int startX = viewContentContainer.getScrollX();
-      final int dx = getRightBound() + startX;
-      fling(startX, dx, duration);
+      scroll(false, duration);
     }
 
     public void showContent(int duration) {
@@ -1010,44 +1005,11 @@ public class ActionsContentView extends ViewGroup {
         return;
       }
 
-      final int startX = viewContentContainer.getScrollX();
-      final int dx = startX;
-      fling(startX, dx, duration);
+      scroll(true, duration);
     }
 
     public float getScrollFactor() {
       return 1f + (float) viewContentContainer.getScrollX() / (float) getRightBound();
-    }
-
-    /**
-     * Processes auto-scrolling to bound which is closer to current position.
-     */
-    @Override
-    public void run() {
-      final Scroller scroller = isEffectsEnabled() ? mEffectsScroller : mScroller;
-      if (scroller.isFinished()) {
-        if (DEBUG)
-          Log.d(TAG, "scroller is finished, done with fling");
-        if (mOnActionsContentListener != null)
-          mOnActionsContentListener.onContentStateChanged(ActionsContentView.this, isContentShown);
-        return;
-      }
-
-
-      final boolean more = scroller.computeScrollOffset();
-      final int x = scroller.getCurrX();
-      final int diff = mLastFlingX - x;
-      if (diff != 0) {
-        viewContentContainer.scrollBy(diff, 0);
-        mLastFlingX = x;
-      }
-
-      if (more) {
-        viewContentContainer.post(this);
-      } else {
-        if (mOnActionsContentListener != null)
-          mOnActionsContentListener.onContentStateChanged(ActionsContentView.this, isContentShown);
-      }
     }
 
     /**
@@ -1084,27 +1046,25 @@ public class ActionsContentView extends ViewGroup {
       }
     }
 
-    private void fling(int startX, int dx, int duration) {
+    private void scroll(boolean showContent, int duration) {
       reset();
 
-      if (dx == 0)
-        return;
+      final int startX = viewContentContainer.getScrollX();
+      final int dx = showContent ? -startX : -getRightBound() - startX;
+      if (DEBUG)
+        Log.d(TAG, "start scroller at " + startX + " for " + dx + " by " + duration);
 
       if (duration <= 0) {
-        viewContentContainer.scrollBy(-dx, 0);
+        viewContentContainer.scrollBy(dx, 0);
         return;
       }
 
-      isEffectsEnabled = startEffects(dx > 0, isFlinging);
+      isEffectsEnabled = startEffects(dx < 0, isFlinging);
       if (isEffectsEnabled)
         mEffectsScroller.startScroll(startX, 0, dx, 0, duration);
       else
         mScroller.startScroll(startX, 0, dx, 0, duration);
 
-      if (DEBUG)
-        Log.d(TAG, "starting fling at " + startX + " for " + dx + " by " + duration);
-
-      mLastFlingX = startX;
       viewContentContainer.post(this);
     }
 
@@ -1116,9 +1076,6 @@ public class ActionsContentView extends ViewGroup {
       final int x = viewContentContainer.getScrollX();
 
       isEffectsEnabled = startEffects(!isContentShown, false);
-
-      if (DEBUG)
-        Log.d(TAG, "scroll from " + x + " by " + dx);
 
       final int scrollBy;
       if (dx < 0) { // scrolling right
@@ -1138,7 +1095,37 @@ public class ActionsContentView extends ViewGroup {
           scrollBy = dx;
       }
 
+      if (DEBUG)
+        Log.d(TAG, "scroll from " + x + " by " + dx + " [" + scrollBy + "]");
+
       viewContentContainer.scrollBy(scrollBy, 0);
+    }
+
+    /**
+     * Processes auto-scrolling to bound which is closer to current position.
+     */
+    @Override
+    public void run() {
+      final Scroller scroller = isEffectsEnabled() ? mEffectsScroller : mScroller;
+      if (scroller.isFinished()) {
+        if (DEBUG)
+          Log.d(TAG, "scroller is finished, done with fling");
+        if (mOnActionsContentListener != null)
+          mOnActionsContentListener.onContentStateChanged(ActionsContentView.this, isContentShown);
+        return;
+      }
+
+
+      final boolean more = scroller.computeScrollOffset();
+      final int x = scroller.getCurrX();
+      viewContentContainer.scrollTo(x, 0);
+
+      if (more) {
+        viewContentContainer.post(this);
+      } else {
+        if (mOnActionsContentListener != null)
+          mOnActionsContentListener.onContentStateChanged(ActionsContentView.this, isContentShown);
+      }
     }
 
     /**
@@ -1152,31 +1139,31 @@ public class ActionsContentView extends ViewGroup {
         return getWidth() - mSpacing - mActionsSpacing;
       }
     }
-  };
 
-  private boolean startEffects(boolean isOpening, boolean isFlinging) {
-    final boolean enableEffects;
+    private boolean startEffects(boolean isOpening, boolean isFlinging) {
+      final boolean enableEffects;
 
-    if (mEffects == EFFECTS_NONE) {
-      enableEffects = false;
-    } else if (!isFlinging && (mEffects & EFFECTS_SCROLL) > 0) {
-      if (isOpening && (mEffects & EFFECTS_SCROLL_OPENING) == EFFECTS_SCROLL_OPENING)
-        enableEffects = true;
-      else if (!isOpening && (mEffects & EFFECTS_SCROLL_CLOSING) == EFFECTS_SCROLL_CLOSING)
-        enableEffects = true;
-      else
+      if (mEffects == EFFECTS_NONE) {
         enableEffects = false;
-    } else if (isFlinging && (mEffects & EFFECTS_FLING) > 0) {
-      if (isOpening && (mEffects & EFFECTS_FLING_OPENING) == EFFECTS_FLING_OPENING)
-        enableEffects = true;
-      else if (!isOpening && (mEffects & EFFECTS_FLING_CLOSING) == EFFECTS_FLING_CLOSING)
-        enableEffects = true;
-      else
+      } else if (!isFlinging && (mEffects & EFFECTS_SCROLL) > 0) {
+        if (isOpening && (mEffects & EFFECTS_SCROLL_OPENING) == EFFECTS_SCROLL_OPENING)
+          enableEffects = true;
+        else if (!isOpening && (mEffects & EFFECTS_SCROLL_CLOSING) == EFFECTS_SCROLL_CLOSING)
+          enableEffects = true;
+        else
+          enableEffects = false;
+      } else if (isFlinging && (mEffects & EFFECTS_FLING) > 0) {
+        if (isOpening && (mEffects & EFFECTS_FLING_OPENING) == EFFECTS_FLING_OPENING)
+          enableEffects = true;
+        else if (!isOpening && (mEffects & EFFECTS_FLING_CLOSING) == EFFECTS_FLING_CLOSING)
+          enableEffects = true;
+        else
+          enableEffects = false;
+      } else {
         enableEffects = false;
-    } else {
-      enableEffects = false;
+      }
+
+      return enableEffects;
     }
-
-    return enableEffects;
-  }
+  };
 }

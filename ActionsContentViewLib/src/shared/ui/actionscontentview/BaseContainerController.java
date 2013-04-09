@@ -81,7 +81,13 @@ public class BaseContainerController implements ContainerController {
   public void onScroll(float factor, int fadeFactor, boolean isOpening, boolean enableEffects) {
     mFadeFactor = fadeFactor;
 
-    final boolean updateEffects = enableEffects && mEffectsController.apply(factor, isOpening ? EffectsController.EFFECT_OPEN : EffectsController.EFFECT_CLOSE);
+    final boolean updateEffects;
+    if (enableEffects)
+      updateEffects = mEffectsController.apply(factor, isOpening ? EffectsController.EFFECT_OPEN : EffectsController.EFFECT_CLOSE);
+    else {
+      mEffectsController.reset();
+      updateEffects = false;
+    }
 
     if (updateEffects || mFadeFactor > 0)
       view.invalidate();

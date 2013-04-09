@@ -104,12 +104,16 @@ class EffectsController {
     return mEffectsAlpha;
   }
 
+  public void reset() {
+    mMatrix.reset();
+    mEffectsAlpha = 1f;
+  }
+
   public boolean apply(float factor, int effectType) {
     if (mEffects == null)
       return false;
 
-    mMatrix.reset();
-    mEffectsAlpha = 1f;
+    reset();
 
     final Effect effect = mEffects[effectType];
     if ( effect == null )
