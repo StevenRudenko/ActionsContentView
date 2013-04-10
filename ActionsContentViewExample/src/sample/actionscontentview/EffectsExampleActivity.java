@@ -56,6 +56,10 @@ public class EffectsExampleActivity extends FragmentActivity {
     final int layoutId = mAdapter.getItem(position);
     setContentView(layoutId);
 
+    final String titleText = getString(R.string.action_effects);
+    final TextView title = (TextView) findViewById(android.R.id.text1);
+    title.setText(titleText.toUpperCase());
+
     final ActionsContentView viewActionsContentView = (ActionsContentView) findViewById(R.id.actionsContentView);
     viewActionsContentView.setOnActionsContentListener(new ActionsContentView.OnActionsContentListener() {
       @Override

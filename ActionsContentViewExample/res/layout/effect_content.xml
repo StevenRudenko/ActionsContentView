@@ -56,7 +56,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_code"
                 android:textIsSelectable="true"
-                android:textSize="10sp"
                 android:typeface="monospace" />
         </LinearLayout>
 
@@ -82,7 +81,6 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_code"
                 android:textIsSelectable="true"
-                android:textSize="10sp"
                 android:typeface="monospace" />
         </LinearLayout>
     </LinearLayout>
