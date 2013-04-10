@@ -98,7 +98,7 @@ Parallax effect for actions layout
 To create parallax effect we should create translate animation and use it as effect for actions layout.
 Here are steps to get it done:
 
-Create <project_path>/res/anim/acitons.xml and put next code into it:
+Create <project_path>/res/anim/actions.xml and put next code into it:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -112,7 +112,7 @@ Add next line to the XML layout of ActionsContentView:
 ```xml
 <shared.ui.actionscontentview.ActionsContentView
     ...
-    app:swiping_type="edge"
+    app:effect_actions="@anim/actions"
     ...
     />
 ```
