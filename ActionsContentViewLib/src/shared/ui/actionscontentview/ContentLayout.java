@@ -19,6 +19,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -104,8 +105,14 @@ class ContentLayout extends LinearLayout {
   @Override
   protected void dispatchDraw(Canvas canvas) {
     final int saveCount = canvas.save();
-    canvas.concat(mController.getEffectsMatrix());
-    canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), (int)(255 * mController.getEffectsAlpha()), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
+
+    final Matrix m = mController.getEffectsMatrix();
+    if (!m.isIdentity())
+      canvas.concat(m);
+
+    final float alpha = mController.getEffectsAlpha();
+    if (alpha != 1f)
+      canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(), (int)(255 * alpha), Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
 
     super.dispatchDraw(canvas);
 
