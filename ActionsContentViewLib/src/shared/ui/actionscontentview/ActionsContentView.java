@@ -964,6 +964,10 @@ public class ActionsContentView extends ViewGroup {
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
         float velocityY) {
 
+      if (!mHandleEvent) {
+        return false;
+      }
+      
       final float absVelocityX = Math.abs(velocityX);
       if (absVelocityX <= Math.abs(velocityY))
         return false;
