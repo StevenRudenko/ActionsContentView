@@ -145,8 +145,8 @@ License
 
 
 
- [1]: http://lh3.ggpht.com/LSmwlk83O_BZciUXNmqgEWcBKzCKK17YCS-Gmv2_VnPnMYbpK4NVSuaaCWD45R8-dW3g
- [2]: http://lh6.ggpht.com/oybOlHn0z9uFMj58s-gRiwICQydFhB5lFGY9cx0qCAQNDm19E8EM2iWyfMTzkTPBKuMY
- [3]: http://lh4.ggpht.com/gjSc5WXfxL2hZqq6Rno0Byx3nHEf7-n4G8ceDV3BC0e4wm2RpFxC7I8VMPgSA9fvKyw
- [4]: http://play.google.com/store/apps/details?id=sample.actionscontentview
+ [1]: https://lh5.ggpht.com/jDdm1FbB13aXq11J61__URorAlT-h12kvU0VlaaDdL1PF5wNrUOVJmdKMqlz506hIg
+ [2]: https://lh4.ggpht.com/98rCqlg4r2aUJCFKZ-_-yTJpVd2OAN4SMzqpiDAvDX-IM0IDTXcvoPEKfQJWQM1IXUU-
+ [3]: https://lh6.ggpht.com/yYy24DPwltmo1Xp0SPAyWzpKOIF7azoTvlveH3X4XWkHo_xm0UQ1lcT-1NJl8QUWBCDA
+ [4]: https://play.google.com/store/apps/details?id=sample.actionscontentview
  [5]: http://img534.imageshack.us/img534/6403/actionscontentviewparal.gif
