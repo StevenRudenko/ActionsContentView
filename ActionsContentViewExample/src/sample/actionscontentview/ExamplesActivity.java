@@ -81,6 +81,18 @@ public class ExamplesActivity extends FragmentActivity {
     updateContent(currentUri);
   }
 
+  @Override
+  public void onBackPressed() {
+    final Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(currentContentFragmentTag);
+    if (currentFragment instanceof WebViewFragment) {
+      final WebViewFragment webFragment = (WebViewFragment) currentFragment;
+      if (webFragment.onBackPressed())
+        return;
+    }
+
+    super.onBackPressed();
+  }
+
   public void onActionsButtonClick(View view) {
     if (viewActionsContentView.isActionsShown())
       viewActionsContentView.showContent();

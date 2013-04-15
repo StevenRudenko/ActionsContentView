@@ -34,6 +34,8 @@ public class WebViewFragment extends Fragment {
   private WebView viewContentWebView;
   private String url;
 
+  private boolean resetHistory = true;
+
   @SuppressLint("SetJavaScriptEnabled")
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +56,11 @@ public class WebViewFragment extends Fragment {
       public void onProgressChanged(WebView view, int newProgress) {
         viewContentProgress.setProgress(newProgress);
         viewContentProgress.setVisibility(newProgress == 100 ? View.GONE : View.VISIBLE);
+
+        if (newProgress == 100 && resetHistory) {
+            viewContentWebView.clearHistory();
+            resetHistory = false;
+        }
       }
     });
     return v;
@@ -76,6 +83,11 @@ public class WebViewFragment extends Fragment {
 
   public void setUrl(String url) {
     this.url = url;
+
+    if (viewContentWebView != null)
+      viewContentWebView.stopLoading();
+
+    resetHistory = true;
   }
 
   public void reload() {
@@ -83,5 +95,13 @@ public class WebViewFragment extends Fragment {
       return;
 
     viewContentWebView.loadUrl(url);
+  }
+
+  public boolean onBackPressed() {
+    if (viewContentWebView.canGoBack()) {
+      viewContentWebView.goBack();
+      return true;
+    }
+    return false;
   }
 }
