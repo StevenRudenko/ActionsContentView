@@ -90,6 +90,6 @@ public class BaseContainerController implements ContainerController {
     }
 
     if (updateEffects || mFadeFactor > 0)
-      view.invalidate();
+      view.postInvalidate();
   }
 }

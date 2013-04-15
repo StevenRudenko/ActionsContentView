@@ -679,7 +679,7 @@ public class ActionsContentView extends ViewGroup {
   }
 
   private void updateScrollFactor() {
-    if ( viewActionsContainer == null )
+    if (viewActionsContainer == null || viewContentContainer == null)
       return;
 
     final float scrollFactor = mScrollController.getScrollFactor();
