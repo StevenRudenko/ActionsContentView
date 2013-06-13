@@ -73,7 +73,7 @@ Try out the example application on the Android Market: [ActionsContentView Examp
 Useful hints
 ============
 
-Enable horizontall scrolling
+Enable horizontal scrolling
 -------------
 To enable horizontall scrolling at content view you should set swipe from the bezel mode.
 It is wasy to do this by adding next row to XML layout:
