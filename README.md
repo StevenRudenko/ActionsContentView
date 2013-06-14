@@ -9,7 +9,7 @@ Some advantages of this library:
 
 * ability to slide view by touch
 * it is easy to adjust size of actions bar in XML
-* support of all Android SDK version starting from 2.0 and up
+* support of all Android SDK versions, starting from 2.0 and up
 
 There is one limitation:
 
@@ -28,18 +28,18 @@ Features included
 * Shadow dropped by content view to actions one.
 * Offset for content view to show part actions view. Useful to hint user that there are actions under content.
 * Add shading for actions view while scrolling content.
-* Swipe from the bezel to the screen so horizontal scrolling will be possible
-* Effects for Action and Content views. See example below.
+* Swipe from the bezel to the screen so horizontal scrolling is possible
+* Effects for Action and Content views. See the example below.
 
 Feature to be implemented in future
 -----------------------------------
-* Left, right or both sides actions support
+* Left, right or both side sliding support
 
 
 Examples
 =============
 
-Here is example of usage ActionsContentView as element of XML layout:
+Here is an example of ActionsContentView as an element of an XML layout:
 
 ```xml
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -68,15 +68,15 @@ Here is example of usage ActionsContentView as element of XML layout:
 ```
 Example application
 -------------------
-Try out the example application on the Android Market: [ActionsContentView Example][4].
+Try out the example application on the Android Play Store: [ActionsContentView Example][4].
 
 Useful hints
 ============
 
 Enable horizontal scrolling
 -------------
-To enable horizontall scrolling at content view you should set swipe from the bezel mode.
-It is wasy to do this by adding next row to XML layout:
+To enable horizontal scrolling at content view, you should set swipe from bezel mode.
+It is easy to do this by adding next row to XML layout:
 
 ```xml
 <shared.ui.actionscontentview.ActionsContentView
@@ -86,7 +86,7 @@ It is wasy to do this by adding next row to XML layout:
     />
 ```
 
-or by next lines of code:
+or by next line(s) of code:
 
 ```java
 viewActionsContentView.setSwipingType(ActionsContentView.SWIPING_EDGE);
@@ -95,7 +95,7 @@ viewActionsContentView.setSwipingType(ActionsContentView.SWIPING_EDGE);
 
 Parallax effect for actions layout
 -------------
-To create parallax effect we should create translate animation and use it as effect for actions layout.
+To create parallax effect we should create a translate animation and use it as the effect for the actions layout.
 Here are steps to get it done:
 
 Create <project_path>/res/anim/actions.xml and put next code into it:
@@ -107,7 +107,7 @@ Create <project_path>/res/anim/actions.xml and put next code into it:
     android:interpolator="@android:anim/accelerate_decelerate_interpolator"
     android:toXDelta="-200" />
 ```
-Add next line to the XML layout of ActionsContentView:
+Add the next line to the XML layout of ActionsContentView:
 
 ```xml
 <shared.ui.actionscontentview.ActionsContentView
@@ -128,7 +128,7 @@ Developed By
 License
 =======
 
-    Copyright 2012 Steven Rudenko
+    Copyright 2013 Steven Rudenko
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
