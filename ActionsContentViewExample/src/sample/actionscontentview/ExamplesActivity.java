@@ -15,11 +15,6 @@
  ******************************************************************************/
 package sample.actionscontentview;
 
-import sample.actionscontentview.adapter.ActionsAdapter;
-import sample.actionscontentview.fragment.AboutFragment;
-import sample.actionscontentview.fragment.SandboxFragment;
-import sample.actionscontentview.fragment.WebViewFragment;
-import shared.ui.actionscontentview.ActionsContentView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +25,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import sample.actionscontentview.adapter.ActionsAdapter;
+import sample.actionscontentview.fragment.AboutFragment;
+import sample.actionscontentview.fragment.SandboxFragment;
+import sample.actionscontentview.fragment.WebViewFragment;
+import shared.ui.actionscontentview.ActionsContentView;
 
 public class ExamplesActivity extends FragmentActivity {
 
@@ -121,7 +122,7 @@ public class ExamplesActivity extends FragmentActivity {
     final FragmentManager fm = getSupportFragmentManager();
     final FragmentTransaction tr = fm.beginTransaction();
 
-    if (currentContentFragmentTag != null) {
+    if (!currentUri.equals(uri)) {
       final Fragment currentFragment = fm.findFragmentByTag(currentContentFragmentTag);
       if (currentFragment != null)
         tr.hide(currentFragment);
@@ -165,7 +166,7 @@ public class ExamplesActivity extends FragmentActivity {
     if (fragment.isAdded()) {
       tr.show(fragment);
     } else {
-      tr.add(R.id.content, fragment, tag);
+      tr.replace(R.id.content, fragment, tag);
     }
     tr.commit();
 
@@ -223,8 +224,8 @@ public class ExamplesActivity extends FragmentActivity {
         viewActionsContentView.setFlingDuration(value);
         return;
       default:
-        return;
+        break;
       }
     }
-  };
+  }
 }
