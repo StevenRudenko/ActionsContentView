@@ -15,7 +15,7 @@
 -->
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Light" />
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar" />
 
     <style name="HoloButton.Borderless" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/item_background_holo_light</item>
