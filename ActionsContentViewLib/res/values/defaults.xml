@@ -18,6 +18,6 @@
     <dimen name="default_actionscontentview_spacing">64dip</dimen>
     <dimen name="default_actionscontentview_actions_spacing">0dip</dimen>
     <integer name="default_actionscontentview_fade_max_value">170</integer>
-    <integer name="default_actionscontentview_fling_duration">900</integer>
-    <dimen name="default_actionscontentview_swiping_edge_width">24dip</dimen>
+    <integer name="default_actionscontentview_fling_duration">800</integer>
+    <dimen name="default_actionscontentview_swiping_edge_width">28dip</dimen>
 </resources>
