@@ -94,6 +94,8 @@
         <attr name="swiping_type" />
         <!-- Swiping edge width. -->
         <attr name="swiping_edge_width" format="dimension" />
+        <!-- Swiping enabled. -->
+        <attr name="swiping_enabled" format="boolean" />
         <!-- Enabled effects. -->
         <attr name="effects" />
         <!-- Actions layout effect. -->

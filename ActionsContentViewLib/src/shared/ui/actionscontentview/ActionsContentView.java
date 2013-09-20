@@ -189,6 +189,7 @@ public class ActionsContentView extends ViewGroup {
     mSwipeType = a.getInteger(R.styleable.ActionsContentView_swiping_type, SWIPING_EDGE);
     final int swipingEdgeWidthDefault = context.getResources().getDimensionPixelSize(R.dimen.default_actionscontentview_swiping_edge_width);
     mSwipeEdgeWidth = a.getDimensionPixelSize(R.styleable.ActionsContentView_swiping_edge_width, swipingEdgeWidthDefault);
+    isSwipingEnabled = a.getBoolean(R.styleable.ActionsContentView_swiping_enabled, true);
 
     final int effectActionsRes = a.getResourceId(R.styleable.ActionsContentView_effect_actions, 0);
     final int effectContentRes = a.getResourceId(R.styleable.ActionsContentView_effect_content, 0);
@@ -212,6 +213,7 @@ public class ActionsContentView extends ViewGroup {
       Log.d(TAG, "  fling duration: " + mFlingDuration);
       Log.d(TAG, "  swiping type: " + mSwipeType);
       Log.d(TAG, "  swiping edge width: " + mSwipeEdgeWidth);
+      Log.d(TAG, "  swiping enabled: " + isSwipingEnabled);
       Log.d(TAG, "  effects: " + mEffects);
       Log.d(TAG, "  effect actions: " + effectActionsRes);
       Log.d(TAG, "  effect content: " + effectContentRes);
