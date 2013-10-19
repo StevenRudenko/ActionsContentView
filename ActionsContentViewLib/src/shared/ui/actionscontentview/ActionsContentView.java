@@ -39,6 +39,8 @@ public class ActionsContentView extends ViewGroup {
 
   public interface OnActionsContentListener {
     public void onContentStateChanged(ActionsContentView v, boolean isContentShown);
+
+    public void onContentStateInAction(ActionsContentView v, boolean isContentShowing);
   }
 
   private static final int FLING_MIN = 1000;
@@ -593,14 +595,12 @@ public class ActionsContentView extends ViewGroup {
     mGestureDetector.onTouchEvent(ev);
 
     final int action = ev.getAction();
-    // if current touch event should be handled
-    if (mScrollController.isHandled()) {
-      if (action == MotionEvent.ACTION_UP)
-        mScrollController.onUp(ev);
-      return true;
+    if (action == MotionEvent.ACTION_UP) {
+      if (mScrollController.onUp(ev))
+        return true;
     }
 
-    return false;
+    return mScrollController.isHandled();
   }
 
   @Override
@@ -609,6 +609,12 @@ public class ActionsContentView extends ViewGroup {
       return false;
 
     mGestureDetector.onTouchEvent(ev);
+
+    final int action = ev.getAction();
+    if (action == MotionEvent.ACTION_UP) {
+      if (mScrollController.onUp(ev))
+        return true;
+    }
 
     // whether we should handle all following events by our view
     // and don't allow children to get them
@@ -870,6 +876,25 @@ public class ActionsContentView extends ViewGroup {
       return mHandleEvent != null && mHandleEvent;
     }
 
+    public boolean isSwipeFinished() {
+      if (!mScroller.isFinished()) {
+        return false;
+      }
+
+      if (!mEffectsScroller.isFinished()) {
+        return false;
+      }
+
+      final int x = viewContentContainer.getScrollX();
+      if (isContentShown && x != 0)
+        return false;
+
+      if (!isContentShown && x != -getRightBound())
+        return false;
+
+      return true;
+    }
+
     public boolean isOpening() {
       if (!mScroller.isFinished()) {
         return mScroller.getStartX() > mScroller.getFinalX();
@@ -894,7 +919,7 @@ public class ActionsContentView extends ViewGroup {
     }
 
     public boolean onUp(MotionEvent e) {
-      if (!isHandled())
+      if (isSwipeFinished())
         return false;
 
       mHandleEvent = null;
@@ -969,7 +994,7 @@ public class ActionsContentView extends ViewGroup {
       if (!mHandleEvent) {
         return false;
       }
-      
+
       final float absVelocityX = Math.abs(velocityX);
       if (absVelocityX <= Math.abs(velocityY))
         return false;
@@ -1070,6 +1095,9 @@ public class ActionsContentView extends ViewGroup {
         mEffectsScroller.startScroll(startX, 0, dx, 0, duration);
       else
         mScroller.startScroll(startX, 0, dx, 0, duration);
+
+      if (mOnActionsContentListener != null)
+        mOnActionsContentListener.onContentStateInAction(ActionsContentView.this, isContentShown);
 
       viewContentContainer.post(this);
     }
