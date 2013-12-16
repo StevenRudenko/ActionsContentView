@@ -118,6 +118,33 @@ Add the next line to the XML layout of ActionsContentView:
 ```
 Parallax demo can be seen [here][5].
 
+How to use ActionsContentView library with your project
+============
+
+Please follow next instruction to import library project into your Eclipse workspace:
+
+1. Clone GitHub somewhere
+1. Open Eclipse workspace
+1. Press menu File->Import->Android->Existing Android code into workspace
+1. Import ActionsContentViewLib project
+1. Select your project and press menu Project->Properties
+1. Select Android.
+1. Press Add at Library section. Select ActionsContentViewLib.
+1. Apply->OK
+
+If you have got error like this one: "Android requires compiler compliance level 5.0 or 6.0. Found '1.7' instead. Please use Android Tools > Fix Project Properties" use next steps to resolve it:
+
+1. Open workspace with project
+2. Select project
+3. Press menu: Project->Properties
+4. Goto tab Java Compiler
+5. Check 'Enable project specific settings'
+6. Set 'Compiler compliance level' to 1.6
+7. Apply->OK
+
+Do this for all Android projects or workspace setting and problem should be resolved.
+
+
 -------------------------------------------------------------------------------
 
 Developed By
