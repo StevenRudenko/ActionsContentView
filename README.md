@@ -118,7 +118,7 @@ Add the next line to the XML layout of ActionsContentView:
 ```
 Parallax demo can be seen [here][5].
 
-How to use ActionsContentView library with your project
+How to use
 ============
 
 Please follow next instruction to import library project into your Eclipse workspace:
