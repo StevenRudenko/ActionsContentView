@@ -66,6 +66,10 @@ public class EffectsExampleActivity extends FragmentActivity {
       public void onContentStateChanged(ActionsContentView v, boolean isContentShown) {
         v.getContentController().setIgnoreTouchEvents(!isContentShown);
       }
+
+      @Override
+      public void onContentStateInAction(ActionsContentView v, boolean isContentShowing) {
+      }
     });
 
     final TextView name = (TextView) findViewById(R.id.effect_name);
